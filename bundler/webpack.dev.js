@@ -11,6 +11,7 @@ const infoColor = (_message) =>
 module.exports = merge(
     commonConfiguration,
     {
+        devtool: "inline-source-map",
         mode: 'development',
         devServer:
         {

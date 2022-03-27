@@ -1,5 +1,8 @@
 import './style.css'
+import { SceneObj } from './SceneObj';
 import * as THREE from 'three'
+//import * as CANNON from 'cannon';
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 
@@ -9,8 +12,8 @@ const gui = new dat.GUI()
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
-let sphere;
 let scene;
+let sceneObject;
 
 const sizes = {width: window.innerWidth, height: window.innerHeight}
 
@@ -18,41 +21,79 @@ const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 0.1, 
 
 function init(){
     scene = new THREE.Scene();
+    sceneObject = new SceneObj();
 
+    defineColors()
+    defineObjects()
+    defineLighting()
+    setupCamera()
 
-    //let sceneObj = new SceneObj("John", 45);
-    //let te = sceneObj.test()
+    function defineColors(){
+        const red = new THREE.MeshStandardMaterial();
+        const green = new THREE.MeshStandardMaterial();
+        const blue = new THREE.MeshStandardMaterial();
+        const white = new THREE.MeshStandardMaterial();
 
-    // Objects
-    const geometry = new THREE.TorusGeometry( .7, .2, 16, 100);
+        red.color = new THREE.Color(255, 0, 0);
+        green.color = new THREE.Color(0, 255, 0);
+        blue.color = new THREE.Color(0, 0, 255);
+        white.color = new THREE.Color(255, 255, 255);
 
-    // Materials
-    const material = new THREE.MeshBasicMaterial();
-    material.color = new THREE.Color(0xff0000);
+        sceneObject.materials.set("red", red);
+        sceneObject.materials.set("green", green);
+        sceneObject.materials.set("blue", blue);
+        sceneObject.materials.set("white", white);
+    }
 
-    // Mesh
-    sphere = new THREE.Mesh(geometry,material);
-    scene.add(sphere);
+    function defineObjects(){
+        let tempGeometry = new THREE.BoxGeometry(100, 0.1, 100, 100, 100, 100);
+        const ground = new THREE.Mesh(tempGeometry, sceneObject.materials.get("green"));
+        //ground.receiveShadow = true;
+        ground.translateY(-2);
+        scene.add(ground);
+        sceneObject.objects.set("floor", ground);
 
-    // Lights
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); //TODO this doesnt seem to work fix it and add better lighting
-    dirLight.position.set(10, 20, 0);
-    scene.add(dirLight);
+        tempGeometry = new THREE.BoxGeometry(3, 1, 1.2);
+        const car = new THREE.Mesh(tempGeometry, sceneObject.materials.get("white"));
+        //car.receiveShadow = true
+        car.translateZ(-5);
+        car.rotation.y = 2.2;
+        car.translateY(-.5);
+        scene.add(car);
+        sceneObject.objects.set("car", car);
 
-    /**
-     * Camera
-     */
-    // Base camera
+        tempGeometry = new THREE.TorusGeometry(.7, .2, 16, 50);
+        const donut = new THREE.Mesh(tempGeometry, sceneObject.materials.get("red"));
+        //donut.receiveShadow = true
+        scene.add(donut);
+        sceneObject.objects.set("donut", donut)
+    }
 
-    camera.position.x = 0
-    camera.position.y = 0
-    camera.position.z = 2
-    scene.add(camera)
+    function defineLighting() {
+        //TODO maybe ray-casting will solve the problems with lighting?
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); //TODO this doesnt seem to work fix it and add better lighting
+        dirLight.position.set(10, 20, 0);
+        //dirLight.castShadow = true
+        //dirLight.shadow.mapSize.set(4096,4096);
+        //dirLight.shadow.radius = 1.75
+        scene.add(dirLight);
 
-    // Controls
-    // const controls = new OrbitControls(camera, canvas)
-    // controls.enableDamping = true
+        // Set up lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.0018);
+        scene.add(ambientLight);
+
+    }
+
+    function setupCamera() {
+        camera.position.x = 0
+        camera.position.y = 1.5
+        camera.position.z = 2
+        scene.add(camera)
+    }
 }
+
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 window.addEventListener('resize', () =>
 {
@@ -76,6 +117,9 @@ window.addEventListener('resize', () =>
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+//renderer.shadowMapEnabled = true
+//renderer.shadowMap.enabled = true;
+//renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
@@ -88,13 +132,19 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
 
+    //renderer.updateShadowMap()
+
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    sphere.rotation.y = 15.0 * elapsedTime
 
+    sceneObject.objects.get("donut").rotation.y = 1.75 * elapsedTime
+
+    //camera.rotation.y = 1.5 * elapsedTime
+
+    //console.log(camera.rotation.y)
     // Update Orbital Controls
-    // controls.update()
+    controls.update()
 
     // Render
     renderer.render(scene, camera)
