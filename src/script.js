@@ -1,157 +1,249 @@
-import './style.css'
-import { SceneObj } from './SceneObj';
-import * as THREE from 'three'
-//import * as CANNON from 'cannon';
+window.focus(); // Capture keys right away (by default focus is on editor)
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
+let camera, scene, renderer; // ThreeJS globals
+let world; // CannonJs world
+let lastTime; // Last timestamp of animation
+let stack; // Parts that stay solid on top of each other
+let overhangs; // Overhanging parts that fall down
+const boxHeight = 1; // Height of each layer
+const originalBoxSize = 3; // Original width and height of a box
+let gameEnded;
 
-// Debug
-const gui = new dat.GUI()
-
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
-
-let scene;
-let sceneObject;
-
-const sizes = {width: window.innerWidth, height: window.innerHeight}
-
-const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 0.1, 100)
+init();
 
 function init(){
-    scene = new THREE.Scene();
-    sceneObject = new SceneObj();
+  stack = [];
+  overhangs = [];
+  // Initialize CannonJS
+  world = new CANNON.World();
+  world.gravity.set(0, -10, 0); // Gravity pulls things down
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.solver.iterations = 40;
 
-    defineColors()
-    defineObjects()
-    defineLighting()
-    setupCamera()
+  // Initialize ThreeJs
+  const aspect = window.innerWidth / window.innerHeight;
+  const width = 10;
+  const height = width / aspect;
 
-    function defineColors(){
-        const red = new THREE.MeshStandardMaterial();
-        const green = new THREE.MeshStandardMaterial();
-        const blue = new THREE.MeshStandardMaterial();
-        const white = new THREE.MeshStandardMaterial();
+  camera = new THREE.OrthographicCamera(
+      width / -2, // left
+      width / 2, // right
+      height / 2, // top
+      height / -2, // bottom
+      0, // near plane
+      100 // far plane
+  );
 
-        red.color = new THREE.Color(255, 0, 0);
-        green.color = new THREE.Color(0, 255, 0);
-        blue.color = new THREE.Color(0, 0, 255);
-        white.color = new THREE.Color(255, 255, 255);
+  camera.position.set(4, 4, 4);
+  camera.lookAt(0, 0, 0);
 
-        sceneObject.materials.set("red", red);
-        sceneObject.materials.set("green", green);
-        sceneObject.materials.set("blue", blue);
-        sceneObject.materials.set("white", white);
-    }
+  scene = new THREE.Scene();
 
-    function defineObjects(){
-        let tempGeometry = new THREE.BoxGeometry(100, 0.1, 100, 100, 100, 100);
-        const ground = new THREE.Mesh(tempGeometry, sceneObject.materials.get("green"));
-        //ground.receiveShadow = true;
-        ground.translateY(-2);
-        scene.add(ground);
-        sceneObject.objects.set("floor", ground);
+  // Foundation
+  addLayer(0, 0, originalBoxSize, originalBoxSize);
 
-        tempGeometry = new THREE.BoxGeometry(3, 1, 1.2);
-        const car = new THREE.Mesh(tempGeometry, sceneObject.materials.get("white"));
-        //car.receiveShadow = true
-        car.translateZ(-5);
-        car.rotation.y = 2.2;
-        car.translateY(-.5);
-        scene.add(car);
-        sceneObject.objects.set("car", car);
+  // First layer
+  addLayer(-10, 0, originalBoxSize, originalBoxSize);
 
-        tempGeometry = new THREE.TorusGeometry(.7, .2, 16, 50);
-        const donut = new THREE.Mesh(tempGeometry, sceneObject.materials.get("red"));
-        //donut.receiveShadow = true
-        scene.add(donut);
-        sceneObject.objects.set("donut", donut)
-    }
+  // Set up lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
 
-    function defineLighting() {
-        //TODO maybe ray-casting will solve the problems with lighting?
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); //TODO this doesnt seem to work fix it and add better lighting
-        dirLight.position.set(10, 20, 0);
-        //dirLight.castShadow = true
-        //dirLight.shadow.mapSize.set(4096,4096);
-        //dirLight.shadow.radius = 1.75
-        scene.add(dirLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  dirLight.position.set(10, 20, 0);
+  scene.add(dirLight);
 
-        // Set up lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.0018);
-        scene.add(ambientLight);
-
-    }
-
-    function setupCamera() {
-        camera.position.x = 0
-        camera.position.y = 1.5
-        camera.position.z = 2
-        scene.add(camera)
-    }
+  // Set up renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animation);
+  document.body.appendChild(renderer.domElement);
 }
 
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-/**
- * Renderer
- */
-
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
-})
-//renderer.shadowMapEnabled = true
-//renderer.shadowMap.enabled = true;
-//renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-/**
- * Animate
- */
-
-const clock = new THREE.Clock()
-
-const tick = () =>
-{
-
-    //renderer.updateShadowMap()
-
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-
-    sceneObject.objects.get("donut").rotation.y = 1.75 * elapsedTime
-
-    //camera.rotation.y = 1.5 * elapsedTime
-
-    //console.log(camera.rotation.y)
-    // Update Orbital Controls
-    controls.update()
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+function addLayer(x, z, width, depth, direction) {
+  const y = boxHeight * stack.length; // Add the new box one layer higher
+  const layer = generateBox(x, y, z, width, depth, false);
+  layer.direction = direction;
+  stack.push(layer);
 }
 
-init()
-tick()
+function addOverhang(x, z, width, depth) {
+  const y = boxHeight * (stack.length - 1); // Add the new box one the same layer
+  const overhang = generateBox(x, y, z, width, depth, true);
+  overhangs.push(overhang);
+}
+
+function generateBox(x, y, z, width, depth, falls) {
+  // ThreeJS
+  const geometry = new THREE.BoxGeometry(width, boxHeight, depth);
+  const color = new THREE.Color(`hsl(${30 + stack.length * 4}, 100%, 50%)`);
+  const material = new THREE.MeshLambertMaterial({ color });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(x, y, z);
+  scene.add(mesh);
+
+  // CannonJS
+  const shape = new CANNON.Box(
+      new CANNON.Vec3(width / 2, boxHeight / 2, depth / 2)
+  );
+  let mass = falls ? 5 : 0; // If it shouldn't fall then setting the mass to zero will keep it stationary
+  mass *= width / originalBoxSize; // Reduce mass proportionately by size
+  mass *= depth / originalBoxSize; // Reduce mass proportionately by size
+  const body = new CANNON.Body({ mass, shape });
+  body.position.set(x, y, z);
+  world.addBody(body);
+
+  return {
+    threejs: mesh,
+    cannonjs: body,
+    width,
+    depth
+  };
+}
+
+function cutBox(topLayer, overlap, size, delta) {
+  const direction = topLayer.direction;
+  const newWidth = direction == "x" ? overlap : topLayer.width;
+  const newDepth = direction == "z" ? overlap : topLayer.depth;
+
+  // Update metadata
+  topLayer.width = newWidth;
+  topLayer.depth = newDepth;
+
+  // Update ThreeJS model
+  topLayer.threejs.scale[direction] = overlap / size;
+  topLayer.threejs.position[direction] -= delta / 2;
+
+  // Update CannonJS model
+  topLayer.cannonjs.position[direction] -= delta / 2;
+
+  // Replace shape to a smaller one (in CannonJS you can't simply just scale a shape)
+  const shape = new CANNON.Box(
+      new CANNON.Vec3(newWidth / 2, boxHeight / 2, newDepth / 2)
+  );
+  topLayer.cannonjs.shapes = [];
+  topLayer.cannonjs.addShape(shape);
+}
+
+//window.addEventListener("mousedown", eventHandler);
+//window.addEventListener("touchstart", eventHandler);
+window.addEventListener("keydown", function (event) {
+  if (event.key == "R" || event.key == "r") {
+    return;
+  }
+});
+
+function splitBlockAndAddNextOneIfOverlaps() {
+  const topLayer = stack[stack.length - 1];
+  const previousLayer = stack[stack.length - 2];
+
+  const direction = topLayer.direction;
+
+  const size = direction == "x" ? topLayer.width : topLayer.depth;
+  const delta =
+      topLayer.threejs.position[direction] -
+      previousLayer.threejs.position[direction];
+  const overhangSize = Math.abs(delta);
+  const overlap = size - overhangSize;
+
+  if (overlap > 0) {
+    cutBox(topLayer, overlap, size, delta);
+
+    // Overhang
+    const overhangShift = (overlap / 2 + overhangSize / 2) * Math.sign(delta);
+    const overhangX =
+        direction == "x"
+            ? topLayer.threejs.position.x + overhangShift
+            : topLayer.threejs.position.x;
+    const overhangZ =
+        direction == "z"
+            ? topLayer.threejs.position.z + overhangShift
+            : topLayer.threejs.position.z;
+    const overhangWidth = direction == "x" ? overhangSize : topLayer.width;
+    const overhangDepth = direction == "z" ? overhangSize : topLayer.depth;
+
+    addOverhang(overhangX, overhangZ, overhangWidth, overhangDepth);
+
+    // Next layer
+    const nextX = direction == "x" ? topLayer.threejs.position.x : -10;
+    const nextZ = direction == "z" ? topLayer.threejs.position.z : -10;
+    const newWidth = topLayer.width; // New layer has the same size as the cut top layer
+    const newDepth = topLayer.depth; // New layer has the same size as the cut top layer
+    const nextDirection = direction == "x" ? "z" : "x";
+
+    addLayer(nextX, nextZ, newWidth, newDepth, nextDirection);
+  } else {
+    missedTheSpot();
+  }
+}
+
+function missedTheSpot() {
+  const topLayer = stack[stack.length - 1];
+
+  // Turn to top layer into an overhang and let it fall down
+  addOverhang(
+      topLayer.threejs.position.x,
+      topLayer.threejs.position.z,
+      topLayer.width,
+      topLayer.depth
+  );
+  world.remove(topLayer.cannonjs);
+  scene.remove(topLayer.threejs);
+}
+
+function animation(time) {
+  if (lastTime) {
+    const timePassed = time - lastTime;
+    const speed = 0.008;
+
+    const topLayer = stack[stack.length - 1];
+    const previousLayer = stack[stack.length - 2];
+
+    // The top level box should move if the game has not ended AND
+    const boxShouldMove = true
+    if (boxShouldMove) {
+      // Keep the position visible on UI and the position in the model in sync
+      topLayer.threejs.position[topLayer.direction] += speed * timePassed;
+      topLayer.cannonjs.position[topLayer.direction] += speed * timePassed;
+
+      // If the box went beyond the stack then show up the fail screen
+      if (topLayer.threejs.position[topLayer.direction] > 10) {
+        missedTheSpot();
+      }
+    }
+
+    // 4 is the initial camera height
+    if (camera.position.y < boxHeight * (stack.length - 2) + 4) {
+      camera.position.y += speed * timePassed;
+    }
+
+    updatePhysics(timePassed);
+    renderer.render(scene, camera);
+  }
+  lastTime = time;
+}
+
+function updatePhysics(timePassed) {
+  world.step(timePassed / 1000); // Step the physics world
+
+  // Copy coordinates from Cannon.js to Three.js
+  overhangs.forEach((element) => {
+    element.threejs.position.copy(element.cannonjs.position);
+    element.threejs.quaternion.copy(element.cannonjs.quaternion);
+  });
+}
+
+window.addEventListener("resize", () => {
+  // Adjust camera
+  console.log("resize", window.innerWidth, window.innerHeight);
+  const aspect = window.innerWidth / window.innerHeight;
+  const width = 10;
+  const height = width / aspect;
+
+  camera.top = height / 2;
+  camera.bottom = height / -2;
+
+  // Reset renderer
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.render(scene, camera);
+});
