@@ -129,7 +129,7 @@ function cutBox(topLayer, overlap, size, delta) {
 //window.addEventListener("touchstart", eventHandler);
 window.addEventListener("keydown", function (event) {
   if (event.key == "R" || event.key == "r") {
-    return;
+
   }
 });
 

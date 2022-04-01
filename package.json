@@ -1,7 +1,15 @@
 {
   "name": "stack-game-with-three-js-and-cannon-js",
   "version": "1.0.0",
+  "scripts": {
+    "doesn'tWork": "parcel dist/index.html"
+  },
   "devDependencies": {
+    "parcel-bundler": "^1.10.0",
+    "cannon": "^0.6.2",
+    "three": "^0.139.2"
+  },
+  "dependencies": {
     "cannon": "^0.6.2",
     "three": "^0.139.2"
   }
