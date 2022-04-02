@@ -1,5 +1,9 @@
 window.focus(); // Capture keys right away (by default focus is on editor)
 
+//TODO possibly use this to set the hitboxes https://sbcode.net/threejs/convexgeometry/
+// ALSO THIS REQUIRES IMPORTING STUFF AND I HAVE TO FIGURE OUT HOW TO DO THAT
+
+
 let camera, scene, renderer; // ThreeJS globals
 let world; // CannonJs world
 let lastTime; // Last timestamp of animation
@@ -30,18 +34,6 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100)
 
-    /*
-  camera = new THREE.OrthographicCamera(
-      width / -2, // left
-      width / 2, // right
-      height / 2, // top
-      height / -2, // bottom
-      0, // near plane
-      100 // far plane
-  );
-
-     */
-
     camera.position.set(4, 4, 4);
     camera.rotation.x = -0.8
 
@@ -50,7 +42,7 @@ function init() {
     const floor = createBox(0, 0, 0, 7, 1, 7, false, colors.get("green"))
     statObjs.push(floor)
 
-    const box = createBox(0, 5, 0, 1, 1, 1, true, colors.get("red"))
+    const box = createBox(0, 5, 0, 1, 1, 1, true, colors.get("transparent"))
     physObjs.push(box)
 
     // Set up lights
@@ -70,28 +62,33 @@ function init() {
 
 function loadObjs() {
     let gtlfLoader = new THREE.GLTFLoader();
-    gtlfLoader.load('./models/car.gltf', (gltf) => {
-        car = gltf.scene;
-        car.scale.set(0.2, 0.2, 0.2);
-        scene.add(car);
-        car.position.set(0, 5, 3);
+    gtlfLoader.load('./models/car_chassis_hitbox_test.gltf', (gltf) => {
+        let carMesh = gltf.scene;
+        carMesh.scale.set(0.2, 0.2, 0.2);
+        scene.add(carMesh);
+        carMesh.position.set(0, 5, 3);
 
         const shape = new CANNON.Box(
             new CANNON.Vec3(1, 1, 1)
         );
-        let mass = 1; //wid * hei * depth
+        //shape.position.y += 0.5
+        let mass = 100; //wid * hei * depth
         const body = new CANNON.Body({mass, shape});
         body.position.set(0, 5, 3);
         world.addBody(body);
 
+        let offsetPos = [0,-0.754,0];
 
-        //TODO finish this
-        const carMesh = {
-            threejs: car,
-            cannonjs: body
+        car = {
+            threejs: carMesh,
+            cannonjs: body,
+            offsetPos
         };
-
-        physObjs.push(carMesh);
+        car.threejs.rotation.y = 45.4
+        //car.cannonjs.position.z += 0.3
+        //car.cannonjs.quaternion.x = 1
+        physObjs.push(car);
+        updateCamera()
     });
 }
 
@@ -124,16 +121,16 @@ function animation(time) {
         updatePhysics(timePassed);
         renderer.render(scene, camera);
 
-        updateCamera()
+        //updateCamera()
     }
     lastTime = time;
 }
 
 function updateCamera() {
     if (car !== undefined) {
-        camera.position.x = car.position.x - 0.85
-        camera.position.y = car.position.y + 2.5
-        camera.position.z = car.position.z + 2.2
+        camera.position.x = car.threejs.position.x - 0.85
+        camera.position.y = car.threejs.position.y + 2.5
+        camera.position.z = car.threejs.position.z + 2.2
     }
 }
 
@@ -147,6 +144,12 @@ function updatePhysics(timePassed) {
     physObjs.forEach((element) => {
         element.threejs.position.copy(element.cannonjs.position);
         element.threejs.quaternion.copy(element.cannonjs.quaternion);
+        //use the offset so the correct position is set
+        if (element.offsetPos !== undefined) {
+            element.threejs.position.x += element.offsetPos[0]
+            element.threejs.position.y += element.offsetPos[1]
+            element.threejs.position.z += element.offsetPos[2]
+        }
     });
 }
 
@@ -167,12 +170,75 @@ window.addEventListener("resize", () => {
 
  // controls
 window.addEventListener("keydown", function (event) {
-    if (event.key.toLowerCase() === "w") {
-        console.log("moving")
-        //TODO make it move, maybe try using cannon? and the car is made of the three js and cannon object so get the
-        // object before?
+    let enableCameraControls = true
+    if (enableCameraControls)
+        cameraControls(event.key.toLowerCase())
+
+    switch (event.key.toLowerCase()){
+        case "w":
+            break
+        case "s":
+            break
+        case "d":
+            break
+        case "a":
+            break
+        case "b":
+            break
     }
 });
+
+
+function cameraControls(key){
+    const cameraMovSens = 0.15;
+    const cameraRotSens = 0.025;
+    switch (key){
+        case "w":
+            camera.position.z -= cameraMovSens;
+            break
+        case "s":
+            camera.position.z += cameraMovSens;
+            break
+        case "a":
+            camera.position.x -= cameraMovSens;
+            break
+        case "d":
+            camera.position.x += cameraMovSens;
+            break
+        case "q":
+            camera.position.y -= cameraMovSens;
+            break
+        case "e":
+            camera.position.y += cameraMovSens;
+            break
+        case "r": // look at car
+            camera.position.x = car.threejs.position.x - 0.85
+            camera.position.y = car.threejs.position.y + 2.5
+            camera.position.z = car.threejs.position.z + 2.2
+            camera.rotation.x = -0.8
+            camera.rotation.y = 0
+            camera.rotation.z = 0
+            break
+        case "i":
+            camera.rotation.x += cameraRotSens
+            break
+        case "k":
+            camera.rotation.x -= cameraRotSens
+            break
+        case "u":
+            camera.rotation.z -= cameraRotSens
+            break
+        case "o":
+            camera.rotation.z += cameraRotSens
+            break
+        case "l":
+            camera.rotation.y -= cameraRotSens
+            break
+        case "j":
+            camera.rotation.y += cameraRotSens
+            break
+    }
+}
 
 function defineColors() {
     colors = new Map()
@@ -181,9 +247,11 @@ function defineColors() {
     const green = new THREE.Color(`hsl(${120}, 100%, 50%)`)
     const blue = new THREE.Color(`hsl(${240}, 100%, 50%)`)
     const white = new THREE.Color(`hsl(${0}, 0%, 50%)`)
+    const transparent = new THREE.MeshLambertMaterial({color: 0x200020, transparent: true, opacity: 0.2});
 
     colors.set("red", red);
     colors.set("green", green);
     colors.set("blue", blue);
     colors.set("white", white);
+    colors.set("transparent", transparent)
 }
