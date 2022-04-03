@@ -1,16 +1,27 @@
 {
-  "name": "stack-game-with-three-js-and-cannon-js",
+  "name": "portfolio",
   "version": "1.0.0",
-  "scripts": {
-    "doesn'tWork": "parcel dist/index.html"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.10.0",
-    "cannon": "^0.6.2",
-    "three": "^0.139.2"
-  },
+  "description": "portfolio project",
+  "main": "script.js",
   "dependencies": {
     "cannon": "^0.6.2",
-    "three": "^0.139.2"
-  }
+    "express": "^4.17.3",
+    "three": "^0.139.2",
+    "three-gltf-loader": "^1.111.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node --inspect app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deltashot/portfolio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deltashot/portfolio/issues"
+  },
+  "homepage": "https://github.com/Deltashot/portfolio#readme"
 }

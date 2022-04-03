@@ -1,4 +1,26 @@
+import * as THREE from './build/three.module.js';
+import {GLTFLoader} from './jsm/loaders/GLTFLoader.js';
+
+console.log(THREE)
+console.log(GLTFLoader)
 window.focus(); // Capture keys right away (by default focus is on editor)
+
+
+/*
+
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import Stats from 'three/examples/jsm/libs/stats.module'
+import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry'
+import * as CANNON from 'cannon-es'
+import CannonUtils from './utils/cannonUtils'
+
+
+ */
+
+
+
 
 //TODO possibly use this to set the hitboxes https://sbcode.net/threejs/convexgeometry/
 // ALSO THIS REQUIRES IMPORTING STUFF AND I HAVE TO FIGURE OUT HOW TO DO THAT
@@ -61,8 +83,8 @@ function init() {
 }
 
 function loadObjs() {
-    let gtlfLoader = new THREE.GLTFLoader();
-    gtlfLoader.load('./models/car_chassis_hitbox_test.gltf', (gltf) => {
+    let gltf = new GLTFLoader();
+    gltf.load('./models/car_chassis_hitbox_test.gltf', (gltf) => {
         let carMesh = gltf.scene;
         carMesh.scale.set(0.2, 0.2, 0.2);
         scene.add(carMesh);

@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>portfolio</title>
-  <link rel="stylesheet" href="./style.css">
-
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>test</title>
+  <link href="style.css" rel="stylesheet">
+  <script type="importmap">
+        {
+            "imports":{
+                "three": "./build/three.module.js",
+                "three/examples/jsm/controls/OrbitControls": "./jsm/controls/OrbitControls.js",
+                "three/examples/jsm/loaders/GLTFLoader": "./jsm/loaders/GLTFLoader.js",
+                "three/examples/jsm/libs/dat.gui.module": "./jsm/libs/dat.gui.module.js"
+                "three/examples/jsm/libs/stats.module":"./jsm/libs/stats.module.js",
+            }
+        }
+  </script>
 <body>
 <!-- partial:index.partial.html -->
-  <script src="https://threejs.org/build/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-  <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="./script.js"></script>
+  <script src="./script.js" type="module"></script>
 </body>
 </html>
