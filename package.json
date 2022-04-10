@@ -4,10 +4,9 @@
   "description": "portfolio project",
   "main": "script.js",
   "dependencies": {
-    "cannon": "^0.6.2",
+    "cannon": "0.6.2",
     "express": "^4.17.3",
-    "three": "^0.139.2",
-    "three-gltf-loader": "^1.111.0"
+    "three": "0.127.0"
   },
   "scripts": {
     "start": "node app.js",

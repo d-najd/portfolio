@@ -1,25 +1,19 @@
-import * as THREE from './build/three.module.js';
-import {GLTFLoader} from './jsm/loaders/GLTFLoader.js';
+import * as THREE from './three/build/three.module.js';
+import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js'
+//import * as CANNON from './cannon/build/cannon.min.js' //the imported object seems to be different somehow?
+import Stats from './three/examples/jsm/libs/stats.module.js'
+import { ConvexGeometry } from './three/examples/jsm/geometries/ConvexGeometry.js'
+//import CannonUtils from './utils/cannonUtils.js'
+
 
 console.log(THREE)
 console.log(GLTFLoader)
+console.log(CANNON)
+console.log(Stats)
+console.log(ConvexGeometry)
+//console.log(CannonUtils)
 window.focus(); // Capture keys right away (by default focus is on editor)
-
-
-/*
-
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import Stats from 'three/examples/jsm/libs/stats.module'
-import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry'
-import * as CANNON from 'cannon-es'
-import CannonUtils from './utils/cannonUtils'
-
-
- */
-
-
 
 
 //TODO possibly use this to set the hitboxes https://sbcode.net/threejs/convexgeometry/
@@ -136,7 +130,12 @@ function createBox(x, y, z, width, height, depth, falls, color) {
     };
 }
 
+ const controls = new OrbitControls(camera, renderer.domElement)
+ controls.enableDamping = true
+
 function animation(time) {
+    if (controls != null)
+        controls.update()
     if (lastTime) {
         const timePassed = time - lastTime;
 
@@ -192,75 +191,11 @@ window.addEventListener("resize", () => {
 
  // controls
 window.addEventListener("keydown", function (event) {
-    let enableCameraControls = true
-    if (enableCameraControls)
-        cameraControls(event.key.toLowerCase())
-
     switch (event.key.toLowerCase()){
         case "w":
             break
-        case "s":
-            break
-        case "d":
-            break
-        case "a":
-            break
-        case "b":
-            break
     }
 });
-
-
-function cameraControls(key){
-    const cameraMovSens = 0.15;
-    const cameraRotSens = 0.025;
-    switch (key){
-        case "w":
-            camera.position.z -= cameraMovSens;
-            break
-        case "s":
-            camera.position.z += cameraMovSens;
-            break
-        case "a":
-            camera.position.x -= cameraMovSens;
-            break
-        case "d":
-            camera.position.x += cameraMovSens;
-            break
-        case "q":
-            camera.position.y -= cameraMovSens;
-            break
-        case "e":
-            camera.position.y += cameraMovSens;
-            break
-        case "r": // look at car
-            camera.position.x = car.threejs.position.x - 0.85
-            camera.position.y = car.threejs.position.y + 2.5
-            camera.position.z = car.threejs.position.z + 2.2
-            camera.rotation.x = -0.8
-            camera.rotation.y = 0
-            camera.rotation.z = 0
-            break
-        case "i":
-            camera.rotation.x += cameraRotSens
-            break
-        case "k":
-            camera.rotation.x -= cameraRotSens
-            break
-        case "u":
-            camera.rotation.z -= cameraRotSens
-            break
-        case "o":
-            camera.rotation.z += cameraRotSens
-            break
-        case "l":
-            camera.rotation.y -= cameraRotSens
-            break
-        case "j":
-            camera.rotation.y += cameraRotSens
-            break
-    }
-}
 
 function defineColors() {
     colors = new Map()

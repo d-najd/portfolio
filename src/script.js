@@ -14,6 +14,7 @@ init();
 function init(){
   stack = [];
   overhangs = [];
+
   // Initialize CannonJS
   world = new CANNON.World();
   world.gravity.set(0, -10, 0); // Gravity pulls things down
@@ -191,7 +192,11 @@ function missedTheSpot() {
   scene.remove(topLayer.threejs);
 }
 
+ const controls = new OrbitControls(camera, canvas)
+ controls.enableDamping = true
+
 function animation(time) {
+  controls.update()
   if (lastTime) {
     const timePassed = time - lastTime;
     const speed = 0.008;
