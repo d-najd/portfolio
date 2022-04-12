@@ -16,7 +16,7 @@ let physObjs = []; // Objects that are affected by gravity
 let colors; // list of colors
 
 let car; // the player
-const debug = true;
+const debug = {enabled: true, collisionWireframe: true};
 
 init();
 
@@ -28,7 +28,7 @@ function init() {
     world.solver.iterations = 40;
 
     defineColors();
-    loadObjs(debug);
+    loadObjs();
 
     // Initialize ThreeJs
     const aspect = window.innerWidth / window.innerHeight;
@@ -42,10 +42,14 @@ function init() {
 
     scene = new THREE.Scene();
 
-    const floor = createBox({x: 0, y: -3, z: 0}, {width: 7, height: 1, depth: 7}, false, colors.get("green"), debug)
+    const floor = createBox(
+        {x: 0, y: -3, z: 0}, {width: 15, height: 1, depth: 15},
+        false, colors.get("green"), )
     statObjs.push(floor)
 
-    const box = createBox({x: 0, y: 3, z: 0}, {width: 1, height: 1, depth: 1}, true, colors.get("white"), debug)
+    const box = createBox(
+        {x: 0, y: 3, z: 0}, {width: 1, height: 1, depth: 1},
+        true, colors.get("white"))
     physObjs.push(box)
 
     // Set up lights
@@ -63,35 +67,41 @@ function init() {
     document.body.appendChild(renderer.domElement);
 }
 
-let pain = THREE.Mesh;
-
-function loadObjs(debug) {
+function loadObjs() {
     //cx, cy, cz are supposted to be offsets for the colliders
-    let carSettings = {x: 0, y: 0, z: 0, sizeMulti: 5.0, cx: 3, cy: 0, cz: 0, color: colors.get("red")};
-
-    //TODO fix a bug where if you move collider or the car the other one follows
-
+    let carSettings = {
+        position: {x: .5, y: 0, z: 0},
+        offset: {x: .8, y: -.0252, z: 1.234},
+        collisionDimension: {x: .4, y: .27, z: 1.053},
+        sizeMulti: 5.0,
+        color: colors.get("red")};
+    console.log(carSettings)
     let gltf = new GLTFLoader();
     gltf.load('./models/car_chassis.gltf', (gltf) => {
         let carMesh = gltf.scene;
         carMesh.scale.set(1/carSettings.sizeMulti, 1/carSettings.sizeMulti, 1/carSettings.sizeMulti);
-        carMesh.position.set(carSettings.x, carSettings.y, carSettings.z);
+
         scene.add(carMesh);
 
         const shape = new CANNON.Box(
-            new CANNON.Vec3(1, 1, 1),
+            new CANNON.Vec3(
+                carSettings.collisionDimension.x,
+                carSettings.collisionDimension.y,
+                carSettings.collisionDimension.z),
         );
-        let mass = 1; //wid * hei * depth
+
+        let mass = 100; //wid * hei * depth
         const body = new CANNON.Body({mass, shape});
-        body.position.set((carSettings.x) + (carSettings.cx), (carSettings.y) + (carSettings.cy), (carSettings.z) + (carSettings.cz));
+        body.position.set(carSettings.position.x, carSettings.position.y, carSettings.position.z);
         world.addBody(body);
 
-        if (debug)
+        if (debug.enabled === true)
             visualizeCollision(body, shape, carMesh, carSettings)
 
         car = {
             threejs: carMesh,
-            cannonjs: body
+            cannonjs: body,
+            settings: carSettings
         };
 
         physObjs.push(car);
@@ -99,11 +109,11 @@ function loadObjs(debug) {
     });
 }
 
-function createBox(offset, dimension, isRigidbody, color, debug) {
+function createBox(position, dimension, isRigidbody, color) {
     const geometry = new THREE.BoxGeometry(dimension.width, dimension.height, dimension.depth);
     const material = new THREE.MeshLambertMaterial({color});
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(offset.x, offset.y, offset.z);
+    mesh.position.set(position.x, position.y, position.z);
     scene.add(mesh);
 
     // CannonJS
@@ -113,11 +123,13 @@ function createBox(offset, dimension, isRigidbody, color, debug) {
 
     let mass = isRigidbody ? dimension.width * dimension.height * dimension.depth : 0; // 0 means its stationary
     const body = new CANNON.Body({mass, shape});
-    body.position.set(offset.x, offset.y, offset.z);
+    body.position.set(position.x, position.y, position.z);
     world.addBody(body);
 
-    if (debug)
-        visualizeCollision(body, shape, mesh, offset)
+    if (debug.enabled === true) {
+        let settings = {position: {x: position.x, y: position.y, z: position.z}}
+        visualizeCollision(body, shape, mesh, settings)
+    }
 
     return {
         threejs: mesh,
@@ -128,11 +140,11 @@ function createBox(offset, dimension, isRigidbody, color, debug) {
 function visualizeCollision(body, shape, mesh, settings){
     let sizeMulti = 1; //default size scale
     let color = 0xffffff; //default color
-    let xOff = 0, yOff = 0, zOff = 0;
-    if (settings.cx !== undefined){
-        xOff = settings.cx;
-        yOff = settings.cy;
-        zOff = settings.cz;
+    let xOff = 0, yOff = 0, zOff = 0; //offsets
+    if (settings.offset !== undefined){
+        xOff = settings.offset.x;
+        yOff = settings.offset.y;
+        zOff = settings.offset.z;
     }
     if (settings.sizeMulti !== undefined)
         sizeMulti = settings.sizeMulti
@@ -140,30 +152,29 @@ function visualizeCollision(body, shape, mesh, settings){
         color = settings.color
 
     let points = []
-    let cannonPoints = shape.convexPolyhedronRepresentation.vertices
+    let vertices = shape.convexPolyhedronRepresentation.vertices
 
-    for (let i = 0; i < cannonPoints.length; i++){
+    for (let i = 0; i < vertices.length; i++){
         points.push(
             new THREE.Vector3(
-                ((cannonPoints[i].x * sizeMulti) - settings.x) - xOff,
-                ((cannonPoints[i].y * sizeMulti) - settings.y) - yOff,
-                ((cannonPoints[i].z * sizeMulti) - settings.z) - zOff)
+                ((vertices[i].x * sizeMulti) - settings.position.x) - (xOff * sizeMulti),
+                ((vertices[i].y * sizeMulti) - settings.position.y) - (yOff * sizeMulti),
+                ((vertices[i].z * sizeMulti) - settings.position.z) - (zOff * sizeMulti))
         )
     }
+    let enableWireframe = debug.collisionWireframe
+
     const convexGeometry = new ConvexGeometry(points)
     let convexHull;
     convexHull = new THREE.Mesh(
         convexGeometry,
         new THREE.MeshBasicMaterial({
             color: color,
-            wireframe: true,
+            wireframe: enableWireframe,
         })
     )
 
-    convexHull.position.x = body.position.x;
-    convexHull.position.y = body.position.y;
-    convexHull.position.z = body.position.z;
-
+    convexHull.position.copy(body.position)
     mesh.add(convexHull)
 }
 
@@ -200,14 +211,15 @@ function updatePhysics(timePassed) {
     // Copy coordinates from Cannon.js to Three.js
     // for physics simulation
     physObjs.forEach((element) => {
-        element.threejs.position.copy(element.cannonjs.position);
+        let cannonPos = element.cannonjs.position;
+        let threePos = element.threejs.position;
+        if (element.settings !== undefined) {
+            threePos.x = cannonPos.x + element.settings.offset.x
+            threePos.y = cannonPos.y + element.settings.offset.y
+            threePos.z = cannonPos.z + element.settings.offset.z
+        } else
+            threePos.copy(element.cannonjs.position);
         element.threejs.quaternion.copy(element.cannonjs.quaternion);
-        //use the offset so the correct position is set
-        if (element.offsetPos !== undefined) {
-            element.threejs.position.x += element.offsetPos[0]
-            element.threejs.position.y += element.offsetPos[1]
-            element.threejs.position.z += element.offsetPos[2]
-        }
     });
 }
 
