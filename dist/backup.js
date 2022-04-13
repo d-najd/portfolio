@@ -19,24 +19,17 @@ let car; // the player
 let wheel; //for debugging purpuses
 const debug = {enabled: true, collisionWireframe: true};
 
-
-let groundMaterial = new CANNON.Material('groundMaterial');
-// car wheels
-var wheelBodies = [],
-    wheelVisuals = [];
-let vehicle
-
-
 init();
 
 function init() {
     // Initialize CannonJS
     world = new CANNON.World();
     world.gravity.set(0, -10, 0); // Gravity pulls things down
-    world.broadphase = new CANNON.SAPBroadphase(world);
-    world.defaultContactMaterial.friction = 0;
+    world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 40;
-    scene = new THREE.Scene();
+
+    defineColors();
+    loadObjs();
 
     // Initialize ThreeJs
     const aspect = window.innerWidth / window.innerHeight;
@@ -44,11 +37,11 @@ function init() {
     const height = width / aspect;
 
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 200)
-    camera.position.set(2, 0, 4);
 
-    defineColors();
-    loadObjs();
-    test();
+    camera.position.set(2, 0, 4);
+    //camera.rotation.x = -1
+
+    scene = new THREE.Scene();
 
     const floor = createBox(
         {x: 0, y: -3, z: 0}, {width: 15, height: 1, depth: 15},
@@ -58,7 +51,7 @@ function init() {
     const box = createBox(
         {x: 0, y: 3, z: 0}, {width: 1, height: 1, depth: 1},
         true, colors.get("white"))
-    //physObjs.push(box)
+    physObjs.push(box)
 
     // Set up lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -75,160 +68,8 @@ function init() {
     document.body.appendChild(renderer.domElement);
 }
 
-
-
-function test(){
-    var wheelMaterial = new CANNON.Material('wheelMaterial');
-    var wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-        friction: 0.3,
-        restitution: 0,
-        contactEquationStiffness: 1000,
-    });
-
-    world.addContactMaterial(wheelGroundContactMaterial);
-
-// car physics body
-    var chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2));
-    var chassisBody = new CANNON.Body({mass: 150});
-    chassisBody.addShape(chassisShape);
-    chassisBody.position.set(0, 0, 0);
-    chassisBody.angularVelocity.set(0, 0, 0); // initial velocity
-
-// car visual body
-    var geometry = new THREE.BoxGeometry(2, 0.6, 4); // double chasis shape
-    var material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-    var box = new THREE.Mesh(geometry, material);
-    scene.add(box);
-
-// parent vehicle object
-    vehicle = new CANNON.RaycastVehicle({
-        chassisBody: chassisBody,
-        indexRightAxis: 0, // x
-        indexUpAxis: 1, // y
-        indexForwardAxis: 2, // z
-    });
-
-
-// wheel options
-    var options = {
-        radius: 0.3,
-        directionLocal: new CANNON.Vec3(0, -1, 0),
-        suspensionStiffness: 45,
-        suspensionRestLength: 0.4,
-        frictionSlip: 5,
-        dampingRelaxation: 2.3,
-        dampingCompression: 4.5,
-        maxSuspensionForce: 200000,
-        rollInfluence:  0.01,
-        axleLocal: new CANNON.Vec3(-1, 0, 0),
-        chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
-        maxSuspensionTravel: 0.25,
-        customSlidingRotationalSpeed: -30,
-        useCustomSlidingRotationalSpeed: true,
-    };
-
-    var axlewidth = 0.7;
-    options.chassisConnectionPointLocal.set(axlewidth, 0, -1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(-axlewidth, 0, -1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(axlewidth, 0, 1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(-axlewidth, 0, 1);
-    vehicle.addWheel(options);
-
-    vehicle.addToWorld(world);
-
-
-    vehicle.wheelInfos.forEach(function(wheel) {
-        var shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20);
-        var body = new CANNON.Body({mass: 1, material: wheelMaterial});
-        var q = new CANNON.Quaternion();
-        q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2);
-        body.addShape(shape, new CANNON.Vec3(), q);
-        wheelBodies.push(body);
-        // wheel visual body
-        var geometry = new THREE.CylinderGeometry( wheel.radius, wheel.radius, 0.4, 32 );
-        var material = new THREE.MeshPhongMaterial({
-            color: 0xd0901d,
-            emissive: 0xaa0000,
-            side: THREE.DoubleSide,
-            flatShading: true,
-        });
-        var cylinder = new THREE.Mesh(geometry, material);
-        cylinder.geometry.rotateZ(Math.PI/2);
-        wheelVisuals.push(cylinder);
-        scene.add(cylinder);
-    });
-
-    let test = {
-        threejs: box,
-        cannonjs: chassisBody
-    };
-    physObjs.push(test)
-}
-
-// update the wheels to match the physics
-world.addEventListener('postStep', function() {
-    for (var i=0; i<vehicle.wheelInfos.length; i++) {
-        vehicle.updateWheelTransform(i);
-        var t = vehicle.wheelInfos[i].worldTransform;
-        // update wheel physics
-        wheelBodies[i].position.copy(t.position);
-        wheelBodies[i].quaternion.copy(t.quaternion);
-        // update wheel visuals
-        wheelVisuals[i].position.copy(t.position);
-        wheelVisuals[i].quaternion.copy(t.quaternion);
-    }
-});
-
-function navigate(e) {
-    if (e.type != 'keydown' && e.type != 'keyup') return;
-    var keyup = e.type == 'keyup';
-    vehicle.setBrake(0, 0);
-    vehicle.setBrake(0, 1);
-    vehicle.setBrake(0, 2);
-    vehicle.setBrake(0, 3);
-
-    var engineForce = 800,
-        maxSteerVal = 0.3;
-    switch(e.keyCode) {
-
-        case 38: // forward
-            vehicle.applyEngineForce(keyup ? 0 : -engineForce, 2);
-            vehicle.applyEngineForce(keyup ? 0 : -engineForce, 3);
-            break;
-
-        case 40: // backward
-            vehicle.applyEngineForce(keyup ? 0 : engineForce, 2);
-            vehicle.applyEngineForce(keyup ? 0 : engineForce, 3);
-            break;
-
-        case 39: // right
-            vehicle.setSteeringValue(keyup ? 0 : -maxSteerVal, 2);
-            vehicle.setSteeringValue(keyup ? 0 : -maxSteerVal, 3);
-            break;
-
-        case 37: // left
-            vehicle.setSteeringValue(keyup ? 0 : maxSteerVal, 2);
-            vehicle.setSteeringValue(keyup ? 0 : maxSteerVal, 3);
-            break;
-    }
-}
-
-window.addEventListener('keydown', navigate)
-window.addEventListener('keyup', navigate)
-
-
-
-
-
 function loadObjs() {
 
-    /*
     loadBasicObject({
         position: {x: -3.5, y: 0, z: 0},
         offset: {x: 4, y: -0.126, z: 6.17},
@@ -236,8 +77,6 @@ function loadObjs() {
         sizeMulti: .2,
         color: colors.get("red"),
         dir: './models/car_chassis.gltf'})
-
-     */
 
 }
 
@@ -325,7 +164,7 @@ function createBox(position, dimension, isRigidbody, color) {
     );
 
     let mass = isRigidbody ? dimension.width * dimension.height * dimension.depth : 0; // 0 means its stationary
-    const body = new CANNON.Body({mass: mass, material: groundMaterial, shape: shape});
+    const body = new CANNON.Body({mass, shape});
     body.position.set(position.x, position.y, position.z);
     world.addBody(body);
 
@@ -409,8 +248,7 @@ function updateCamera(object) {
 function updatePhysics(timePassed) {
     //Prevent objects to move 1000 meters below the ground if we change page and return to this one after some time
     timePassed > 200 ? timePassed = 200 : timePassed
-    //world.step(timePassed / 1000); // Step the physics world
-    world.step(1 / 60); // Step the physics world
+    world.step(timePassed / 1000); // Step the physics world
 
     // Copy coordinates from Cannon.js to Three.js
     // for physics simulation
@@ -430,12 +268,16 @@ function updatePhysics(timePassed) {
 window.addEventListener("resize", () => {
     // Adjust camera
     console.log("resize", window.innerWidth, window.innerHeight);
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const aspect = window.innerWidth / window.innerHeight;
+    const width = 10;
+    const height = width / aspect;
 
-    camera.aspect = width/height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
+    camera.top = height / 2;
+    camera.bottom = height / -2;
+
+    // Reset renderer
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.render(scene, camera);
 });
 
  // controls
