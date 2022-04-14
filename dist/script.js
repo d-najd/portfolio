@@ -2,30 +2,27 @@ import * as THREE from './three/build/three.module.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js'
 import { ConvexGeometry } from './three/examples/jsm/geometries/ConvexGeometry.js'
+import * as Spawn from './spawn.js'
 //import * as CANNON from './cannon/build/cannon.min.js' //the imported object seems to be different somehow?
 //import Stats from './three/examples/jsm/libs/stats.module.js'
 //import CannonUtils from './utils/cannonUtils.js'
 
 window.focus(); // Capture keys right away (by default focus is on editor)
 
-let camera, scene, renderer; // ThreeJS globals
-let world; // CannonJs world
+export let camera, scene, renderer; // ThreeJS globals
+export let world; // CannonJs world
 let lastTime; // Last timestamp of animation
 let statObjs = []; // Objects that are not affected by gravity
-let physObjs = []; // Objects that are affected by gravity
+export let physObjs = []; // Objects that are affected by gravity
 let colors; // list of colors
 
-let car; // the player
-let wheel; //for debugging purpuses
-const debug = {enabled: true, collisionWireframe: true};
+export const debug = {enabled: true, collisionWireframe: true};
+let Spawner;
 
-
-let groundMaterial = new CANNON.Material('groundMaterial');
 // car wheels
-var wheelBodies = [],
+let wheelBodies = [],
     wheelVisuals = [];
 let vehicle
-
 
 init();
 
@@ -33,7 +30,7 @@ function init() {
     // Initialize CannonJS
     world = new CANNON.World();
     world.gravity.set(0, -10, 0); // Gravity pulls things down
-    world.broadphase = new CANNON.SAPBroadphase(world);
+    //world.broadphase = new CANNON.SAPBroadphase(world);
     world.defaultContactMaterial.friction = 0;
     world.solver.iterations = 40;
     scene = new THREE.Scene();
@@ -46,19 +43,30 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 200)
     camera.position.set(2, 0, 4);
 
+    //setup of other scripts
+    Spawner = new Spawn.Spawn()
     defineColors();
-    loadObjs();
-    test();
-
-    const floor = createBox(
-        {x: 0, y: -3, z: 0}, {width: 15, height: 1, depth: 15},
-        false, colors.get("green"), )
+    const floor = Spawner.spawnFloor(new Spawn.Settings({
+            dimensions: {width: 100, depth: 100},
+            position: {x: 0, y: -3, z: 0},
+            color: colors.get("green")}))
     statObjs.push(floor)
 
-    const box = createBox(
-        {x: 0, y: 3, z: 0}, {width: 1, height: 1, depth: 1},
-        true, colors.get("white"))
-    //physObjs.push(box)
+    const box = Spawner.spawnBox(new Spawn.Settings({
+        position: {x: 0, y: 3, z: 0},
+        dimensions: {width: 1, height: 1, depth: 1},
+        color: colors.get("white"),
+        isRigidbody: true
+    }))
+    physObjs.push(box)
+
+    Spawner.spawnCar(undefined, new Spawn.Settings( {
+        position: {x: -3.5, y: 0, z: 0},
+        offsets: {x: 4, y: -0.126, z: 6.17},
+        colliderDimensions: {x: 2, y: 1.35, z: 5.265},
+        sizeMulti: .2,
+        wireframeColor: colors.get("red"),
+        dir: './models/car_chassis.gltf'}), undefined)
 
     // Set up lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -75,100 +83,39 @@ function init() {
     document.body.appendChild(renderer.domElement);
 }
 
+//#region physics
 
+function animation(time) {
+    if (controls != null)
+        controls.update()
+    if (lastTime) {
+        const timePassed = time - lastTime;
 
-function test(){
-    var wheelMaterial = new CANNON.Material('wheelMaterial');
-    var wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-        friction: 0.3,
-        restitution: 0,
-        contactEquationStiffness: 1000,
+        updatePhysics(timePassed);
+        renderer.render(scene, camera);
+    }
+    lastTime = time;
+}
+
+function updatePhysics(timePassed) {
+    //Prevent objects to move 1000 meters below the ground if we change page and return to this one after some time
+    timePassed > 200 ? timePassed = 200 : timePassed
+    //world.step(timePassed / 1000); // Step the physics world
+    world.step(1 / 60); // Step the physics world
+
+    // Copy coordinates from Cannon.js to Three.js
+    // for physics simulation
+    physObjs.forEach((element) => {
+        let cannonPos = element.cannonjs.position;
+        let threePos = element.threejs.position;
+        if (element.settings !== undefined) {
+            threePos.x = cannonPos.x + element.settings.offsets.x * element.settings.sizeMulti
+            threePos.y = cannonPos.y + element.settings.offsets.y * element.settings.sizeMulti
+            threePos.z = cannonPos.z + element.settings.offsets.z * element.settings.sizeMulti
+        } else
+            threePos.copy(element.cannonjs.position);
+        element.threejs.quaternion.copy(element.cannonjs.quaternion);
     });
-
-    world.addContactMaterial(wheelGroundContactMaterial);
-
-// car physics body
-    var chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2));
-    var chassisBody = new CANNON.Body({mass: 150});
-    chassisBody.addShape(chassisShape);
-    chassisBody.position.set(0, 0, 0);
-    chassisBody.angularVelocity.set(0, 0, 0); // initial velocity
-
-// car visual body
-    var geometry = new THREE.BoxGeometry(2, 0.6, 4); // double chasis shape
-    var material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-    var box = new THREE.Mesh(geometry, material);
-    scene.add(box);
-
-// parent vehicle object
-    vehicle = new CANNON.RaycastVehicle({
-        chassisBody: chassisBody,
-        indexRightAxis: 0, // x
-        indexUpAxis: 1, // y
-        indexForwardAxis: 2, // z
-    });
-
-
-// wheel options
-    var options = {
-        radius: 0.3,
-        directionLocal: new CANNON.Vec3(0, -1, 0),
-        suspensionStiffness: 45,
-        suspensionRestLength: 0.4,
-        frictionSlip: 5,
-        dampingRelaxation: 2.3,
-        dampingCompression: 4.5,
-        maxSuspensionForce: 200000,
-        rollInfluence:  0.01,
-        axleLocal: new CANNON.Vec3(-1, 0, 0),
-        chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
-        maxSuspensionTravel: 0.25,
-        customSlidingRotationalSpeed: -30,
-        useCustomSlidingRotationalSpeed: true,
-    };
-
-    var axlewidth = 0.7;
-    options.chassisConnectionPointLocal.set(axlewidth, 0, -1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(-axlewidth, 0, -1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(axlewidth, 0, 1);
-    vehicle.addWheel(options);
-
-    options.chassisConnectionPointLocal.set(-axlewidth, 0, 1);
-    vehicle.addWheel(options);
-
-    vehicle.addToWorld(world);
-
-
-    vehicle.wheelInfos.forEach(function(wheel) {
-        var shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20);
-        var body = new CANNON.Body({mass: 1, material: wheelMaterial});
-        var q = new CANNON.Quaternion();
-        q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2);
-        body.addShape(shape, new CANNON.Vec3(), q);
-        wheelBodies.push(body);
-        // wheel visual body
-        var geometry = new THREE.CylinderGeometry( wheel.radius, wheel.radius, 0.4, 32 );
-        var material = new THREE.MeshPhongMaterial({
-            color: 0xd0901d,
-            emissive: 0xaa0000,
-            side: THREE.DoubleSide,
-            flatShading: true,
-        });
-        var cylinder = new THREE.Mesh(geometry, material);
-        cylinder.geometry.rotateZ(Math.PI/2);
-        wheelVisuals.push(cylinder);
-        scene.add(cylinder);
-    });
-
-    let test = {
-        threejs: box,
-        cannonjs: chassisBody
-    };
-    physObjs.push(test)
 }
 
 // update the wheels to match the physics
@@ -185,34 +132,40 @@ world.addEventListener('postStep', function() {
     }
 });
 
+//#endregion
+
+//#region controls
+const controls = new OrbitControls(camera, renderer.domElement)
+controls.enableDamping = true
+
 function navigate(e) {
-    if (e.type != 'keydown' && e.type != 'keyup') return;
-    var keyup = e.type == 'keyup';
+    if (e.type !== 'keydown' && e.type !== 'keyup') return;
+    const keyup = e.type === 'keyup';
     vehicle.setBrake(0, 0);
     vehicle.setBrake(0, 1);
     vehicle.setBrake(0, 2);
     vehicle.setBrake(0, 3);
 
-    var engineForce = 800,
+    const engineForce = 800,
         maxSteerVal = 0.3;
-    switch(e.keyCode) {
+    switch(e.key.toLowerCase()) {
 
-        case 38: // forward
+        case "w": // forward
             vehicle.applyEngineForce(keyup ? 0 : -engineForce, 2);
             vehicle.applyEngineForce(keyup ? 0 : -engineForce, 3);
             break;
 
-        case 40: // backward
+        case "s": // backward
             vehicle.applyEngineForce(keyup ? 0 : engineForce, 2);
             vehicle.applyEngineForce(keyup ? 0 : engineForce, 3);
             break;
 
-        case 39: // right
+        case "d": // right
             vehicle.setSteeringValue(keyup ? 0 : -maxSteerVal, 2);
             vehicle.setSteeringValue(keyup ? 0 : -maxSteerVal, 3);
             break;
 
-        case 37: // left
+        case "a": // left
             vehicle.setSteeringValue(keyup ? 0 : maxSteerVal, 2);
             vehicle.setSteeringValue(keyup ? 0 : maxSteerVal, 3);
             break;
@@ -222,210 +175,7 @@ function navigate(e) {
 window.addEventListener('keydown', navigate)
 window.addEventListener('keyup', navigate)
 
-
-
-
-
-function loadObjs() {
-
-    /*
-    loadBasicObject({
-        position: {x: -3.5, y: 0, z: 0},
-        offset: {x: 4, y: -0.126, z: 6.17},
-        collisionDimension: {x: 2, y: 1.35, z: 5.265},
-        sizeMulti: .2,
-        color: colors.get("red"),
-        dir: './models/car_chassis.gltf'})
-
-     */
-
-}
-
-//loads object with cube collider
-function loadBasicObject(oSettings){
-    let gltf = new GLTFLoader();
-    gltf.load(oSettings.dir, (gltf) => {
-        let carMesh = gltf.scene;
-        carMesh.scale.set(oSettings.sizeMulti, oSettings.sizeMulti, oSettings.sizeMulti);
-
-        scene.add(carMesh);
-
-        const shape = new CANNON.Box(
-            new CANNON.Vec3(
-                oSettings.collisionDimension.x * oSettings.sizeMulti,
-                oSettings.collisionDimension.y * oSettings.sizeMulti,
-                oSettings.collisionDimension.z * oSettings.sizeMulti),
-        );
-
-        let mass = 100; //wid * hei * depth
-        const body = new CANNON.Body({mass, shape});
-        body.position.set(oSettings.position.x, oSettings.position.y, oSettings.position.z);
-        world.addBody(body);
-
-        if (debug.enabled === true)
-            visualizeCollision(body, shape, carMesh, oSettings)
-        car = {
-            threejs: carMesh,
-            cannonjs: body,
-            settings: oSettings
-        };
-
-        physObjs.push(car);
-        loadWheels()
-    });
-}
-
-function loadWheels(){
-    let oSettings = {
-        position: {x: .5, y: 0, z: 0},
-        offset: {x: 4, y: -0.126, z: 6.17},
-        collisionDimension: {x: 2, y: 1.35, z: 5.265},
-        sizeMulti: .2,
-        color: colors.get("blue")};
-    let gltf = new GLTFLoader();
-    gltf.load('./models/car_wheel.gltf', (gltf) => {
-        let carMesh = gltf.scene;
-        carMesh.scale.set(oSettings.sizeMulti, oSettings.sizeMulti, oSettings.sizeMulti);
-
-        scene.add(carMesh);
-        const shape = new CANNON.Cylinder(
-            new CANNON.Vec3(
-                oSettings.collisionDimension.x * oSettings.sizeMulti,
-                oSettings.collisionDimension.y * oSettings.sizeMulti,
-                oSettings.collisionDimension.z * oSettings.sizeMulti),
-        );
-
-        let mass = 100; //wid * hei * depth
-        const body = new CANNON.Body({mass, shape});
-        body.position.set(oSettings.position.x, oSettings.position.y, oSettings.position.z);
-        world.addBody(body);
-
-        if (debug.enabled === true)
-            visualizeCollision(body, shape, carMesh, oSettings)
-        car = {
-            threejs: carMesh,
-            cannonjs: body,
-            settings: oSettings
-        };
-
-        physObjs.push(car);
-    });
-}
-
-function createBox(position, dimension, isRigidbody, color) {
-    const geometry = new THREE.BoxGeometry(dimension.width, dimension.height, dimension.depth);
-    const material = new THREE.MeshLambertMaterial({color});
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(position.x, position.y, position.z);
-    scene.add(mesh);
-
-    // CannonJS
-    const shape = new CANNON.Box(
-        new CANNON.Vec3(dimension.width / 2, dimension.height / 2, dimension.depth / 2)
-    );
-
-    let mass = isRigidbody ? dimension.width * dimension.height * dimension.depth : 0; // 0 means its stationary
-    const body = new CANNON.Body({mass: mass, material: groundMaterial, shape: shape});
-    body.position.set(position.x, position.y, position.z);
-    world.addBody(body);
-
-    if (debug.enabled === true) {
-        let settings = {position: {x: position.x, y: position.y, z: position.z}}
-        visualizeCollision(body, shape, mesh, settings)
-    }
-
-    return {
-        threejs: mesh,
-        cannonjs: body
-    };
-}
-
-function visualizeCollision(body, shape, mesh, settings){
-    let sizeMulti = 1; //default size scale
-    let color = 0xffffff; //default color
-    let xOff = 0, yOff = 0, zOff = 0; //offsets
-    if (settings.offset !== undefined){
-        xOff = settings.offset.x;
-        yOff = settings.offset.y;
-        zOff = settings.offset.z;
-    }
-    if (settings.sizeMulti !== undefined)
-        sizeMulti = settings.sizeMulti
-    if (settings.color !== undefined)
-        color = settings.color
-    let points = []
-    let vertices = shape.convexPolyhedronRepresentation.vertices
-
-    for (let i = 0; i < vertices.length; i++){
-        points.push(
-            //dont ask how or why this shit works
-            new THREE.Vector3(
-                ((vertices[i].x / sizeMulti) - settings.position.x) - xOff,
-                ((vertices[i].y / sizeMulti) - settings.position.y) - yOff,
-                ((vertices[i].z / sizeMulti) - settings.position.z) - zOff)
-        )
-    }
-    let enableWireframe = debug.collisionWireframe
-
-    const convexGeometry = new ConvexGeometry(points)
-    let convexHull;
-    convexHull = new THREE.Mesh(
-        convexGeometry,
-        new THREE.MeshBasicMaterial({
-            color: color,
-            wireframe: enableWireframe,
-        })
-    )
-
-    convexHull.position.copy(body.position)
-    mesh.add(convexHull)
-}
-
-const controls = new OrbitControls(camera, renderer.domElement)
-controls.enableDamping = true
-
-function animation(time) {
-    if (controls != null)
-        controls.update()
-    if (lastTime) {
-        const timePassed = time - lastTime;
-
-        updatePhysics(timePassed);
-        renderer.render(scene, camera);
-
-        //updateCamera()
-    }
-    lastTime = time;
-}
-
-function updateCamera(object) {
-    if (object !== undefined) {
-        camera.position.x = object.threejs.position.x
-        camera.position.y = object.threejs.position.y
-        camera.position.z = object.threejs.position.z
-    }
-}
-
-function updatePhysics(timePassed) {
-    //Prevent objects to move 1000 meters below the ground if we change page and return to this one after some time
-    timePassed > 200 ? timePassed = 200 : timePassed
-    //world.step(timePassed / 1000); // Step the physics world
-    world.step(1 / 60); // Step the physics world
-
-    // Copy coordinates from Cannon.js to Three.js
-    // for physics simulation
-    physObjs.forEach((element) => {
-        let cannonPos = element.cannonjs.position;
-        let threePos = element.threejs.position;
-        if (element.settings !== undefined) {
-            threePos.x = cannonPos.x + element.settings.offset.x * element.settings.sizeMulti
-            threePos.y = cannonPos.y + element.settings.offset.y * element.settings.sizeMulti
-            threePos.z = cannonPos.z + element.settings.offset.z * element.settings.sizeMulti
-        } else
-            threePos.copy(element.cannonjs.position);
-        element.threejs.quaternion.copy(element.cannonjs.quaternion);
-    });
-}
+//#endregion
 
 window.addEventListener("resize", () => {
     // Adjust camera
@@ -438,15 +188,11 @@ window.addEventListener("resize", () => {
     renderer.setSize(width, height);
 });
 
- // controls
-window.addEventListener("keydown", function (event) {
-    switch (event.key.toLowerCase()){
-        case "w":
-            break
-        case "r":
-            updateCamera(wheel)
-    }
-});
+export function setVehicle(vehicle_, wheelBodies_, wheelVisuals_){
+    vehicle = vehicle_
+    wheelBodies = wheelBodies_
+    wheelVisuals = wheelVisuals_
+}
 
 function defineColors() {
     colors = new Map()
