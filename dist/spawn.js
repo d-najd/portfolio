@@ -9,6 +9,7 @@ import {debug, physObjs, scene, world} from "./script.js";
 const groundMaterial = new CANNON.Material('groundMaterial');
 const dDimensions = {width: 1, height: 1, depth: 1}
 const dPosition = {x: 0, y: 0, z: 0}
+const dRotation = {x: 0, y: 0, z: 0}
 const dColor = 0xffffff
 const dRigidbodyState = false
 const dOffsets = {x: 0, y: 0, z: 0}
@@ -18,6 +19,7 @@ const dSizeMulti = 1.0
 export class Settings{
     constructor(s) {
         this.position = s.position !== undefined ? s.position : dPosition
+        this.rotation = s.rotation !== undefined ? s.rotation : dRotation
         this.dimensions = s.dimensions !== undefined ? s.dimensions : dDimensions
         this.offsets = s.offsets !== undefined ? s.offsets : dOffsets
         this.colliderDimensions = s.colliderDimensions !== undefined ? s.colliderDimensions : dCollisionDimensions
@@ -94,13 +96,16 @@ export class Spawn{
     }
 
     spawnCar(gs, cs, ws) { // general settings, chassis settings, wheel settings
-        function loadChassis(s){
+        loadChassis(gs, cs, ws)
+        function loadChassis(gs, s, ws){
             let gltf = new GLTFLoader();
             gltf.load(s.dir, (gltf) => {
-                let carMesh = gltf.scene;
-                carMesh.scale.set(s.sizeMulti, s.sizeMulti, s.sizeMulti);
-
-                scene.add(carMesh);
+                let ChildObject = gltf.scene;
+                ChildObject.position.set(s.position.x, s.position.y, s.position.z)
+                ChildObject.rotation.set(s.rotation.x, s.rotation.y, s.rotation.z)
+                const carMesh = new THREE.Object3D();
+                carMesh.add(ChildObject);
+                carMesh.scale.set(s.sizeMulti, s.sizeMulti, s.sizeMulti)
 
                 const shape = new CANNON.Box(
                     new CANNON.Vec3(
@@ -111,159 +116,152 @@ export class Spawn{
 
                 if (s.mass === undefined)
                     s.mass = s.colliderDimensions.x * s.colliderDimensions.y * s.colliderDimensions.z * s.sizeMulti * 10; //wid * hei * depth
-                console.log(s.mass)
                 const body = new CANNON.Body({mass: s.mass, shape});
-                body.position.set(s.position.x, s.position.y, s.position.z);
-                world.addBody(body);
+                body.position.set(0, 0, 0);
+                body.angularVelocity.set(0, 0, 0); // initial velocity
+                //world.addBody(body);
 
                 if (debug.enabled === true)
                     visualizeCollision(body, shape, carMesh, s)
-                car = {
+                let carChassis = {
                     threejs: carMesh,
                     cannonjs: body,
                     settings: s
                 };
-                Main.physObjs.push(car);
-                //loadWheels()
+                //Main.physObjs.push(carChassis);
+
+                loadWheel(carChassis, gs, ws)
             });
         }
 
-        /*
-        function loadWheels(){
-            let oSettings = {
-                position: {x: .5, y: 0, z: 0},
-                offset: {x: 4, y: -0.126, z: 6.17},
-                collisionDimension: {x: 2, y: 1.35, z: 5.265},
-                sizeMulti: .2,
-                color: colors.get("blue")};
+        function loadWheel(carChassis, gs, s){
+            loadRest(carChassis, null, ws)
+            /*
             let gltf = new GLTFLoader();
-            gltf.load('./models/car_wheel.gltf', (gltf) => {
-                let carMesh = gltf.scene;
-                carMesh.scale.set(oSettings.sizeMulti, oSettings.sizeMulti, oSettings.sizeMulti);
+            gltf.load(s.dir, (gltf) => {
+                let ChildObject = gltf.scene;
+                ChildObject.position.set(s.position.x, s.position.y, s.position.z)
+                ChildObject.rotation.set(s.rotation.x, s.rotation.y, s.rotation.z)
+                const carMesh = new THREE.Object3D();
+                carMesh.add(ChildObject);
+                carMesh.scale.set(s.sizeMulti, s.sizeMulti, s.sizeMulti)
 
-                scene.add(carMesh);
-                const shape = new CANNON.Cylinder(
+                const shape = new CANNON.Box(
                     new CANNON.Vec3(
-                        oSettings.collisionDimension.x * oSettings.sizeMulti,
-                        oSettings.collisionDimension.y * oSettings.sizeMulti,
-                        oSettings.collisionDimension.z * oSettings.sizeMulti),
+                        s.colliderDimensions.x * s.sizeMulti,
+                        s.colliderDimensions.y * s.sizeMulti,
+                        s.colliderDimensions.z * s.sizeMulti),
                 );
 
-                let mass = 100; //wid * hei * depth
-                const body = new CANNON.Body({mass, shape});
-                body.position.set(oSettings.position.x, oSettings.position.y, oSettings.position.z);
-                world.addBody(body);
+                if (s.mass === undefined)
+                    s.mass = s.colliderDimensions.x * s.colliderDimensions.y * s.colliderDimensions.z * s.sizeMulti * 10; //wid * hei * depth
+                const body = new CANNON.Body({mass: s.mass, shape});
+                body.position.set(0, 0, 0);
+                body.angularVelocity.set(0, 0, 0); // initial velocity
+                //world.addBody(body);
 
                 if (debug.enabled === true)
-                    //visualizeCollision(body, shape, carMesh, oSettings)
-                    car = {
-                        threejs: carMesh,
-                        cannonjs: body,
-                        settings: oSettings
-                    };
+                    visualizeCollision(body, shape, carMesh, s)
+                let carChassis = {
+                    threejs: carMesh,
+                    cannonjs: body,
+                    settings: s
+                };
+                //Main.physObjs.push(carChassis);
 
-                physObjs.push(car);
             });
+
+             */
         }
 
-         */
+       function loadRest(carChassis, carWheel, s) {
+           //let carChassis =  loadChassis(cs)
+
+           let vehicle, wheelBodies = [], wheelVisuals = [];
+           const wheelMaterial = new CANNON.Material('wheelMaterial');
+           const wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
+               friction: 0.3,
+               restitution: 0,
+               contactEquationStiffness: 1000,
+           });
+
+           Main.world.addContactMaterial(wheelGroundContactMaterial);
+
+           const box = carChassis.threejs
+           Main.scene.add(box);
+
+           const chassisBody = carChassis.cannonjs
+           // parent vehicle object
+           vehicle = new CANNON.RaycastVehicle({
+               chassisBody: chassisBody,
+               indexRightAxis: 0, // x
+               indexUpAxis: 1, // y
+               indexForwardAxis: 2, // z
+           });
 
 
-        loadChassis(cs)
+           // wheel options
+           const options = {
+               radius: 0.3,
+               directionLocal: new CANNON.Vec3(0, -1, 0),
+               suspensionStiffness: 45,
+               suspensionRestLength: 0.4,
+               frictionSlip: 5,
+               dampingRelaxation: 2.3,
+               dampingCompression: 4.5,
+               maxSuspensionForce: 200000,
+               rollInfluence: 0.01,
+               axleLocal: new CANNON.Vec3(-1, 0, 0),
+               chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
+               maxSuspensionTravel: 0.25,
+               customSlidingRotationalSpeed: -30,
+               useCustomSlidingRotationalSpeed: true,
+           };
 
-        let vehicle, wheelBodies = [], wheelVisuals = [];
-        const wheelMaterial = new CANNON.Material('wheelMaterial');
-        const wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-            friction: 0.3,
-            restitution: 0,
-            contactEquationStiffness: 1000,
-        });
+           const axlewidth = 0.7;
+           options.chassisConnectionPointLocal.set(axlewidth, 0, -1);
+           vehicle.addWheel(options);
 
-        Main.world.addContactMaterial(wheelGroundContactMaterial);
+           options.chassisConnectionPointLocal.set(-axlewidth, 0, -1);
+           vehicle.addWheel(options);
 
-        // car physics body
-        const chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2));
-        const chassisBody = new CANNON.Body({mass: 150});
-        chassisBody.addShape(chassisShape);
-        chassisBody.position.set(0, 0, 0);
-        chassisBody.angularVelocity.set(0, 0, 0); // initial velocity
+           options.chassisConnectionPointLocal.set(axlewidth, 0, 1);
+           vehicle.addWheel(options);
 
-        // car visual body
-        const geometry = new THREE.BoxGeometry(2, 0.6, 4); // double chasis shape
-        const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const box = new THREE.Mesh(geometry, material);
-        Main.scene.add(box);
+           options.chassisConnectionPointLocal.set(-axlewidth, 0, 1);
+           vehicle.addWheel(options);
 
-        // parent vehicle object
-        vehicle = new CANNON.RaycastVehicle({
-            chassisBody: chassisBody,
-            indexRightAxis: 0, // x
-            indexUpAxis: 1, // y
-            indexForwardAxis: 2, // z
-        });
+           vehicle.addToWorld(world);
 
+           vehicle.wheelInfos.forEach(function(wheel) {
+               const shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20);
+               const body = new CANNON.Body({mass: 1, material: wheelMaterial});
+               const q = new CANNON.Quaternion();
+               q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2);
+               body.addShape(shape, new CANNON.Vec3(), q);
+               wheelBodies.push(body);
+               // wheel visual body
+               const geometry = new THREE.CylinderGeometry(wheel.radius, wheel.radius, 0.4, 32);
+               const material = new THREE.MeshPhongMaterial({
+                   color: 0xd0901d,
+                   emissive: 0xaa0000,
+                   side: THREE.DoubleSide,
+                   flatShading: true,
+               });
+               const cylinder = new THREE.Mesh(geometry, material);
+               cylinder.geometry.rotateZ(Math.PI/2);
+               wheelVisuals.push(cylinder);
+               scene.add(cylinder);
+           });
 
-        // wheel options
-        const options = {
-            radius: 0.3,
-            directionLocal: new CANNON.Vec3(0, -1, 0),
-            suspensionStiffness: 45,
-            suspensionRestLength: 0.4,
-            frictionSlip: 5,
-            dampingRelaxation: 2.3,
-            dampingCompression: 4.5,
-            maxSuspensionForce: 200000,
-            rollInfluence: 0.01,
-            axleLocal: new CANNON.Vec3(-1, 0, 0),
-            chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
-            maxSuspensionTravel: 0.25,
-            customSlidingRotationalSpeed: -30,
-            useCustomSlidingRotationalSpeed: true,
-        };
+           Main.setVehicle(vehicle, wheelBodies, wheelVisuals)
 
-        const axlewidth = 0.7;
-        options.chassisConnectionPointLocal.set(axlewidth, 0, -1);
-        vehicle.addWheel(options);
-
-        options.chassisConnectionPointLocal.set(-axlewidth, 0, -1);
-        vehicle.addWheel(options);
-
-        options.chassisConnectionPointLocal.set(axlewidth, 0, 1);
-        vehicle.addWheel(options);
-
-        options.chassisConnectionPointLocal.set(-axlewidth, 0, 1);
-        vehicle.addWheel(options);
-
-        vehicle.addToWorld(world);
-
-        vehicle.wheelInfos.forEach(function(wheel) {
-            const shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20);
-            const body = new CANNON.Body({mass: 1, material: wheelMaterial});
-            const q = new CANNON.Quaternion();
-            q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2);
-            body.addShape(shape, new CANNON.Vec3(), q);
-            wheelBodies.push(body);
-            // wheel visual body
-            const geometry = new THREE.CylinderGeometry(wheel.radius, wheel.radius, 0.4, 32);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0xd0901d,
-                emissive: 0xaa0000,
-                side: THREE.DoubleSide,
-                flatShading: true,
-            });
-            const cylinder = new THREE.Mesh(geometry, material);
-            cylinder.geometry.rotateZ(Math.PI/2);
-            wheelVisuals.push(cylinder);
-            scene.add(cylinder);
-        });
-
-        Main.setVehicle(vehicle, wheelBodies, wheelVisuals)
-
-        let car = {
-            threejs: box,
-            cannonjs: chassisBody
-        };
-        Main.physObjs.push(car)
+           let car = {
+               threejs: box,
+               cannonjs: chassisBody
+           };
+           Main.physObjs.push(car)
+       }
     }
 }
 

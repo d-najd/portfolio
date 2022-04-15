@@ -24,13 +24,15 @@ let wheelBodies = [],
     wheelVisuals = [];
 let vehicle
 
+let count = 2500
+
 init();
 
 function init() {
     // Initialize CannonJS
     world = new CANNON.World();
     world.gravity.set(0, -10, 0); // Gravity pulls things down
-    //world.broadphase = new CANNON.SAPBroadphase(world);
+    world.broadphase = new CANNON.SAPBroadphase(world);
     world.defaultContactMaterial.friction = 0;
     world.solver.iterations = 40;
     scene = new THREE.Scene();
@@ -60,13 +62,22 @@ function init() {
     }))
     physObjs.push(box)
 
-    Spawner.spawnCar(undefined, new Spawn.Settings( {
-        position: {x: -3.5, y: 0, z: 0},
-        offsets: {x: 4, y: -0.126, z: 6.17},
-        colliderDimensions: {x: 2, y: 1.35, z: 5.265},
-        sizeMulti: .2,
-        wireframeColor: colors.get("red"),
-        dir: './models/car_chassis.gltf'}), undefined)
+    let chassisSettings = {
+        position: {x: 0, y: 0, z: 0},
+        rotation: {x: 0, y: Math.PI/2 * 2, z: 0},
+        offsets: {x: 0, y: 0, z: 0}, //offsets don't work
+        colliderDimensions: {x: .65 * Math.PI, y: .545 * Math.PI, z: 1.7 * Math.PI}, // why do I need to use pi here? like seriously?
+        sizeMulti: .32,
+        mass: 150,
+        wireframeColor: colors.get("white"),
+        dir: './models/car_chassis.gltf'}
+    let wheelSettings = {
+        position: {x: 0, y: 0, z: 0},
+        offset: {x: 0, y: 0, z: 0},
+        collisionDimension: {x: 1, y: 1, z: 1},
+        sizeMulti: .32,
+        color: colors.get("blue")}
+    Spawner.spawnCar(undefined, new Spawn.Settings(chassisSettings), wheelSettings)
 
     // Set up lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -120,9 +131,10 @@ function updatePhysics(timePassed) {
 
 // update the wheels to match the physics
 world.addEventListener('postStep', function() {
-    for (var i=0; i<vehicle.wheelInfos.length; i++) {
+    if (vehicle !== undefined)
+    for (let i=0; i<vehicle.wheelInfos.length; i++) {
         vehicle.updateWheelTransform(i);
-        var t = vehicle.wheelInfos[i].worldTransform;
+        let t = vehicle.wheelInfos[i].worldTransform;
         // update wheel physics
         wheelBodies[i].position.copy(t.position);
         wheelBodies[i].quaternion.copy(t.quaternion);
