@@ -24,8 +24,6 @@ let wheelBodies = [],
     wheelVisuals = [];
 let vehicle
 
-let count = 2500
-
 init();
 
 function init() {
@@ -33,7 +31,7 @@ function init() {
     world = new CANNON.World();
     world.gravity.set(0, -10, 0); // Gravity pulls things down
     world.broadphase = new CANNON.SAPBroadphase(world);
-    world.defaultContactMaterial.friction = 0;
+    //world.defaultContactMaterial.friction = 0;
     world.solver.iterations = 40;
     scene = new THREE.Scene();
 
