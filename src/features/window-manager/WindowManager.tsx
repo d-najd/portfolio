@@ -8,7 +8,10 @@ export const WindowManager = () => {
 	return (
 		<>
 		{windowManager.windows.map((window) => {
-			return (<button key = {"@@window-manager/" + window.id} onClick={() => dispatch(closeWindow(window.id))}>
+			return (<button 
+				key = {"@@window-manager/" + window.id} 
+				onClick={() => 
+					dispatch(closeWindow(window.id))}>
 				{window.name}
 			</button>)
 		})}

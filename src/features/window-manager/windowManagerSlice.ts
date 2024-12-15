@@ -1,11 +1,14 @@
-import type { OnTestFailedHandler } from "vitest"
 import { createAppSlice } from "../../app/createAppSlice"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import type { defaultSliceStates } from "../../utils/sliceUtil"
 
 export interface WindowManager {
 	windows: Window[]
 }
 
+/**
+ * TODO move this to another module
+ */
 export interface Window {
 	/**
 	 * Window id is being used instead of index because the index will be pain to update in every part of the app which
@@ -24,35 +27,38 @@ export interface Window {
 
 export interface WindowManagerSliceState {
 	readonly data: WindowManager
-	readonly status: "idle" | "loading" | OnTestFailedHandler
-	/**
-	 * Due to redux functions needing to be completely pure a counter is used as the id for the window
-	 */
-	readonly windowIdCounter: number
+	readonly status: defaultSliceStates
+}
+
+/**
+ * Due to redux functions needing to be completely pure a counter is used as the id for the window
+ */
+let windowIdCounter = 0
+export function getNextWindowId(): number { 
+	return windowIdCounter++
 }
 
 const initialState: WindowManagerSliceState = {
 	data: {
 		windows: [
 			{
-				id: 0,
+				id: getNextWindowId(),
 				index: 0,
 				name: "Window 1"
 			},
 			{
-				id: 1,
+				id: getNextWindowId(),
 				index: 1,
 				name: "Window 2"
 			},
 			{
-				id: 2,
+				id: getNextWindowId(),
 				index: 2,
 				name: "Window 3"
 			}
 		]
 	},
 	status: "idle",
-	windowIdCounter: 1
 }
 
 export const windowManagerSlice = createAppSlice({
