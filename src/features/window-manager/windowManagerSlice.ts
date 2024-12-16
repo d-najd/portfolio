@@ -4,6 +4,7 @@ import type { defaultSliceStates } from "../../utils/sliceUtil"
 
 export interface WindowManager {
 	windows: Window[]
+	// May contain stuff like action window and stuff that's why its separated
 }
 
 /**

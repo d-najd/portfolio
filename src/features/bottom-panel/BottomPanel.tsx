@@ -4,7 +4,7 @@ export const BottomPanel = () => {
 	return (
 		<>
 			<div className={styles.container}>
-				<div className={styles.bottomDiv}>
+				<div className={styles.bottomBar}>
 					TEST (C) 2010
 				</div>
 			</div>

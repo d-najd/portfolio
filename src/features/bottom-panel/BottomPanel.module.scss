@@ -1,11 +1,25 @@
+@import "../../resources/theme";
+
 .container {
 	position: relative;
 	height: 100%;
 }
 
-.bottomDiv {
+.bottomBar {
 	position: absolute;
-	bottom: 1px;
+	bottom: 0.001px;
+	height: 2.2vh;
+	padding-top: 15px;
 	width: 100%;
-	background-color: green;
+	background-color: var(--primary-background);
+	
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 0.3vh;
+		background-color: var(--primary-border-elevated);
+	}
 }

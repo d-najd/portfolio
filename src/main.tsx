@@ -9,7 +9,9 @@ const container = document.getElementById("root")
 
 if (container) {
 	const root = createRoot(container)
-
+	
+	document.body.setAttribute("theme", "white")
+	
 	root.render(
 		<React.StrictMode>
 			<Provider store={store}>
