@@ -4,19 +4,21 @@ import { Provider } from "react-redux"
 import App from "./App"
 import { store } from "./app/store"
 import "./index.css"
+import { ThemeProvider } from "@emotion/react"
+import theme from "./theme/theme"
 
 const container = document.getElementById("root")
 
 if (container) {
 	const root = createRoot(container)
-	
-	document.body.setAttribute("theme", "white")
-	
+
 	root.render(
 		<React.StrictMode>
-			<Provider store={store}>
-				<App />
-			</Provider>
+			<ThemeProvider theme={theme}>
+				<Provider store={store}>
+					<App />
+				</Provider>
+			</ThemeProvider>
 		</React.StrictMode>,
 	)
 } else {
