@@ -1,20 +1,20 @@
 import "./App.css"
-import wallpaper from "./resources/kolibri-os.png"
+import wallpaperImg from "./resources/kolibri-os.png"
 import { BottomPanel } from "./features/bottom-panel/BottomPanel"
+import styled from "@emotion/styled"
 
 const App = () => {
+	const Wallpaper = styled.div`
+		background: url(${wallpaperImg}) no-repeat center center fixed;
+		background-size: cover;
+		height: 100vh;
+		overflow: hidden;
+	`
 	return (
 		<>
-			<div
-				style={{
-					background: `url(${wallpaper}) no-repeat center center fixed`,
-					backgroundSize: "cover",
-					height: "100vh",
-					overflow: "hidden",
-				}}
-			>
-				<BottomPanel />
-			</div>
+			<Wallpaper>
+				<BottomPanel/>
+			</Wallpaper>
 		</>
 	)
 
