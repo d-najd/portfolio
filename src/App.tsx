@@ -8,12 +8,16 @@ const App = () => {
 		background: url(${wallpaperImg}) no-repeat center center fixed;
 		background-size: cover;
 		height: 100vh;
+		width: 100%;
 		overflow: hidden;
+		position: absolute;
 	`
+	
+	// Top level components here should always be position: absolute
 	return (
 		<>
 			<Wallpaper>
-				<BottomPanel/>
+				<BottomPanel />
 			</Wallpaper>
 		</>
 	)

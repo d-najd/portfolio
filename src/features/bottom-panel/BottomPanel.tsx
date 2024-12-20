@@ -8,7 +8,7 @@ import { Column } from "../../components/Column"
 
 export const BottomPanel = () => {
 	const Container = styled.div`
-		position: relative;
+		position: absolute;
 		height: 100%;
 	`
 

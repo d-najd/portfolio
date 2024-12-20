@@ -5,6 +5,7 @@ export const WindowManager = () => {
 	const dispatch = useAppDispatch()
 	const windowManager = useAppSelector(selectWidows)
 
+	// Component that draws windows inside the bottom panel
 	return (
 		<>
 		{windowManager.windows.map((window) => {
