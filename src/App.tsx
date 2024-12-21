@@ -2,6 +2,7 @@ import "./App.css"
 import wallpaperImg from "./resources/kolibri-os.png"
 import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
+import { WindowDrawer } from "./features/window-drawer/WindowDrawer"
 
 const App = () => {
 	const Wallpaper = styled.div`
@@ -12,11 +13,12 @@ const App = () => {
 		overflow: hidden;
 		position: absolute;
 	`
-	
+
 	// Top level components here should always be position: absolute
 	return (
 		<>
 			<Wallpaper>
+				<WindowDrawer />
 				<BottomPanel />
 			</Wallpaper>
 		</>

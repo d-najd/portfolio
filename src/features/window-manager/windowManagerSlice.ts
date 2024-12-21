@@ -24,6 +24,10 @@ export interface Window {
 	 * Name of the window
 	 */
 	name: string
+	width: number
+	height: number
+	offsetY: number
+	offsetX: number
 }
 
 export interface WindowManagerSliceState {
@@ -42,21 +46,6 @@ export function getNextWindowId(): number {
 const initialState: WindowManagerSliceState = {
 	data: {
 		windows: [
-			{
-				id: getNextWindowId(),
-				index: 0,
-				name: "Window 1"
-			},
-			{
-				id: getNextWindowId(),
-				index: 1,
-				name: "Window 2"
-			},
-			{
-				id: getNextWindowId(),
-				index: 2,
-				name: "Window 3"
-			}
 		]
 	},
 	status: "idle",
@@ -76,6 +65,20 @@ export const windowManagerSlice = createAppSlice({
 	}
 })
 
-export const { closeWindow } = windowManagerSlice.actions
+/*
+const windowManagerSelectors.ts = (state: BottomPanelSliceState) => {
+	const windowManager = state.data.windowManager;
+	windowManager.windows
+	
+	return {
+		selectWindows: windowManager.windows
+	}
+};
+ */
 
-export const { selectWidows, selectStatus } = windowManagerSlice.selectors
+
+// export const { selectWindows, selectStatus }= () => bottomPanelSlice.selectors
+
+// export const { closeWindow } = windowManagerSlice.actions
+
+// export const { selectWidows, selectStatus } = windowManagerSlice.selectors

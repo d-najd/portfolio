@@ -2,7 +2,7 @@ import type { WindowManager } from "../window-manager/windowManagerSlice";
 import { getNextWindowId } from "../window-manager/windowManagerSlice"
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import { createAppSlice } from "../../app/createAppSlice"
-import { CaseReducer, combineSlices, ReducerCreators } from "@reduxjs/toolkit"
+import { windowManagerSelectors } from "../window-manager/windowManagerSelectors"
 
 export interface BottomPanel {
 	windowManager: WindowManager
@@ -20,17 +20,29 @@ const initialState: BottomPanelSliceState = {
 				{
 					id: getNextWindowId(),
 					index: 0,
-					name: "Window 1"
+					name: "Window 1",
+					width: 20,
+					height: 20,
+					offsetX: 25,
+					offsetY: 25,
 				},
 				{
 					id: getNextWindowId(),
 					index: 1,
-					name: "Window 2"
+					name: "Window 2",
+					width: 20,
+					height: 20,
+					offsetX: 25,
+					offsetY: 50,
 				},
 				{
 					id: getNextWindowId(),
 					index: 2,
-					name: "Window 3"
+					name: "Window 3",
+					width: 20,
+					height: 20,
+					offsetX: 5,
+					offsetY: 25,
 				}
 			]
 		},
@@ -38,23 +50,28 @@ const initialState: BottomPanelSliceState = {
 	status: "idle"
 }
 
+/*
 const createCounterActions = () => {
 	return {
 		add: (state: BottomPanelSliceState) => {
 		},
 		subtract: (state: BottomPanelSliceState) => {
 		},
-		// You can add more actions here as needed
 	};
 };
+ */
 
 export const bottomPanelSlice = createAppSlice({
 	name: "bottom-panel",
 	initialState,
 	reducers: create => ({
-		...createCounterActions(),
+		// ...createCounterActions(),
 	}),
 	selectors: {
-		
+		selectWindowManager: bottomSlice => bottomSlice.data.windowManager,
+		selectBottomPanelStatus: bottomSlice => bottomSlice.status,
+		...windowManagerSelectors
 	}
 })
+
+export const { selectWindowManager, selectBottomPanelStatus, selectWindows, } = bottomPanelSlice.selectors
