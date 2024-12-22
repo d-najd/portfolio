@@ -5,10 +5,17 @@ import type { DefaultProps } from "./common/CommonProps"
 export const WindowsButton = ({ className, children }: DefaultProps) => {
 	const style = css`
         background-color: ${CurTheme().colors.primaryBackground};
-        box-shadow: 2px 2px ${CurTheme().colors.primaryBorderElevated};
+		
+		border-bottom: 2px solid ${CurTheme().colors.primaryBorderElevated};
+		border-right: 2px solid ${CurTheme().colors.primaryBorderElevated};
+		border-top: 2px solid ${CurTheme().colors.primaryBorderDepressed};
+		border-left: 2px solid ${CurTheme().colors.primaryBorderDepressed};
 		
         &:active {
-            box-shadow: 1px 1px ${CurTheme().colors.primaryBorderDepressed};
+            border-bottom: 2px solid ${CurTheme().colors.primaryBorderDepressed};
+            border-right: 2px solid ${CurTheme().colors.primaryBorderDepressed};
+            border-top: 1px solid ${CurTheme().colors.primaryBorderElevated};
+            border-left: 1px solid ${CurTheme().colors.primaryBorderElevated};
         }
 	`
 	

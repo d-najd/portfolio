@@ -10,6 +10,7 @@ export const WindowDrawer = () => {
 	const WindowContainer = styled.div<{window: Window}>`
 		position: absolute;
 		background-color: ${CurTheme().colors.primaryBackground};
+		border: ${CurTheme().colors.primaryBorderElevated};
 		width: ${o => o.window.width}mm;
 		height: ${o => o.window.height}mm;
         margin-left: ${o => o.window.offsetX}mm;

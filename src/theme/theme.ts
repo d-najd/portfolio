@@ -13,8 +13,8 @@ export const light: ThemeType = {
 	colors: {
 		primaryBackground: "#C3C3C3",
 		primaryText: "#FFFF",
-		primaryBorderElevated: "#222222",
-		primaryBorderDepressed: "#DDDDDD",
+		primaryBorderElevated: "#333333",
+		primaryBorderDepressed: "#EEEEEE",
 	},
 }
 
