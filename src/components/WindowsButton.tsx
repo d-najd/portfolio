@@ -6,16 +6,16 @@ export const WindowsButton = ({ className, children }: DefaultProps) => {
 	const style = css`
         background-color: ${CurTheme().colors.primaryBackground};
 		
-		border-bottom: 2px solid ${CurTheme().colors.primaryBorderElevated};
-		border-right: 2px solid ${CurTheme().colors.primaryBorderElevated};
-		border-top: 2px solid ${CurTheme().colors.primaryBorderDepressed};
-		border-left: 2px solid ${CurTheme().colors.primaryBorderDepressed};
+		border-bottom: 2px outset ${CurTheme().colors.primaryBorderElevated};
+		border-right: 2px outset ${CurTheme().colors.primaryBorderElevated};
+		border-top: 2px outset ${CurTheme().colors.primaryBorderDepressed};
+		border-left: 2px outset ${CurTheme().colors.primaryBorderDepressed};
 		
         &:active {
-            border-bottom: 2px solid ${CurTheme().colors.primaryBorderDepressed};
-            border-right: 2px solid ${CurTheme().colors.primaryBorderDepressed};
-            border-top: 1px solid ${CurTheme().colors.primaryBorderElevated};
-            border-left: 1px solid ${CurTheme().colors.primaryBorderElevated};
+            border-bottom: 2px inset ${CurTheme().colors.primaryBorderDepressed};
+            border-right: 2px inset ${CurTheme().colors.primaryBorderDepressed};
+            border-top: 2px inset ${CurTheme().colors.primaryBorderElevated};
+            border-left: 2px inset ${CurTheme().colors.primaryBorderElevated};
         }
 	`
 	
