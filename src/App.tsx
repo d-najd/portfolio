@@ -18,8 +18,8 @@ const App = () => {
 	return (
 		<>
 			<Wallpaper>
-				<WindowDrawer />
 				<BottomPanel />
+				<WindowDrawer />
 			</Wallpaper>
 		</>
 	)

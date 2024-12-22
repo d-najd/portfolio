@@ -21,7 +21,7 @@ export const BottomPanel = () => {
 	const BottomBarTopLine = styled.div`
 		width: 100vw;
 		height: 2px;
-		background-color: ${CurTheme().colors.primaryText};
+		background-color: ${CurTheme().colors.primaryBorderDepressed};
 	`
 	
 	const StartButtonStyle = css`
