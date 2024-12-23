@@ -1,5 +1,5 @@
 import "./App.css"
-import wallpaperImg from "./resources/kolibri-os.png"
+import wallpaperImg from "./resources/images/kolibri-os.png"
 import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
 import { WindowDrawer } from "./features/window-drawer/WindowDrawer"

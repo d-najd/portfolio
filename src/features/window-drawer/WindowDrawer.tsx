@@ -7,6 +7,9 @@ import { Column } from "../../components/Column"
 import { Row } from "../../components/Row"
 import { Alignment, Alignments } from "../../components/common/CommonProps"
 import { WindowsButton } from "../../components/WindowsButton"
+import minimizeIcon from "../../resources/icons/minimize-icon.png"
+import maximizeIcon from "../../resources/icons/maximize-icon.png"
+import closeIcon from "../../resources/icons/close-icon.png"
 
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
@@ -68,7 +71,7 @@ const TopBar = (window: TopBarPreps) => {
 	`
 
 	const Text = styled.span`
-        color: ${CurTheme().colors.primaryTextInverted};
+		color: ${CurTheme().colors.primaryTextInverted};
 		padding-left: 0.25em;
 		font-weight: 500;
 		user-select: none;
@@ -81,7 +84,20 @@ const TopBar = (window: TopBarPreps) => {
 		width: 100%;
 		gap: 0.125em;
 	`
-	
+
+	const TopBarButton = styled(WindowsButton)`
+		${Alignment(Alignments.Centered)};
+		min-width: 1.5em;
+		min-height: 1.5em;
+		max-width: 1.5em;
+		max-height: 1.5em;
+	`
+
+	const Icon = styled.img`
+		width: 1em;
+		height: 1em;
+	`
+
 	// <Row css={Alignment(Alignments.VerticallyCentered)}>
 
 	return (
@@ -90,9 +106,15 @@ const TopBar = (window: TopBarPreps) => {
 				<StyledImage />
 				<Text>Biography</Text>
 				<ActionsContainer>
-					<WindowsButton>X</WindowsButton>
-					<WindowsButton>X</WindowsButton>
-					<WindowsButton>X</WindowsButton>
+					<TopBarButton>
+						<Icon src={minimizeIcon} />
+					</TopBarButton>
+					<TopBarButton>
+						<Icon src={maximizeIcon} />
+					</TopBarButton>
+					<TopBarButton>
+						<Icon src={closeIcon} />
+					</TopBarButton>
 				</ActionsContainer>
 			</Container>
 		</Root>

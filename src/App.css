@@ -1,12 +1,19 @@
 @font-face {
-	font-family: 'w95f'; /* Define the font family name */
-	src: url('resources/w95fa.woff2') format('truetype'); /* Provide the path to the font file */
+	font-family: 'w95f';
+	src: url('resources/fonts/w95fa.woff2') format('truetype'); 
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'ms-sans-serif';
+	src: url('resources/fonts/MS-Sans-Serif.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
 
 * {
-	font-family: 'w95f', sans-serif;
+	font-family: 'ms-sans-serif', sans-serif;
 }
 
 .App {
