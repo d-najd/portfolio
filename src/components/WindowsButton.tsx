@@ -3,6 +3,7 @@ import styled from "@emotion/styled"
 
 export const WindowsButton =
 	styled.button`
+		pointer-events: auto;
 		color: ${theme.colors.primaryBorderElevated}
         color: ${theme.colors.primaryText}
         background-color: ${theme.colors.primaryBackground};

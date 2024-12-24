@@ -9,6 +9,7 @@ import { Column } from "../../components/Column"
 export const BottomPanel = () => {
 	const Container = styled.div`
 		position: absolute;
+		pointer-events: none;
 		height: 100%;
 	`
 

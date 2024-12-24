@@ -23,7 +23,7 @@ const initialState: BottomPanelSliceState = {
 					name: "Window 1",
 					width: 20,
 					height: 20,
-					offsetX: 5,
+					offsetX: 20,
 					offsetY: 5,
 				},
 				{

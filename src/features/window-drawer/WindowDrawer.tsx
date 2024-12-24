@@ -10,27 +10,19 @@ import { WindowsButton } from "../../components/WindowsButton"
 import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
-import { useEffect, useState } from "react"
-import React from "react"
+import React, { useEffect, useState } from "react"
 
 /**
  * Position of the mouse in pixels
  */
 interface MousePosition {
-	x: number,
+	x: number
 	y: number
 }
 
 /**
- * Whether the left mouse button is pressed down or not
- */
-interface MouseDown {
-	isDown: boolean
-}
-
-/**
  * The current drag state
- * @remarks only one window can be dragged at a time so there is no need to 
+ * @remarks only one window can be dragged at a time so there is no need to
  * store more than one drag state
  * @remarks this is needed because dragging does not work properly on firefox
  * for some godforsaken reason
@@ -42,43 +34,45 @@ interface DragState {
 }
 
 /**
- * Size of the top bar, this is here 
+ * Size of the top bar, this is here
  */
-const topBarSize = 1.75;
+const topBarSize = 1.75
 
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
-	
+
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
 		y: 0,
 	})
-	
-	const [mouseDown, setMouseDown] = useState<MouseDown>({
-		isDown: false,
-	})
+
+	const [mouseDown, setMouseDown] = useState<boolean>(false)
 
 	const [dragState, setDragState] = useState<DragState>({
 		windowId: -1,
 		isThisDragged: false,
 		dragging: false,
 	})
-	
+
+	const [overNonDraggableState, setOverNonDraggableState] =
+		useState<boolean>(false)
+
 	const getWindowOffset = (window: Window) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
-			
-			const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
+			const fontSize = parseFloat(
+				getComputedStyle(document.body).fontSize,
+			)
 			return {
 				x: mousePosition.x / fontSize,
-				y: mousePosition.y / fontSize
+				y: mousePosition.y / fontSize,
 			}
 		}
 		return {
 			x: window.offsetX,
-			y: window.offsetY
+			y: window.offsetY,
 		}
 	}
-	
+
 	const WindowContainer = styled.div<{ window: Window }>`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
@@ -91,12 +85,6 @@ export const WindowDrawer = () => {
 		margin-left: ${o => getWindowOffset(o.window).x}em;
 		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
-	
-	/*
-	console.log(
-		`DRAG STATE ${Boolean(dragState.dragging)} ${Boolean(dragState.isThisDragged)} mouse ${Boolean(mouseDown.isDown)} pos ${Number(mousePosition.x)}`,
-	)
-	 */
 
 	const onDragStart = (window: Window) => {
 		setDragState({
@@ -106,20 +94,21 @@ export const WindowDrawer = () => {
 		})
 	}
 
-	if (dragState.isThisDragged && mouseDown.isDown && !dragState.dragging) {
+	if (dragState.isThisDragged && mouseDown && !dragState.dragging) {
 		setDragState({ ...dragState, dragging: true })
 	}
 
-	if (dragState.isThisDragged && dragState.dragging && !mouseDown.isDown) {
+	if (dragState.isThisDragged && dragState.dragging && !mouseDown) {
 		setDragState({ windowId: -1, isThisDragged: false, dragging: false })
 		console.log("DRAG STOP")
 	}
 
-	if (dragState.dragging) {
-		console.log("DRAGGING")
+	const handleDragStart = (window: Window) => {
+		onDragStart(window)
+		setMouseDown(true)
 	}
-	
-	MousePositionHandler(setMouseDown, setMousePosition)
+
+	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
 
 	return (
 		<>
@@ -130,7 +119,16 @@ export const WindowDrawer = () => {
 							<Column>
 								<TopBar
 									curWindow={window}
-									onDragStart={() => onDragStart(window)}
+									onDragStart={() => {
+										handleDragStart(window)
+									}}
+									nonDraggableState={overNonDraggableState}
+									nonDraggableEntered={() =>
+										setOverNonDraggableState(true)
+									}
+									nonDraggableExited={() =>
+										setOverNonDraggableState(false)
+									}
 								></TopBar>
 							</Column>
 							{window.name}
@@ -144,10 +142,9 @@ export const WindowDrawer = () => {
 
 // This cursed piece of code is necessary due to firefox deciding it does not want to support drag event position
 const MousePositionHandler = (
-	setMouseDown: React.Dispatch<React.SetStateAction<{ isDown: boolean }>>,
-	setMousePosition: React.Dispatch<
-		React.SetStateAction<{ x: number; y: number }>
-	>,
+	setMouseDown: React.Dispatch<boolean>,
+	setMousePosition: React.Dispatch<MousePosition>,
+	overNonDraggableState: boolean,
 ) => {
 	useEffect(() => {
 		const handleMouseMove = (event: MouseEvent) => {
@@ -158,35 +155,34 @@ const MousePositionHandler = (
 		}
 
 		const handleMouseUp = () => {
-			setMouseDown({ isDown: false })
+			setMouseDown(false)
 			// console.log("MOUSE UP")
 		}
 
-		const handleMouseDown = () => {
-			setMouseDown({ isDown: true })
-			// console.log("MOUSE DOWN")
-		}
-
 		window.addEventListener("mouseup", handleMouseUp)
-		window.addEventListener("mousedown", handleMouseDown)
 		window.addEventListener("mousemove", handleMouseMove)
 
 		return () => {
 			window.removeEventListener("mouseup", handleMouseUp)
-			window.removeEventListener("mousedown", handleMouseDown)
 			window.removeEventListener("mousemove", handleMouseMove)
 		}
-	}, [setMouseDown, setMousePosition])
+	}, [overNonDraggableState, setMouseDown, setMousePosition])
 }
 
 interface TopBarPreps {
 	curWindow: Window
 	onDragStart: () => void
+	nonDraggableState: boolean
+	nonDraggableEntered: () => void
+	nonDraggableExited: () => void
 }
 
 const TopBar = ({
 	curWindow,
 	onDragStart,
+	nonDraggableState,
+	nonDraggableEntered,
+	nonDraggableExited,
 }: TopBarPreps) => {
 	const Root = styled.div`
 		padding-right: 0.55em;
@@ -220,14 +216,14 @@ const TopBar = ({
 		${Alignment(Alignments.End)}
 		display: flex;
 		justify-content: flex-end;
-		width: 100%;
 		gap: 0.125em;
 	`
-	
-	const TestContainer = styled.div`
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
+
+	const Divider = styled.div`
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+		height: 100%;
 	`
 
 	const TopBarButton = styled(WindowsButton)`
@@ -245,20 +241,44 @@ const TopBar = ({
 		user-select: none;
 	`
 
+	const sendDragStarted = () => {
+		if (!nonDraggableState) {
+			onDragStart()
+		}
+	}
+
+	const handleDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (e.button === 0) {
+			sendDragStarted()
+		}
+	}
+
 	return (
 		<Root>
-			<Container>
+			<Container
+				onMouseDown={handleDrag}
+				onMouseEnter={nonDraggableExited}
+			>
 				<StyledImage />
 				<Text>{curWindow.name}</Text>
-				<TestContainer />
-				<ActionsContainer >
-					<TopBarButton >
+				<Divider />
+				<ActionsContainer>
+					<TopBarButton
+						onMouseEnter={nonDraggableEntered}
+						onMouseLeave={nonDraggableExited}
+					>
 						<Icon src={minimizeIcon} />
 					</TopBarButton>
-					<TopBarButton>
+					<TopBarButton
+						onMouseEnter={nonDraggableEntered}
+						onMouseLeave={nonDraggableExited}
+					>
 						<Icon src={maximizeIcon} />
 					</TopBarButton>
-					<TopBarButton>
+					<TopBarButton
+						onMouseEnter={nonDraggableEntered}
+						onMouseLeave={nonDraggableExited}
+					>
 						<Icon src={closeIcon} />
 					</TopBarButton>
 				</ActionsContainer>
