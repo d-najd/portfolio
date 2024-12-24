@@ -13,9 +13,55 @@ import closeIcon from "../../resources/icons/close-icon.png"
 import { useEffect, useState } from "react"
 import React from "react"
 
+interface MousePosition {
+	x: number,
+	y: number
+}
+
+interface MouseDown {
+	isDown: boolean
+}
+
+interface DragState {
+	windowId: number
+	isThisDragged: boolean
+	dragging: boolean
+}
+
+
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
+	
+	const [mousePosition, setMousePosition] = useState<MousePosition>({
+		x: 0,
+		y: 0,
+	})
+	
+	const [mouseDown, setMouseDown] = useState<MouseDown>({
+		isDown: false,
+	})
 
+	const [dragState, setDragState] = useState<DragState>({
+		windowId: -1,
+		isThisDragged: false,
+		dragging: false,
+	})
+	
+	const getWindowOffset = (window: Window) => {
+		if (dragState.dragging && window.id === dragState.windowId) {
+			
+			const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
+			return {
+				x: mousePosition.x / fontSize,
+				y: mousePosition.y / fontSize
+			}
+		}
+		return {
+			x: window.offsetX,
+			y: window.offsetY
+		}
+	}
+	
 	const WindowContainer = styled.div<{ window: Window }>`
 		position: absolute;
 		background-color: ${CurTheme().colors.primaryBackground};
@@ -25,37 +71,15 @@ export const WindowDrawer = () => {
 		border-bottom: 0.15em inset ${CurTheme().colors.primaryBorderElevated};
 		width: ${o => o.window.width}em;
 		height: ${o => o.window.height}em;
-		margin-left: ${o => o.window.offsetX}em;
-		margin-top: ${o => o.window.offsetY}em;
+		margin-left: ${o => getWindowOffset(o.window).x}em;
+		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
-
-	const [mousePosition, setMousePosition] = useState<{
-		x: number
-		y: number
-	}>({
-		x: 0,
-		y: 0,
-	})
-
-	const [mouseDown, setMouseDown] = useState<{
-		isDown: boolean
-	}>({
-		isDown: false,
-	})
-
-	const [dragState, setDragState] = useState<{
-		windowId: number
-		isThisDragged: boolean
-		dragging: boolean
-	}>({
-		windowId: -1,
-		isThisDragged: false,
-		dragging: false,
-	})
-
+	
+	/*
 	console.log(
 		`DRAG STATE ${Boolean(dragState.dragging)} ${Boolean(dragState.isThisDragged)} mouse ${Boolean(mouseDown.isDown)} pos ${Number(mousePosition.x)}`,
 	)
+	 */
 
 	const onDragStart = (window: Window) => {
 		setDragState({
@@ -75,9 +99,9 @@ export const WindowDrawer = () => {
 	}
 
 	if (dragState.dragging) {
-		console.log("IS DRAGGING")
+		console.log("DRAGGING")
 	}
-
+	
 	MousePositionHandler(setMouseDown, setMousePosition)
 
 	return (
@@ -206,10 +230,6 @@ const TopBar = ({
 		height: 1em;
 		user-select: none;
 	`
-
-	/*
-	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
-	 */
 
 	return (
 		<Root onMouseDown={() => onDragStart()}>
