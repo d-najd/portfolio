@@ -23,8 +23,5 @@ export const light: ThemeType = {
 }
 
 // noinspection UnnecessaryLocalVariableJS
-const theme = light
+let theme = light
 export default theme
-export function CurTheme() {
-	return useTheme() as ThemeType;
-}

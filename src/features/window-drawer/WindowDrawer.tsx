@@ -2,7 +2,7 @@ import { selectWindows } from "../bottom-panel/bottomPanelSlice"
 import type { Window } from "../window-manager/windowManagerSlice"
 import styled from "@emotion/styled"
 import { useAppSelector } from "../../app/hooks"
-import { CurTheme } from "../../theme/theme"
+import theme from "../../theme/theme"
 import { Column } from "../../components/Column"
 import { Row } from "../../components/Row"
 import { Alignment, Alignments } from "../../components/common/CommonProps"
@@ -13,21 +13,38 @@ import closeIcon from "../../resources/icons/close-icon.png"
 import { useEffect, useState } from "react"
 import React from "react"
 
+/**
+ * Position of the mouse in pixels
+ */
 interface MousePosition {
 	x: number,
 	y: number
 }
 
+/**
+ * Whether the left mouse button is pressed down or not
+ */
 interface MouseDown {
 	isDown: boolean
 }
 
+/**
+ * The current drag state
+ * @remarks only one window can be dragged at a time so there is no need to 
+ * store more than one drag state
+ * @remarks this is needed because dragging does not work properly on firefox
+ * for some godforsaken reason
+ */
 interface DragState {
 	windowId: number
 	isThisDragged: boolean
 	dragging: boolean
 }
 
+/**
+ * Size of the top bar, this is here 
+ */
+const topBarSize = 1.75;
 
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
@@ -64,11 +81,11 @@ export const WindowDrawer = () => {
 	
 	const WindowContainer = styled.div<{ window: Window }>`
 		position: absolute;
-		background-color: ${CurTheme().colors.primaryBackground};
-		border-top: 0.15em outset ${CurTheme().colors.primaryBorderDepressed};
-		border-left: 0.15em outset ${CurTheme().colors.primaryBorderDepressed};
-		border-right: 0.15em inset ${CurTheme().colors.primaryBorderElevated};
-		border-bottom: 0.15em inset ${CurTheme().colors.primaryBorderElevated};
+		background-color: ${theme.colors.primaryBackground};
+		border-top: 0.15em outset ${theme.colors.primaryBorderDepressed};
+		border-left: 0.15em outset ${theme.colors.primaryBorderDepressed};
+		border-right: 0.15em inset ${theme.colors.primaryBorderElevated};
+		border-bottom: 0.15em inset ${theme.colors.primaryBorderElevated};
 		width: ${o => o.window.width}em;
 		height: ${o => o.window.height}em;
 		margin-left: ${o => getWindowOffset(o.window).x}em;
@@ -113,11 +130,6 @@ export const WindowDrawer = () => {
 							<Column>
 								<TopBar
 									curWindow={window}
-									mousePosition={mousePosition}
-									dragging={
-										window.id === dragState.windowId &&
-										dragState.dragging
-									}
 									onDragStart={() => onDragStart(window)}
 								></TopBar>
 							</Column>
@@ -147,12 +159,12 @@ const MousePositionHandler = (
 
 		const handleMouseUp = () => {
 			setMouseDown({ isDown: false })
-			console.log("MOUSE UP")
+			// console.log("MOUSE UP")
 		}
 
 		const handleMouseDown = () => {
 			setMouseDown({ isDown: true })
-			console.log("MOUSE DOWN")
+			// console.log("MOUSE DOWN")
 		}
 
 		window.addEventListener("mouseup", handleMouseUp)
@@ -169,15 +181,11 @@ const MousePositionHandler = (
 
 interface TopBarPreps {
 	curWindow: Window
-	mousePosition: { x: number; y: number }
-	dragging: boolean
 	onDragStart: () => void
 }
 
 const TopBar = ({
 	curWindow,
-	mousePosition,
-	dragging,
 	onDragStart,
 }: TopBarPreps) => {
 	const Root = styled.div`
@@ -189,9 +197,9 @@ const TopBar = ({
 	const Container = styled(Row)`
 		${Alignment(Alignments.VerticallyCentered)}
 		padding: 0.075em 0.2em;
-		height: 1.75em;
+		height: ${topBarSize}5em;
 		width: 100%;
-		background-color: ${CurTheme().colors.windowTopBar};
+		background-color: ${theme.colors.windowTopBar};
 	`
 	const StyledImage = styled.img`
 		min-width: 1.5em;
@@ -201,7 +209,7 @@ const TopBar = ({
 	`
 
 	const Text = styled.span`
-		color: ${CurTheme().colors.primaryTextInverted};
+		color: ${theme.colors.primaryTextInverted};
 		padding-left: 0.25em;
 		font-weight: 500;
 		min-width: fit-content;
@@ -214,6 +222,12 @@ const TopBar = ({
 		justify-content: flex-end;
 		width: 100%;
 		gap: 0.125em;
+	`
+	
+	const TestContainer = styled.div`
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
 	`
 
 	const TopBarButton = styled(WindowsButton)`
@@ -232,12 +246,13 @@ const TopBar = ({
 	`
 
 	return (
-		<Root onMouseDown={() => onDragStart()}>
+		<Root>
 			<Container>
 				<StyledImage />
 				<Text>{curWindow.name}</Text>
-				<ActionsContainer>
-					<TopBarButton>
+				<TestContainer />
+				<ActionsContainer >
+					<TopBarButton >
 						<Icon src={minimizeIcon} />
 					</TopBarButton>
 					<TopBarButton>

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import { css } from "@emotion/react"
-import { CurTheme } from "../../theme/theme"
+import theme from "../../theme/theme"
 import { WindowsButton } from "../../components/WindowsButton"
 import { Row } from "../../components/Row"
 import { Alignment, Alignments } from "../../components/common/CommonProps"
@@ -13,7 +13,7 @@ export const BottomPanel = () => {
 	`
 
 	const BottomBar = styled.div`
-		background-color: ${CurTheme().colors.primaryBackground};
+		background-color: ${theme.colors.primaryBackground};
 		height: 33px;
 		width: 100vw;
 	`
@@ -21,7 +21,7 @@ export const BottomPanel = () => {
 	const BottomBarTopLine = styled.div`
 		width: 100vw;
 		height: 2px;
-		background-color: ${CurTheme().colors.primaryBorderDepressed};
+		background-color: ${theme.colors.primaryBorderDepressed};
 	`
 	
 	const StartButtonStyle = css`

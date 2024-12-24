@@ -1,27 +1,20 @@
-import { css } from "@emotion/react"
-import { CurTheme } from "../theme/theme"
-import type { DefaultProps } from "./common/CommonProps"
+import theme from "../theme/theme"
+import styled from "@emotion/styled"
 
-export const WindowsButton = ({ className, children }: DefaultProps) => {
-	const style = css`
-		color: ${CurTheme().colors.primaryText}
-        background-color: ${CurTheme().colors.primaryBackground};
-		border-bottom: 0.2em outset ${CurTheme().colors.primaryBorderElevated};
-		border-right: 0.2em outset ${CurTheme().colors.primaryBorderElevated};
-		border-top: 0.2em outset ${CurTheme().colors.primaryBorderDepressed};
-		border-left: 0.2em outset ${CurTheme().colors.primaryBorderDepressed};
-		
+export const WindowsButton =
+	styled.button`
+		color: ${theme.colors.primaryBorderElevated}
+        color: ${theme.colors.primaryText}
+        background-color: ${theme.colors.primaryBackground};
+        border-bottom: 0.2em outset ${theme.colors.primaryBorderElevated};
+        border-right: 0.2em outset ${theme.colors.primaryBorderElevated};
+        border-top: 0.2em outset ${theme.colors.primaryBorderDepressed};
+        border-left: 0.2em outset ${theme.colors.primaryBorderDepressed};
+
         &:active {
-            border-bottom: 0.2em inset ${CurTheme().colors.primaryBorderDepressed};
-            border-right: 0.2em inset ${CurTheme().colors.primaryBorderDepressed};
-            border-top: 0.2em inset ${CurTheme().colors.primaryBorderElevated};
-            border-left: 0.2em inset ${CurTheme().colors.primaryBorderElevated};
+            border-bottom: 0.2em inset ${theme.colors.primaryBorderDepressed};
+            border-right: 0.2em inset ${theme.colors.primaryBorderDepressed};
+            border-top: 0.2em inset ${theme.colors.primaryBorderElevated};
+            border-left: 0.2em inset ${theme.colors.primaryBorderElevated};
         }
 	`
-	
-	return (
-		<button css={style} className={className}>
-			{children}
-		</button>
-	)
-}
