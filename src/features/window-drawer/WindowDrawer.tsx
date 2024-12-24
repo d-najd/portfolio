@@ -10,6 +10,8 @@ import { WindowsButton } from "../../components/WindowsButton"
 import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
+import { useEffect, useState } from "react"
+import React from "react"
 
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
@@ -27,29 +29,133 @@ export const WindowDrawer = () => {
 		margin-top: ${o => o.window.offsetY}em;
 	`
 
+	const [mousePosition, setMousePosition] = useState<{
+		x: number
+		y: number
+	}>({
+		x: 0,
+		y: 0,
+	})
+
+	const [mouseDown, setMouseDown] = useState<{
+		isDown: boolean
+	}>({
+		isDown: false,
+	})
+
+	const [dragState, setDragState] = useState<{
+		windowId: number
+		isThisDragged: boolean
+		dragging: boolean
+	}>({
+		windowId: -1,
+		isThisDragged: false,
+		dragging: false,
+	})
+
+	console.log(
+		`DRAG STATE ${Boolean(dragState.dragging)} ${Boolean(dragState.isThisDragged)} mouse ${Boolean(mouseDown.isDown)} pos ${Number(mousePosition.x)}`,
+	)
+
+	const onDragStart = (window: Window) => {
+		setDragState({
+			windowId: window.id,
+			isThisDragged: true,
+			dragging: false,
+		})
+	}
+
+	if (dragState.isThisDragged && mouseDown.isDown && !dragState.dragging) {
+		setDragState({ ...dragState, dragging: true })
+	}
+
+	if (dragState.isThisDragged && dragState.dragging && !mouseDown.isDown) {
+		setDragState({ windowId: -1, isThisDragged: false, dragging: false })
+		console.log("DRAG STOP")
+	}
+
+	if (dragState.dragging) {
+		console.log("IS DRAGGING")
+	}
+
+	MousePositionHandler(setMouseDown, setMousePosition)
+
 	return (
 		<>
 			{windows.map(window => {
 				return (
-					<>
-						<WindowContainer window={window}>
+					<React.Fragment key={window.id}>
+						<WindowContainer key={window.id} window={window}>
 							<Column>
-								<TopBar window={window}></TopBar>
+								<TopBar
+									curWindow={window}
+									mousePosition={mousePosition}
+									dragging={
+										window.id === dragState.windowId &&
+										dragState.dragging
+									}
+									onDragStart={() => onDragStart(window)}
+								></TopBar>
 							</Column>
 							{window.name}
 						</WindowContainer>
-					</>
+					</React.Fragment>
 				)
 			})}
 		</>
 	)
 }
 
-interface TopBarPreps {
-	window: Window
+// This cursed piece of code is necessary due to firefox deciding it does not want to support drag event position
+const MousePositionHandler = (
+	setMouseDown: React.Dispatch<React.SetStateAction<{ isDown: boolean }>>,
+	setMousePosition: React.Dispatch<
+		React.SetStateAction<{ x: number; y: number }>
+	>,
+) => {
+	useEffect(() => {
+		const handleMouseMove = (event: MouseEvent) => {
+			setMousePosition({
+				x: event.clientX,
+				y: event.clientY,
+			})
+		}
+
+		const handleMouseUp = () => {
+			setMouseDown({ isDown: false })
+			console.log("MOUSE UP")
+		}
+
+		const handleMouseDown = () => {
+			setMouseDown({ isDown: true })
+			console.log("MOUSE DOWN")
+		}
+
+		window.addEventListener("mouseup", handleMouseUp)
+		window.addEventListener("mousedown", handleMouseDown)
+		window.addEventListener("mousemove", handleMouseMove)
+
+		return () => {
+			window.removeEventListener("mouseup", handleMouseUp)
+			window.removeEventListener("mousedown", handleMouseDown)
+			window.removeEventListener("mousemove", handleMouseMove)
+		}
+	}, [setMouseDown, setMousePosition])
 }
 
-const TopBar = (window: TopBarPreps) => {
+interface TopBarPreps {
+	curWindow: Window
+	mousePosition: { x: number; y: number }
+	dragging: boolean
+	onDragStart: () => void
+}
+
+const TopBar = ({
+	curWindow,
+	mousePosition,
+	dragging,
+	onDragStart,
+}: TopBarPreps) => {
 	const Root = styled.div`
 		padding-right: 0.55em;
 		padding-left: 0.1em;
@@ -74,6 +180,7 @@ const TopBar = (window: TopBarPreps) => {
 		color: ${CurTheme().colors.primaryTextInverted};
 		padding-left: 0.25em;
 		font-weight: 500;
+		min-width: fit-content;
 		user-select: none;
 	`
 
@@ -91,20 +198,24 @@ const TopBar = (window: TopBarPreps) => {
 		min-height: 1.5em;
 		max-width: 1.5em;
 		max-height: 1.5em;
+		user-select: none;
 	`
 
 	const Icon = styled.img`
 		width: 1em;
 		height: 1em;
+		user-select: none;
 	`
 
-	// <Row css={Alignment(Alignments.VerticallyCentered)}>
+	/*
+	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
+	 */
 
 	return (
-		<Root>
+		<Root onMouseDown={() => onDragStart()}>
 			<Container>
 				<StyledImage />
-				<Text>Biography</Text>
+				<Text>{curWindow.name}</Text>
 				<ActionsContainer>
 					<TopBarButton>
 						<Icon src={minimizeIcon} />
