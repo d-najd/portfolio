@@ -22,14 +22,29 @@ interface MousePosition {
 
 /**
  * The current drag state
- * @remarks only one window can be dragged at a time so there is no need to
- * store more than one drag state
- * @remarks this is needed because dragging does not work properly on firefox
- * for some godforsaken reason
+ * @remarks only one window can be dragged at a time so there is no need to store more than one drag state
+ * @remarks this is needed because dragging does not work properly on firefox for some godforsaken reason
  */
 interface DragState {
 	windowId: number
 	dragging: boolean
+	/**
+	 * The window needs to be offset-ted certain amount to account for x and y differences between the cursor and window 
+	 * origin
+	 */
+	windowXOffset: number
+	/**
+	 * The window needs to be offset-ted certain amount to account for x and y differences between the cursor and window 
+	 * origin
+	 */
+	windowYOffset: number
+}
+
+const defaultWindowState: DragState = {
+	windowId: -1,
+	dragging: false,
+	windowXOffset: -1,
+	windowYOffset: -1,
 }
 
 /**
@@ -39,43 +54,39 @@ const topBarSize = 1.75
 
 /**
  * Handles drawing of the windows
- * 
- * @remarks dragging does not work properly in firefox so it had to be 
- * re-implemented, if interactables (buttons) don't wont properly in some places
- * check setOverNonDraggableState
+ *
+ * @remarks dragging does not work properly in firefox so it had to be re-implemented, if interactables (buttons) don't 
+ * work properly check setOverNonDraggableState
  */
 export const WindowDrawer = () => {
 	const windows = useAppSelector(selectWindows)
+	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
 		y: 0,
 	})
-	
+
 	/**
 	 * Whether left mouse click is pressed or not
 	 */
 	const [mouseDown, setMouseDown] = useState(false)
 
-	const [dragState, setDragState] = useState<DragState>({
-		windowId: -1,
-		dragging: false,
-	})
+	const [dragState, setDragState] = useState<DragState>(defaultWindowState)
 
 	/**
-	 * Non-draggable are components like buttons, use the setter if the some 
-	 * behaviour breaks.
+	 * Non-draggable are components like buttons, use the setter if the same behaviour breaks.
 	 */
-	const [overNonDraggableState, setOverNonDraggableState] =
-		useState(false)
+	const [overNonDraggableState, setOverNonDraggableState] = useState(false)
 
 	const onDragStart = (window: Window) => {
 		setDragState({
 			windowId: window.id,
 			dragging: true,
+			windowXOffset: mousePosition.x / fontSize - window.offsetX,
+			windowYOffset: mousePosition.y / fontSize - window.offsetY,
 		})
 		setMouseDown(true)
-		console.log("DRAG START")
 	}
 
 	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
@@ -85,17 +96,14 @@ export const WindowDrawer = () => {
 	 * @remarks may get invoked multiple times
 	 */
 	if (dragState.dragging && !mouseDown) {
-		setDragState({ windowId: -1, dragging: false })
+		setDragState(defaultWindowState)
 	}
-	
+
 	const getWindowOffset = (window: Window) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
-			const fontSize = parseFloat(
-				getComputedStyle(document.body).fontSize,
-			)
 			return {
-				x: mousePosition.x / fontSize,
-				y: mousePosition.y / fontSize,
+				x: mousePosition.x / fontSize - dragState.windowXOffset,
+				y: mousePosition.y / fontSize - dragState.windowYOffset,
 			}
 		}
 		return {
@@ -116,7 +124,7 @@ export const WindowDrawer = () => {
 		margin-left: ${o => getWindowOffset(o.window).x}em;
 		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
-	
+
 	return (
 		<>
 			{windows.map(window => {
@@ -147,7 +155,11 @@ export const WindowDrawer = () => {
 	)
 }
 
-// This cursed piece of code is necessary due to firefox deciding it does not want to support drag event position
+/**
+ * Updates the state for various mouse events 
+ * @remarks This cursed piece of code is necessary due to firefox deciding it does not want to support drag event 
+ * position
+ */
 const MousePositionHandler = (
 	setMouseDown: React.Dispatch<boolean>,
 	setMousePosition: React.Dispatch<MousePosition>,
@@ -163,7 +175,6 @@ const MousePositionHandler = (
 
 		const handleMouseUp = () => {
 			setMouseDown(false)
-			// console.log("MOUSE UP")
 		}
 
 		window.addEventListener("mouseup", handleMouseUp)
@@ -184,6 +195,14 @@ interface TopBarPreps {
 	nonDraggableExited: () => void
 }
 
+/**
+ * Top bar of the window, the thing that can be grabbed and contains buttons for managing the window
+ * @param curWindow The current window
+ * @param onDragStart state for starting drag
+ * @param nonDraggableState 
+ * @param nonDraggableEntered
+ * @param nonDraggableExited
+ */
 const TopBar = ({
 	curWindow,
 	onDragStart,
