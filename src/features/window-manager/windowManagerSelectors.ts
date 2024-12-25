@@ -1,11 +1,8 @@
-import type { WindowManager } from "./windowManagerSlice"
 import type { BottomPanelSliceState } from "../bottom-panel/bottomPanelSlice"
-
-const windowManager = (bottomPanel: BottomPanelSliceState): WindowManager => {
-	return bottomPanel.data.windowManager
-}
+import { windowManagerFromBottomManagerState } from "../bottom-panel/bottomPanelSlice"
 
 // Exports are located in bottomPanelSlice.ts
 export const windowManagerSelectors = {
-	selectWindows: (bottomPanel: BottomPanelSliceState) => windowManager(bottomPanel).windows,
-};
+	selectWindows: (bottomPanel: BottomPanelSliceState) =>
+		windowManagerFromBottomManagerState(bottomPanel).windows,
+}

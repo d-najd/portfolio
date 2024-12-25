@@ -1,7 +1,7 @@
-import { selectWindows } from "../bottom-panel/bottomPanelSlice"
-import type { Window } from "../window-manager/windowManagerSlice"
+import { closeWindow, selectWindows } from "../bottom-panel/bottomPanelSlice"
+import type { Window } from "../window-manager/windowManager"
 import styled from "@emotion/styled"
-import { useAppSelector } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
 import { Column } from "../../components/Column"
 import { Row } from "../../components/Row"
@@ -210,6 +210,8 @@ const TopBar = ({
 	nonDraggableEntered,
 	nonDraggableExited,
 }: TopBarPreps) => {
+	const dispatch = useAppDispatch()
+
 	const Root = styled.div`
 		padding-right: 0.55em;
 		padding-left: 0.1em;
@@ -304,6 +306,7 @@ const TopBar = ({
 					<TopBarButton
 						onMouseEnter={nonDraggableEntered}
 						onMouseLeave={nonDraggableExited}
+						onClick={o => dispatch(closeWindow(curWindow.id))}
 					>
 						<Icon src={closeIcon} />
 					</TopBarButton>

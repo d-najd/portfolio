@@ -3,7 +3,6 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { counterSlice } from "../features/counter/counterSlice"
 import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
-import { windowManagerSlice } from "../features/window-manager/windowManagerSlice"
 import { bottomPanelSlice } from "../features/bottom-panel/bottomPanelSlice"
 
 // `combineSlices` automatically combines the reducers using
@@ -11,7 +10,6 @@ import { bottomPanelSlice } from "../features/bottom-panel/bottomPanelSlice"
 const rootReducer = combineSlices(
 	counterSlice, 
 	quotesApiSlice,
-	windowManagerSlice,
 	bottomPanelSlice
 )
 

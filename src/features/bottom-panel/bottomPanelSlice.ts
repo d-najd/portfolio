@@ -1,8 +1,9 @@
-import type { WindowManager } from "../window-manager/windowManagerSlice";
-import { getNextWindowId } from "../window-manager/windowManagerSlice"
+import type { WindowManager } from "../window-manager/windowManager"
+import { getNextWindowId } from "../window-manager/windowManager"
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import { createAppSlice } from "../../app/createAppSlice"
 import { windowManagerSelectors } from "../window-manager/windowManagerSelectors"
+import { windowManagerActions } from "../window-manager/WindowManagerActions"
 
 export interface BottomPanel {
 	windowManager: WindowManager
@@ -43,35 +44,33 @@ const initialState: BottomPanelSliceState = {
 					height: 20,
 					offsetX: 5,
 					offsetY: 30,
-				}
-			]
+				},
+			],
 		},
 	},
-	status: "idle"
+	status: "idle",
 }
-
-/*
-const createCounterActions = () => {
-	return {
-		add: (state: BottomPanelSliceState) => {
-		},
-		subtract: (state: BottomPanelSliceState) => {
-		},
-	};
-};
- */
 
 export const bottomPanelSlice = createAppSlice({
 	name: "bottom-panel",
 	initialState,
 	reducers: create => ({
-		// ...createCounterActions(),
+		...windowManagerActions
 	}),
 	selectors: {
 		selectWindowManager: bottomSlice => bottomSlice.data.windowManager,
 		selectBottomPanelStatus: bottomSlice => bottomSlice.status,
-		...windowManagerSelectors
-	}
+		...windowManagerSelectors,
+	},
 })
 
-export const { selectWindowManager, selectBottomPanelStatus, selectWindows, } = bottomPanelSlice.selectors
+export const windowManagerFromBottomManagerState = (
+	bottomPanel: BottomPanelSliceState,
+): WindowManager => {
+	return bottomPanel.data.windowManager
+}
+
+export const { closeWindow } = bottomPanelSlice.actions
+
+export const { selectWindowManager, selectBottomPanelStatus, selectWindows } =
+	bottomPanelSlice.selectors
