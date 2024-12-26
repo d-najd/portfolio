@@ -1,5 +1,9 @@
-import { closeWindow, selectWindows } from "./WindowManagerSlice"
-import type { Window } from "./windowManager"
+import {
+	closeWindow,
+	selectActiveWindowId,
+	selectWindows,
+} from "./WindowManagerSlice"
+import type { Window } from "./WindowManagerSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
@@ -204,13 +208,14 @@ interface TopBarPreps {
  * @param nonDraggableExited
  */
 const TopBar = ({
-					curWindow,
-					onDragStart,
-					nonDraggableState,
-					nonDraggableEntered,
-					nonDraggableExited,
-				}: TopBarPreps) => {
+	curWindow,
+	onDragStart,
+	nonDraggableState,
+	nonDraggableEntered,
+	nonDraggableExited,
+}: TopBarPreps) => {
 	const dispatch = useAppDispatch()
+	const activeWindowId = useAppSelector(selectActiveWindowId)
 
 	const Root = styled.div`
 		padding-right: 0.55em;
@@ -223,7 +228,9 @@ const TopBar = ({
 		padding: 0.075em 0.2em;
 		height: ${topBarSize}5em;
 		width: 100%;
-		background-color: ${theme.colors.windowTopBar};
+		background-color: ${curWindow.id === activeWindowId
+			? theme.colors.windowTopBarActive
+			: theme.colors.windowTopBarInactive};
 	`
 	const StyledImage = styled.img`
 		min-width: 1.5em;
@@ -306,7 +313,7 @@ const TopBar = ({
 					<TopBarButton
 						onMouseEnter={nonDraggableEntered}
 						onMouseLeave={nonDraggableExited}
-						onClick={o => dispatch(closeWindow(curWindow.id))}
+						onClick={() => dispatch(closeWindow(curWindow.id))}
 					>
 						<Icon src={closeIcon} />
 					</TopBarButton>

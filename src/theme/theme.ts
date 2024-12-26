@@ -7,7 +7,8 @@ export interface ThemeType {
 		primaryTextInverted: string,
 		primaryBorderElevated: string,
 		primaryBorderDepressed: string,
-		windowTopBar: string,
+		windowTopBarActive: string,
+		windowTopBarInactive: string,
 	},
 }
 
@@ -18,7 +19,8 @@ export const light: ThemeType = {
 		primaryTextInverted: "#FFFFFF",
 		primaryBorderElevated: "#555555",
 		primaryBorderDepressed: "#FFFFFF",
-		windowTopBar: "#00007C",
+		windowTopBarActive: "#00007C",
+		windowTopBarInactive: "#7B7D7B",
 	},
 }
 

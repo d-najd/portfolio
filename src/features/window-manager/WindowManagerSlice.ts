@@ -4,7 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 
 export interface WindowManager {
 	windows: Window[]
-	// May contain stuff like action window and stuff that's why its separated
+	activeWindowId: number
 }
 
 export interface Window {
@@ -72,6 +72,7 @@ const initialState: WindowManagerState = {
 				offsetY: 30,
 			},
 		],
+		activeWindowId: 0
 	},
 	status: "idle",
 }
@@ -87,6 +88,8 @@ export const windowManagerSlice = createAppSlice({
 	selectors: {
 		selectWindowManager: state => state.data,
 		selectWindowManagerStatus: state => state.status,
+		selectActiveWindowId: state => state.data.activeWindowId,
+		
 		selectWindows: state => state.data.windows
 	},
 })
@@ -94,5 +97,5 @@ export const windowManagerSlice = createAppSlice({
 
 export const { closeWindow } = windowManagerSlice.actions
 
-export const { selectWindowManager, selectWindowManagerStatus, selectWindows } =
+export const { selectWindowManager, selectWindowManagerStatus, selectWindows, selectActiveWindowId } =
 	windowManagerSlice.selectors
