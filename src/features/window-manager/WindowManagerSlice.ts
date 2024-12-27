@@ -1,39 +1,10 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
+import { closeWindow } from "../window/WindowSlice"
 
 export interface WindowManager {
-	windows: Window[]
 	activeWindowId: number
-}
-
-export interface Window {
-	/**
-	 * Window id is being used instead of index because the index will be pain to update in every part of the app which
-	 * may alter it
-	 */
-	id: number
-	/**
-	 * Refers to the position of the current window in the bottom bar
-	 */
-	index: number
-	/**
-	 * Name of the window
-	 */
-	name: string
-	width: number
-	height: number
-	offsetY: number
-	offsetX: number
-}
-
-/**
- * Due to redux functions needing to be completely pure a counter is used as the id for the window
- */
-let windowIdCounter = 0
-
-export function getNextWindowId(): number {
-	return windowIdCounter++
 }
 
 export interface WindowManagerState {
@@ -43,47 +14,15 @@ export interface WindowManagerState {
 
 const initialState: WindowManagerState = {
 	data: {
-		windows: [
-			{
-				id: getNextWindowId(),
-				index: 0,
-				name: "Window 1",
-				width: 20,
-				height: 20,
-				offsetX: 20,
-				offsetY: 5,
-			},
-			{
-				id: getNextWindowId(),
-				index: 1,
-				name: "Window 2",
-				width: 20,
-				height: 20,
-				offsetX: 30,
-				offsetY: 5,
-			},
-			{
-				id: getNextWindowId(),
-				index: 2,
-				name: "Window 3",
-				width: 20,
-				height: 20,
-				offsetX: 5,
-				offsetY: 30,
-			},
-		],
-		activeWindowId: 0
+		activeWindowId: 1,
 	},
 	status: "idle",
 }
 
 export const windowManagerSlice = createAppSlice({
-	name: "bottom-panel",
+	name: "window-manager",
 	initialState,
 	reducers: create => ({
-		closeWindow: (state, action: PayloadAction<number>) => {
-			state.data.windows = state.data.windows.filter(o => o.id !== action.payload)
-		},
 		changeActiveWindow: (state, action: PayloadAction<number>) => {
 			state.data.activeWindowId = action.payload
 		},
@@ -92,12 +31,20 @@ export const windowManagerSlice = createAppSlice({
 		selectWindowManager: state => state.data,
 		selectWindowManagerStatus: state => state.status,
 		selectActiveWindowId: state => state.data.activeWindowId,
-		
-		selectWindows: state => state.data.windows
 	},
+	extraReducers: builder => {
+		builder.addCase(closeWindow, (state, action) => {
+			if (action.payload === state.data.activeWindowId) {
+				state.data.activeWindowId = -1
+			}
+		})
+	}
 })
 
-export const { closeWindow, changeActiveWindow } = windowManagerSlice.actions
+export const { changeActiveWindow } = windowManagerSlice.actions
 
-export const { selectWindowManager, selectWindowManagerStatus, selectWindows, selectActiveWindowId } =
-	windowManagerSlice.selectors
+export const {
+	selectWindowManager,
+	selectWindowManagerStatus,
+	selectActiveWindowId,
+} = windowManagerSlice.selectors

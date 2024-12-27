@@ -1,10 +1,8 @@
 import {
-	changeActiveWindow,
 	closeWindow,
-	selectActiveWindowId,
 	selectWindows,
-} from "./WindowManagerSlice"
-import type { Window } from "./WindowManagerSlice"
+} from "../window/WindowSlice"
+import type { Window } from "../window/WindowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
@@ -16,7 +14,7 @@ import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
 import React, { useEffect, useState } from "react"
-import { css } from "@emotion/react"
+import { changeActiveWindow, selectActiveWindowId } from "./WindowManagerSlice"
 
 /**
  * Position of the mouse in pixels
@@ -67,6 +65,7 @@ const topBarSize = 1.75
 export const WindowManager = () => {
 	const dispatch = useAppDispatch()
 	const windows = useAppSelector(selectWindows)
+	const activeWindowId = useAppSelector(selectActiveWindowId)
 	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
@@ -109,8 +108,8 @@ export const WindowManager = () => {
 	const getWindowOffset = (window: Window) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
 			return {
-				x: mousePosition.x / fontSize - dragState.windowXOffset,
-				y: mousePosition.y / fontSize - dragState.windowYOffset,
+				x: (mousePosition.x / fontSize) - dragState.windowXOffset,
+				y: (mousePosition.y / fontSize) - dragState.windowYOffset,
 			}
 		}
 		return {
@@ -131,6 +130,13 @@ export const WindowManager = () => {
 		margin-left: ${o => getWindowOffset(o.window).x}em;
 		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
+	
+	const changeActiveWindowAction = (curWindow: Window) => {
+		
+		if (activeWindowId !== curWindow.id) {
+			dispatch(changeActiveWindow(curWindow.id))
+		}
+	}
 
 	return (
 		<>
@@ -141,7 +147,7 @@ export const WindowManager = () => {
 							key={window.id}
 							window={window}
 							onMouseDown={() => {
-								dispatch(changeActiveWindow(window.id))
+								changeActiveWindowAction(window)
 							}}
 						>
 							<Column>
