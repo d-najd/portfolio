@@ -154,7 +154,7 @@ export const WindowDrawer = () => {
 
 	return (
 		<>
-			{windows.map(window => {
+			{windows.sort((b, o) => o.order - b.order).map(window => {
 				return (
 					<React.Fragment key={window.id}>
 						<WindowContainer
