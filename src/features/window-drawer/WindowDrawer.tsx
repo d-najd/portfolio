@@ -1,6 +1,4 @@
-import {
-	closeWindow, useWindows
-} from "../window/WindowSlice"
+import { closeWindow, useWindows } from "../window/WindowSlice"
 import type { Window } from "../window/WindowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
@@ -13,7 +11,11 @@ import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
 import React, { useEffect, useState } from "react"
-import { changeActiveWindow, moveWindow, selectActiveWindowId } from "./WindowDrawerSlice"
+import {
+	changeActiveWindow,
+	moveWindow,
+	selectActiveWindowId,
+} from "./WindowDrawerSlice"
 
 /**
  * Position of the mouse in pixels
@@ -96,34 +98,43 @@ export const WindowDrawer = () => {
 
 	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
 
-	/**
-	 * Gets invoked when dragging ends
-	 * @remarks may get invoked multiple times
-	 */
-	if (dragState.dragging && !mouseDown) {
-		const offsetX = mousePosition.x / fontSize - dragState.windowXOffset
-		const offsetY = mousePosition.y / fontSize - dragState.windowYOffset
-		const curWindow = windows.find(o => o.id === dragState.windowId)
-		
-		// The event gets called multiple times, avoiding the second call
-		if (!(curWindow !== undefined && curWindow.offsetX === offsetX && curWindow.offsetY === offsetY)) {
-			dispatch(moveWindow(
-				{
-					id: dragState.windowId,
-					offsetX: offsetX,
-					offsetY: offsetY,
-				}
-			))
+	useEffect(() => {
+		/**
+		 * Gets invoked when dragging ends
+		 * @remarks may get invoked multiple times
+		 */
+		if (dragState.dragging && !mouseDown) {
+			const offsetX = mousePosition.x / fontSize - dragState.windowXOffset
+			const offsetY = mousePosition.y / fontSize - dragState.windowYOffset
+			const curWindow = windows.find(o => o.id === dragState.windowId)
+
+			// The event gets called multiple times, avoiding the second call
+			if (
+				!(
+					curWindow !== undefined &&
+					curWindow.offsetX === offsetX &&
+					curWindow.offsetY === offsetY
+				)
+			) {
+				dispatch(
+					moveWindow({
+						id: dragState.windowId,
+						offsetX: offsetX,
+						offsetY: offsetY,
+					}),
+				)
+
+				setDragState(defaultWindowState)
+			}
+
 		}
-		
-		setDragState(defaultWindowState)
-	}
+	}, [dispatch, dragState, fontSize, mouseDown, mousePosition, windows])
 
 	const getWindowOffset = (window: Window) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
 			return {
-				x: (mousePosition.x / fontSize) - dragState.windowXOffset,
-				y: (mousePosition.y / fontSize) - dragState.windowYOffset,
+				x: mousePosition.x / fontSize - dragState.windowXOffset,
+				y: mousePosition.y / fontSize - dragState.windowYOffset,
 			}
 		}
 		return {
@@ -144,9 +155,8 @@ export const WindowDrawer = () => {
 		margin-left: ${o => getWindowOffset(o.window).x}em;
 		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
-	
+
 	const changeActiveWindowAction = (curWindow: Window) => {
-		
 		if (activeWindowId !== curWindow.id) {
 			dispatch(changeActiveWindow(curWindow.id))
 		}
@@ -154,36 +164,40 @@ export const WindowDrawer = () => {
 
 	return (
 		<>
-			{windows.sort((b, o) => o.order - b.order).map(window => {
-				return (
-					<React.Fragment key={window.id}>
-						<WindowContainer
-							key={window.id}
-							window={window}
-							onMouseDown={() => {
-								changeActiveWindowAction(window)
-							}}
-						>
-							<Column>
-								<TopBar
-									curWindow={window}
-									onDragStart={() => {
-										onDragStart(window)
-									}}
-									nonDraggableState={overNonDraggableState}
-									nonDraggableEntered={() =>
-										setOverNonDraggableState(true)
-									}
-									nonDraggableExited={() =>
-										setOverNonDraggableState(false)
-									}
-								></TopBar>
-							</Column>
-							{window.name}
-						</WindowContainer>
-					</React.Fragment>
-				)
-			})}
+			{windows
+				.sort((b, o) => o.order - b.order)
+				.map(window => {
+					return (
+						<React.Fragment key={window.id}>
+							<WindowContainer
+								key={window.id}
+								window={window}
+								onMouseDown={() => {
+									changeActiveWindowAction(window)
+								}}
+							>
+								<Column>
+									<TopBar
+										curWindow={window}
+										onDragStart={() => {
+											onDragStart(window)
+										}}
+										nonDraggableState={
+											overNonDraggableState
+										}
+										nonDraggableEntered={() =>
+											setOverNonDraggableState(true)
+										}
+										nonDraggableExited={() =>
+											setOverNonDraggableState(false)
+										}
+									></TopBar>
+								</Column>
+								{window.name}
+							</WindowContainer>
+						</React.Fragment>
+					)
+				})}
 		</>
 	)
 }
