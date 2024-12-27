@@ -1,8 +1,9 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { selectWindowDrawerWindows, WindowDrawerWindow } from "../window-drawer/WindowDrawerSlice"
+import type { WindowDrawerWindow } from "../window-drawer/WindowDrawerSlice";
+import { selectWindowDrawerWindows } from "../window-drawer/WindowDrawerSlice"
 import { createAppSlice } from "../../app/createAppSlice"
-import { useSelector } from "react-redux"
+import { useAppSelector } from "../../app/hooks"
 
 export interface BaseWindow {
 	/**
@@ -83,8 +84,8 @@ const combineWindows = (
 }
 
 export const useWindows = (): Window[] => {
-	const windowDrawerWindows = useSelector(selectWindowDrawerWindows);
-	const baseWindows = useSelector(selectBaseWindows)
+	const windowDrawerWindows = useAppSelector(selectWindowDrawerWindows);
+	const baseWindows = useAppSelector(selectBaseWindows)
 
 	return baseWindows.map(baseWindow => {
 		const windowDrawerWindow = windowDrawerWindows.find(o => o.id === baseWindow.id);
