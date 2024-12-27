@@ -51,6 +51,12 @@ const initialState: WindowManagerState = {
 	status: "idle",
 }
 
+interface MoveWindowState {
+	id: number
+	offsetX: number,
+	offsetY: number,
+}
+
 export const windowDrawerSlice = createAppSlice({
 	name: "window-drawer",
 	initialState,
@@ -58,6 +64,17 @@ export const windowDrawerSlice = createAppSlice({
 		changeActiveWindow: (state, action: PayloadAction<number>) => {
 			state.data.activeWindowId = action.payload
 		},
+		moveWindow: (state, action: PayloadAction<MoveWindowState>) => {
+			state.data.windows.map(o => {
+				if (o.id === action.payload.id) {
+					o.offsetX = action.payload.offsetX
+					o.offsetY = action.payload.offsetY
+					
+					return o;
+				}
+				return o
+			})
+		}
 	}),
 	selectors: {
 		selectWindowDrawer: state => state.data,
@@ -74,7 +91,7 @@ export const windowDrawerSlice = createAppSlice({
 	}
 })
 
-export const { changeActiveWindow } = windowDrawerSlice.actions
+export const { changeActiveWindow, moveWindow } = windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawer,

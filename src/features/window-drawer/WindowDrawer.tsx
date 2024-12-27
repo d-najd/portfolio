@@ -13,7 +13,7 @@ import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
 import React, { useEffect, useState } from "react"
-import { changeActiveWindow, selectActiveWindowId } from "./WindowDrawerSlice"
+import { changeActiveWindow, moveWindow, selectActiveWindowId } from "./WindowDrawerSlice"
 
 /**
  * Position of the mouse in pixels
@@ -101,6 +101,21 @@ export const WindowDrawer = () => {
 	 * @remarks may get invoked multiple times
 	 */
 	if (dragState.dragging && !mouseDown) {
+		const offsetX = mousePosition.x / fontSize - dragState.windowXOffset
+		const offsetY = mousePosition.y / fontSize - dragState.windowYOffset
+		const curWindow = windows.find(o => o.id === dragState.windowId)
+		
+		// The event gets called multiple times, avoiding the second call
+		if (!(curWindow !== undefined && curWindow.offsetX === offsetX && curWindow.offsetY === offsetY)) {
+			dispatch(moveWindow(
+				{
+					id: dragState.windowId,
+					offsetX: offsetX,
+					offsetY: offsetY,
+				}
+			))
+		}
+		
 		setDragState(defaultWindowState)
 	}
 

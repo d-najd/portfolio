@@ -12,10 +12,6 @@ export interface BaseWindow {
 	 */
 	id: number
 	/**
-	 * Refers to the position of the current window in the bottom bar
-	 */
-	index: number
-	/**
 	 * Name of the window
 	 */
 	name: string
@@ -41,17 +37,14 @@ const initialState: WindowState = {
 	data: [
 		{
 			id: getNextWindowId(),
-			index: 0,
 			name: "Window 1",
 		},
 		{
 			id: getNextWindowId(),
-			index: 1,
 			name: "Window 2",
 		},
 		{
 			id: getNextWindowId(),
-			index: 2,
 			name: "Window 3",
 		},
 	],
