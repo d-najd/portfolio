@@ -4,7 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import { counterSlice } from "../features/counter/counterSlice"
 import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
 import { windowSlice } from "../features/window/WindowSlice"
-import { windowManagerSlice } from "../features/window-manager/WindowManagerSlice"
+import { windowDrawerSlice } from "../features/window-drawer/WindowDrawerSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -12,7 +12,7 @@ const rootReducer = combineSlices(
 	counterSlice, 
 	quotesApiSlice,
 	windowSlice,
-	windowManagerSlice
+	windowDrawerSlice
 )
 
 // Infer the `RootState` type from the root reducer

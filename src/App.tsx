@@ -2,7 +2,7 @@ import "./App.css"
 import wallpaperImg from "./resources/images/kolibri-os.png"
 import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
-import { WindowManager } from "./features/window-manager/WindowManager"
+import { WindowDrawer } from "./features/window-drawer/WindowDrawer"
 
 const App = () => {
 	const Wallpaper = styled.div`
@@ -17,7 +17,7 @@ const App = () => {
 	return (
 		<>
 			<Wallpaper>
-				<WindowManager />
+				<WindowDrawer />
 				<BottomPanel />
 			</Wallpaper>
 		</>

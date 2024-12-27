@@ -1,6 +1,5 @@
 import {
-	closeWindow,
-	selectWindows,
+	closeWindow, useWindows
 } from "../window/WindowSlice"
 import type { Window } from "../window/WindowSlice"
 import styled from "@emotion/styled"
@@ -14,7 +13,7 @@ import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
 import React, { useEffect, useState } from "react"
-import { changeActiveWindow, selectActiveWindowId } from "./WindowManagerSlice"
+import { changeActiveWindow, selectActiveWindowId } from "./WindowDrawerSlice"
 
 /**
  * Position of the mouse in pixels
@@ -62,9 +61,9 @@ const topBarSize = 1.75
  * @remarks dragging does not work properly in firefox so it had to be re-implemented, if interactables (buttons) don't
  * work properly check setOverNonDraggableState
  */
-export const WindowManager = () => {
+export const WindowDrawer = () => {
 	const dispatch = useAppDispatch()
-	const windows = useAppSelector(selectWindows)
+	const windows = useWindows()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
 
