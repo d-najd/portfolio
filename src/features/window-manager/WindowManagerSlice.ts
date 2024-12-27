@@ -1,6 +1,6 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
-import { createAppSlice } from "../../app/createAppSlice"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import { createAppSlice } from "../../app/createAppSlice"
 
 export interface WindowManager {
 	windows: Window[]
@@ -83,7 +83,10 @@ export const windowManagerSlice = createAppSlice({
 	reducers: create => ({
 		closeWindow: (state, action: PayloadAction<number>) => {
 			state.data.windows = state.data.windows.filter(o => o.id !== action.payload)
-		}
+		},
+		changeActiveWindow: (state, action: PayloadAction<number>) => {
+			state.data.activeWindowId = action.payload
+		},
 	}),
 	selectors: {
 		selectWindowManager: state => state.data,
@@ -94,8 +97,7 @@ export const windowManagerSlice = createAppSlice({
 	},
 })
 
-
-export const { closeWindow } = windowManagerSlice.actions
+export const { closeWindow, changeActiveWindow } = windowManagerSlice.actions
 
 export const { selectWindowManager, selectWindowManagerStatus, selectWindows, selectActiveWindowId } =
 	windowManagerSlice.selectors

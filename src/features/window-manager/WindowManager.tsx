@@ -1,4 +1,5 @@
 import {
+	changeActiveWindow,
 	closeWindow,
 	selectActiveWindowId,
 	selectWindows,
@@ -15,6 +16,7 @@ import minimizeIcon from "../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../resources/icons/maximize-icon.png"
 import closeIcon from "../../resources/icons/close-icon.png"
 import React, { useEffect, useState } from "react"
+import { css } from "@emotion/react"
 
 /**
  * Position of the mouse in pixels
@@ -63,6 +65,7 @@ const topBarSize = 1.75
  * work properly check setOverNonDraggableState
  */
 export const WindowManager = () => {
+	const dispatch = useAppDispatch()
 	const windows = useAppSelector(selectWindows)
 	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
 
@@ -134,7 +137,13 @@ export const WindowManager = () => {
 			{windows.map(window => {
 				return (
 					<React.Fragment key={window.id}>
-						<WindowContainer key={window.id} window={window}>
+						<WindowContainer
+							key={window.id}
+							window={window}
+							onMouseDown={() => {
+								dispatch(changeActiveWindow(window.id))
+							}}
+						>
 							<Column>
 								<TopBar
 									curWindow={window}
