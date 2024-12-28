@@ -4,6 +4,8 @@ import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import type { MyWindow } from "../../window/WindowSlice"
 import { useWindows } from "../../window/WindowSlice"
 import { WindowsButton } from "../../../components/WindowsButton"
+import { useAppDispatch } from "../../../app/hooks"
+import { changeActiveWindow } from "../../window-drawer/WindowDrawerSlice"
 
 /**
  * List of opened windows on the bottom panel
@@ -12,8 +14,8 @@ export const BottomPanelWindows = () => {
 	const windows = useWindows()
 
 	const Container = styled(Row)`
-        ${Alignment(Alignments.CenteredStart)};
-        padding-left: .5em;
+		${Alignment(Alignments.CenteredStart)};
+		padding-left: 0.5em;
 		gap: 0.25em;
 	`
 
@@ -21,7 +23,7 @@ export const BottomPanelWindows = () => {
 		<>
 			<Container>
 				{windows.map(curWindow => {
-					return <WindowsContainer curWindow={curWindow}/>
+					return <WindowsContainer curWindow={curWindow} />
 				})}
 			</Container>
 		</>
@@ -33,6 +35,8 @@ interface WindowContainerProps {
 }
 
 export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
+	const dispatch = useAppDispatch()
+
 	const ContainerButton = styled(WindowsButton)`
 		min-height: 2em;
 		min-width: 8em;
@@ -40,32 +44,34 @@ export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 	`
 
 	const ContainerContent = styled(Row)`
-        ${Alignment(Alignments.CenteredStart)};
-        padding-left: .2em;
-        padding-right: .2em;
+		${Alignment(Alignments.CenteredStart)};
+		padding-left: 0.2em;
+		padding-right: 0.2em;
 	`
 
 	const WindowImage = styled.image`
-        min-width: 1em;
-        min-height: 1em;
-        background-color: red;
+		min-width: 1em;
+		min-height: 1em;
+		background-color: red;
 	`
-	
+
 	const Text = styled.span`
-		margin-left: .2em;
+		margin-left: 0.2em;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	`
 
-	return (<>
-		<ContainerButton>
-			<ContainerContent>
-				<WindowImage/>
-				<Text>
-					{curWindow.name}
-				</Text>
-			</ContainerContent>
-		</ContainerButton>
-	</>)
+	return (
+		<>
+			<ContainerButton
+				onClick={o => dispatch(changeActiveWindow(curWindow.id))}
+			>
+				<ContainerContent>
+					<WindowImage />
+					<Text>{curWindow.name}</Text>
+				</ContainerContent>
+			</ContainerButton>
+		</>
+	)
 }
