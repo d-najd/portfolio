@@ -84,6 +84,7 @@ export const WindowDrawer = () => {
 			windowYOffset: mousePosition.y / fontSize - window.offsetY,
 		})
 		setMouseDown(true)
+		document.body.style.userSelect = 'none';
 	}
 
 	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
@@ -106,6 +107,8 @@ export const WindowDrawer = () => {
 					curWindow.offsetY === offsetY
 				)
 			) {
+				document.body.style.userSelect = '';
+				
 				dispatch(
 					moveWindow({
 						id: dragState.windowId,
@@ -113,7 +116,6 @@ export const WindowDrawer = () => {
 						offsetY: offsetY,
 					}),
 				)
-
 				setDragState(defaultWindowState)
 			}
 
