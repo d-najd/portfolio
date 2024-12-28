@@ -75,7 +75,6 @@ interface MoveWindowState {
  * @param id id of the window
  */
 const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
-	const windowCount = state.data.windows.length
 	const curWindow= state.data.windows.find(o => o.id === id)!
 	
 	state.data.windows.map(o => {

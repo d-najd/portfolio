@@ -172,7 +172,7 @@ export const WindowDrawer = () => {
 							<WindowContainer
 								key={window.id}
 								window={window}
-								onMouseDown={() => {
+								onPointerDown={() => {
 									changeActiveWindowAction(window)
 								}}
 							>
@@ -224,12 +224,12 @@ const MousePositionHandler = (
 			setMouseDown(false)
 		}
 
-		window.addEventListener("mouseup", handleMouseUp)
-		window.addEventListener("mousemove", handleMouseMove)
+		window.addEventListener("pointerup", handleMouseUp)
+		window.addEventListener("pointermove", handleMouseMove)
 
 		return () => {
-			window.removeEventListener("mouseup", handleMouseUp)
-			window.removeEventListener("mousemove", handleMouseMove)
+			window.removeEventListener("pointerup", handleMouseUp)
+			window.removeEventListener("pointermove", handleMouseMove)
 		}
 	}, [overNonDraggableState, setMouseDown, setMousePosition])
 }
@@ -334,28 +334,28 @@ const TopBar = ({
 	return (
 		<Root>
 			<Container
-				onMouseDown={handleDrag}
-				onMouseEnter={nonDraggableExited}
+				onPointerDown={handleDrag}
+				onPointerEnter={nonDraggableExited}
 			>
 				<StyledImage />
 				<Text>{curWindow.name}</Text>
 				<Divider />
 				<ActionsContainer>
 					<TopBarButton
-						onMouseEnter={nonDraggableEntered}
-						onMouseLeave={nonDraggableExited}
+						onPointerEnter={nonDraggableEntered}
+						onPointerLeave={nonDraggableExited}
 					>
 						<Icon src={minimizeIcon} />
 					</TopBarButton>
 					<TopBarButton
-						onMouseEnter={nonDraggableEntered}
-						onMouseLeave={nonDraggableExited}
+						onPointerEnter={nonDraggableEntered}
+						onPointerLeave={nonDraggableExited}
 					>
 						<Icon src={maximizeIcon} />
 					</TopBarButton>
 					<TopBarButton
-						onMouseEnter={nonDraggableEntered}
-						onMouseLeave={nonDraggableExited}
+						onPointerEnter={nonDraggableEntered}
+						onPointerLeave={nonDraggableExited}
 						onClick={() => dispatch(closeWindow(curWindow.id))}
 					>
 						<Icon src={closeIcon} />
