@@ -9,6 +9,7 @@ export interface WindowDrawer {
 	 * There can be no active windows so that's why the id is kept
 	 */
 	activeWindowId: number
+	maximized: boolean
 }
 
 export interface WindowDrawerWindow {
@@ -17,7 +18,12 @@ export interface WindowDrawerWindow {
 	 * Order of which the windows will get drawn, which one should be in front and which behind, order is ascending
 	 * meaning 0 at top and n at bottom
 	 */
-	order: number
+	drawOrder: number
+	/**
+	 * Current state of the window, maximized is kept in the window drawer menu
+	 * since only one window can be maximized, and it's always the active window
+	 */
+	state: "minimized" | "shown"
 	width: number
 	height: number
 	offsetY: number
@@ -34,7 +40,8 @@ const initialState: WindowManagerState = {
 		windows: [
 			{
 				id: 0,
-				order: 1,
+				drawOrder: 1,
+				state: "shown",
 				width: 20,
 				height: 20,
 				offsetX: 20,
@@ -42,7 +49,8 @@ const initialState: WindowManagerState = {
 			},
 			{
 				id: 1,
-				order: 0,
+				drawOrder: 0,
+				state: "shown",
 				width: 20,
 				height: 20,
 				offsetX: 30,
@@ -50,7 +58,8 @@ const initialState: WindowManagerState = {
 			},
 			{
 				id: 2,
-				order: 2,
+				drawOrder: 2,
+				state: "shown",
 				width: 20,
 				height: 20,
 				offsetX: 5,
@@ -58,6 +67,7 @@ const initialState: WindowManagerState = {
 			},
 		],
 		activeWindowId: 1,
+		maximized: false,
 	},
 	status: "idle",
 }
@@ -78,12 +88,12 @@ const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
 	const curWindow= state.data.windows.find(o => o.id === id)!
 	
 	state.data.windows.map(o => {
-		if (o.order < curWindow.order) {
-			o.order++
+		if (o.drawOrder < curWindow.drawOrder) {
+			o.drawOrder++
 		}
 		return o;
 	})
-	curWindow.order = 0
+	curWindow.drawOrder = 0
 }
 
 export const windowDrawerSlice = createAppSlice({
@@ -92,7 +102,19 @@ export const windowDrawerSlice = createAppSlice({
 	reducers: create => ({
 		changeActiveWindow: (state, action: PayloadAction<number>) => {
 			state.data.activeWindowId = action.payload
+			
+			const window = state.data.windows.find(o => o.id === action.payload)
+			if (window !== undefined) {
+				window.state = "shown"
+			}
+			
 			reorderAtTopWindow(state, action.payload)
+		},
+		minimizeWindow: (state, action: PayloadAction<number>) => {
+			const window = state.data.windows.find(o => o.id === action.payload)
+			if (window !== undefined) {
+				window.state = "minimized"
+			}
 		},
 		moveWindow: (state, action: PayloadAction<MoveWindowState>) => {
 			state.data.windows.map(o => {
@@ -123,7 +145,7 @@ export const windowDrawerSlice = createAppSlice({
 	}
 })
 
-export const { changeActiveWindow, moveWindow } = windowDrawerSlice.actions
+export const { changeActiveWindow, minimizeWindow, moveWindow } = windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawer,

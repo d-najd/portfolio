@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectActiveWindowId } from "../WindowDrawerSlice"
+import { minimizeWindow, selectActiveWindowId } from "../WindowDrawerSlice"
 import styled from "@emotion/styled"
 import { Row } from "../../../components/Row"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
@@ -10,6 +10,7 @@ import { WindowsButton } from "../../../components/WindowsButton"
 import minimizeIcon from "../../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../../resources/icons/maximize-icon.png"
 import closeIcon from "../../../resources/icons/close-icon.png"
+import type React from "react"
 
 export interface TopBarPreps {
 	curWindow: MyWindow
@@ -126,6 +127,7 @@ export const WindowDrawerTopBar = ({
 					<TopBarButton
 						onPointerEnter={nonDraggableEntered}
 						onPointerLeave={nonDraggableExited}
+						onClick={() => dispatch(minimizeWindow(curWindow.id))}
 					>
 						<Icon src={minimizeIcon} />
 					</TopBarButton>

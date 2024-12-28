@@ -157,7 +157,8 @@ export const WindowDrawer = () => {
 	return (
 		<>
 			{windows
-				.sort((b, o) => o.order - b.order)
+				.filter(o => o.state !== "minimized")
+				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(window => {
 					return (
 						<React.Fragment key={window.id}>
