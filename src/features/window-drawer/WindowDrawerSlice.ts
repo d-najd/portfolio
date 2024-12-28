@@ -118,6 +118,8 @@ export const windowDrawerSlice = createAppSlice({
 			if (action.payload === state.data.activeWindowId) {
 				state.data.activeWindowId = -1
 			}
+
+			state.data.windows = state.data.windows.filter(o => o.id !== action.payload)
 		})
 	}
 })
