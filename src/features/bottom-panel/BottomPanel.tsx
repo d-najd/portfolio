@@ -5,6 +5,7 @@ import { WindowsButton } from "../../components/WindowsButton"
 import { Row } from "../../components/Row"
 import { Alignment, Alignments } from "../../components/common/CommonProps"
 import { Column } from "../../components/Column"
+import { BottomPanelWindows } from "./components/BottomPanelWindows"
 
 export const BottomPanel = () => {
 	const Container = styled.div`
@@ -13,7 +14,7 @@ export const BottomPanel = () => {
 		height: 100%;
 	`
 
-	const BottomBar = styled.div`
+	const BottomBar = styled(Row)`
 		background-color: ${theme.colors.primaryBackground};
 		height: 33px;
 		width: 100vw;
@@ -66,6 +67,7 @@ export const BottomPanel = () => {
 								<WindowsImageText>Start</WindowsImageText>
 							</Row>
 						</WindowsButton>
+						<BottomPanelWindows/>
 					</BottomBar>
 				</Column>
 			</Container>

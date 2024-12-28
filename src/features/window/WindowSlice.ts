@@ -17,7 +17,7 @@ export interface BaseWindow {
 	name: string
 }
 
-export interface Window extends BaseWindow, WindowDrawerWindow {}
+export interface MyWindow extends BaseWindow, WindowDrawerWindow {}
 
 /**
  * Due to redux functions needing to be completely pure a counter is used as the id for the window
@@ -69,14 +69,14 @@ export const windowSlice = createAppSlice({
 const combineWindows = (
 	baseWindow: BaseWindow,
 	windowDrawerWindow: WindowDrawerWindow,
-): Window => {
+): MyWindow => {
 	return {
 		...baseWindow,
 		...windowDrawerWindow
 	}
 }
 
-export const useWindows = (): Window[] => {
+export const useWindows = (): MyWindow[] => {
 	const windowDrawerWindows = useAppSelector(selectWindowDrawerWindows);
 	const baseWindows = useAppSelector(selectBaseWindows)
 
@@ -86,7 +86,7 @@ export const useWindows = (): Window[] => {
 			return undefined
 		}
 		return combineWindows(baseWindow, windowDrawerWindow); // Combine matches or return null
-	}).filter((e): e is Window => !!e)
+	}).filter((e): e is MyWindow => !!e)
 }
 
 export const { closeWindow } = windowSlice.actions

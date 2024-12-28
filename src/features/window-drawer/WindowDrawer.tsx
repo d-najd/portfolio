@@ -1,5 +1,5 @@
 import { useWindows } from "../window/WindowSlice"
-import type { Window } from "../window/WindowSlice"
+import type { MyWindow } from "../window/WindowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
@@ -76,7 +76,7 @@ export const WindowDrawer = () => {
 	 */
 	const [overNonDraggableState, setOverNonDraggableState] = useState(false)
 
-	const onDragStart = (window: Window) => {
+	const onDragStart = (window: MyWindow) => {
 		setDragState({
 			windowId: window.id,
 			dragging: true,
@@ -120,7 +120,7 @@ export const WindowDrawer = () => {
 		}
 	}, [dispatch, dragState, fontSize, mouseDown, mousePosition, windows])
 
-	const getWindowOffset = (window: Window) => {
+	const getWindowOffset = (window: MyWindow) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
 			return {
 				x: mousePosition.x / fontSize - dragState.windowXOffset,
@@ -133,7 +133,7 @@ export const WindowDrawer = () => {
 		}
 	}
 
-	const WindowContainer = styled.div<{ window: Window }>`
+	const WindowContainer = styled.div<{ window: MyWindow }>`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
 		border-top: 0.15em outset ${theme.colors.primaryBorderDepressed};
@@ -146,7 +146,7 @@ export const WindowDrawer = () => {
 		margin-top: ${o => getWindowOffset(o.window).y}em;
 	`
 
-	const changeActiveWindowAction = (curWindow: Window) => {
+	const changeActiveWindowAction = (curWindow: MyWindow) => {
 		if (activeWindowId !== curWindow.id) {
 			dispatch(changeActiveWindow(curWindow.id))
 		}
