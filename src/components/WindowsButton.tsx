@@ -1,6 +1,7 @@
 import theme from "../theme/theme"
 import styled from "@emotion/styled"
 import { css } from "@emotion/react"
+import { lighten } from "polished"
 
 export const WindowsButtonIdleStyle = css`
     pointer-events: auto;
@@ -13,6 +14,7 @@ export const WindowsButtonIdleStyle = css`
 `
 
 export const WindowsButtonPressedStyle = css`
+	background-color: ${theme.colors.primaryBackgroundActive};
     border-bottom: 0.2em inset ${theme.colors.primaryBorderDepressed};
     border-right: 0.2em inset ${theme.colors.primaryBorderDepressed};
     border-top: 0.2em inset ${theme.colors.primaryBorderElevated};
