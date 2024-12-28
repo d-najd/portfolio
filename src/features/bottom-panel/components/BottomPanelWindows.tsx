@@ -35,6 +35,8 @@ interface WindowContainerProps {
 export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 	const ContainerButton = styled(WindowsButton)`
 		min-height: 2em;
+		min-width: 8em;
+		max-width: 8em;
 	`
 
 	const ContainerContent = styled(Row)`
@@ -51,6 +53,9 @@ export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 	
 	const Text = styled.span`
 		margin-left: .2em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	`
 
 	return (<>
