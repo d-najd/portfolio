@@ -112,6 +112,7 @@ export const windowDrawerSlice = createAppSlice({
 		},
 		minimizeWindow: (state, action: PayloadAction<number>) => {
 			const window = state.data.windows.find(o => o.id === action.payload)
+			state.data.activeWindowId = -1
 			if (window !== undefined) {
 				window.state = "minimized"
 			}
