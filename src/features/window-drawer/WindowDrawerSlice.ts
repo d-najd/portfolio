@@ -129,7 +129,7 @@ export const windowDrawerSlice = createAppSlice({
 			}
 			window.state |= WindowDrawerWindowState.Minimized
 		},
-		maximizeWindow: (state, action: PayloadAction<number>) => {
+		toggleMaximizeWindow: (state, action: PayloadAction<number>) => {
 			const window = state.data.windows.find(o => o.id === action.payload)
 			if (window === undefined) {
 				console.log("Invalid window id", action.payload)
@@ -137,17 +137,7 @@ export const windowDrawerSlice = createAppSlice({
 			}
 
 			state.data.activeWindowId = action.payload
-			window.state = WindowDrawerWindowState.ShownOrMaximized
-		},
-		restoreWindow: (state, action: PayloadAction<number>) => {
-			const window = state.data.windows.find(o => o.id === action.payload)
-			if (window === undefined) {
-				console.log("Invalid window id", action.payload)
-				return
-			}
-			
-			state.data.activeWindowId = action.payload
-			window.state = ~WindowDrawerWindowState.ShownOrMaximized
+			window.state ^= WindowDrawerWindowState.ShownOrMaximized
 		},
 		moveWindow: (state, action: PayloadAction<MoveWindowState>) => {
 			state.data.windows.map(o => {
@@ -180,7 +170,7 @@ export const windowDrawerSlice = createAppSlice({
 	},
 })
 
-export const { changeActiveWindow, minimizeWindow, moveWindow } =
+export const { changeActiveWindow, minimizeWindow, toggleMaximizeWindow, moveWindow } =
 	windowDrawerSlice.actions
 
 export const {

@@ -1,16 +1,14 @@
-import { useWindows } from "../window/WindowSlice"
 import type { MyWindow } from "../window/WindowSlice"
+import { useWindows } from "../window/WindowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
 import { Column } from "../../components/Column"
 import React, { useEffect, useState } from "react"
-import {
-	changeActiveWindow,
-	moveWindow,
-	selectActiveWindowId, WindowDrawerWindowState
-} from "./WindowDrawerSlice"
+import { changeActiveWindow, moveWindow, selectActiveWindowId, WindowDrawerWindowState } from "./WindowDrawerSlice"
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
+import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
+import useScreenSize from "../../components/useScreenSize"
 
 /**
  * Position of the mouse in pixels
@@ -57,6 +55,7 @@ export const WindowDrawer = () => {
 	const dispatch = useAppDispatch()
 	const windows = useWindows()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
+	const screenSize = useScreenSize()
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
@@ -75,12 +74,12 @@ export const WindowDrawer = () => {
 	 */
 	const [overNonDraggableState, setOverNonDraggableState] = useState(false)
 
-	const onDragStart = (window: MyWindow) => {
+	const onDragStart = (curWindow: MyWindow) => {
 		setDragState({
-			windowId: window.id,
+			windowId: curWindow.id,
 			dragging: true,
-			windowXOffset: mousePosition.x - window.offsetX,
-			windowYOffset: mousePosition.y - window.offsetY,
+			windowXOffset: mousePosition.x - curWindow.offsetX,
+			windowYOffset: mousePosition.y - curWindow.offsetY,
 		})
 		setMouseDown(true)
 		document.body.style.userSelect = 'none';
@@ -121,30 +120,54 @@ export const WindowDrawer = () => {
 		}
 	}, [dispatch, dragState, mouseDown, mousePosition, windows])
 
-	const getWindowOffset = (window: MyWindow) => {
-		if (dragState.dragging && window.id === dragState.windowId) {
+	const getWindowOffset = (curWindow: MyWindow) => {
+		if (WindowDrawerWindowState.ShownOrMaximized !== (curWindow.state & WindowDrawerWindowState.ShownOrMaximized)) {
+			return {
+				x: 0,
+				y: 0,
+			}
+		}
+		
+		if (dragState.dragging && curWindow.id === dragState.windowId) {
 			return {
 				x: mousePosition.x - dragState.windowXOffset,
 				y: mousePosition.y - dragState.windowYOffset,
 			}
 		}
 		return {
-			x: window.offsetX,
-			y: window.offsetY,
+			x: curWindow.offsetX,
+			y: curWindow.offsetY,
+		}
+	}
+	
+	const getWindowSize = (curWindow: MyWindow) => {
+		if (WindowDrawerWindowState.ShownOrMaximized !== (curWindow.state & WindowDrawerWindowState.ShownOrMaximized)) {
+			// Size due to borders?
+			const extraSize = 3
+			return {
+				width: screenSize.width - extraSize,
+				height: screenSize.height - bottomPanelHeight - extraSize,
+			}
+		}
+		else {
+			return {
+				width: curWindow.width,
+				height: curWindow.height,
+			}
 		}
 	}
 
-	const WindowContainer = styled.div<{ window: MyWindow }>`
+	const WindowContainer = styled.div<{ curWindow: MyWindow }>`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
 		border-top: 3px outset ${theme.colors.primaryBorderDepressed};
 		border-left: 3px outset ${theme.colors.primaryBorderDepressed};
 		border-right: 3px inset ${theme.colors.primaryBorderElevated};
 		border-bottom: 3px inset ${theme.colors.primaryBorderElevated};
-		width: ${o => o.window.width}px;
-		height: ${o => o.window.height}px;
-		margin-left: ${o => getWindowOffset(o.window).x}px;
-		margin-top: ${o => getWindowOffset(o.window).y}px;
+		width: ${o => getWindowSize(o.curWindow).width}px;
+		height: ${o => getWindowSize(o.curWindow).height}px;
+		margin-left: ${o => getWindowOffset(o.curWindow).x}px;
+		margin-top: ${o => getWindowOffset(o.curWindow).y}px;
 	`
 
 	const changeActiveWindowAction = (curWindow: MyWindow) => {
@@ -163,7 +186,7 @@ export const WindowDrawer = () => {
 						<React.Fragment key={window.id}>
 							<WindowContainer
 								key={window.id}
-								window={window}
+								curWindow={window}
 								onPointerDown={() => {
 									changeActiveWindowAction(window)
 								}}

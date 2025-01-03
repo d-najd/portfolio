@@ -7,22 +7,29 @@ import { Alignment, Alignments } from "../../components/common/CommonProps"
 import { Column } from "../../components/Column"
 import { BottomPanelWindows } from "./components/BottomPanelWindows"
 
+const bottomPanelHeightTopLine = 2
+const bottomPanelHeightContainer = 33
+export const bottomPanelHeight = bottomPanelHeightContainer + bottomPanelHeightTopLine
+
 export const BottomPanel = () => {
 	const Container = styled.div`
 		position: absolute;
 		pointer-events: none;
 		height: 100%;
 	`
-	
+
+	// height: ${temp}px;
 	const BottomBar = styled(Row)`
 		background-color: ${theme.colors.primaryBackground};
-		height: 33px;
+        max-height: ${bottomPanelHeightContainer}px;
+		min-height: ${bottomPanelHeightContainer}px;
 		width: 100vw;
 	`
 
 	const BottomBarTopLine = styled.div`
 		width: 100vw;
-		height: 2px;
+		max-height: ${bottomPanelHeightTopLine}px;
+		min-height: ${bottomPanelHeightTopLine}px;
 		background-color: ${theme.colors.primaryBorderDepressed};
 	`
 	
