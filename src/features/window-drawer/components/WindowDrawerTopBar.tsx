@@ -23,7 +23,7 @@ export interface TopBarPreps {
 /**
  * Size of the top bar, this is here
  */
-const topBarSize = 1.75
+const topBarSize = 28
 
 /**
  * Top bar of the window, the thing that can be grabbed and contains buttons for managing the window
@@ -44,30 +44,30 @@ export const WindowDrawerTopBar = ({
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 
 	const Root = styled.div`
-		padding-right: 0.55em;
-		padding-left: 0.1em;
-		padding-top: 0.1em;
+		padding-right: 7px;
+		padding-left: 1px;
+		padding-top: 1px;
 	`
 
 	const Container = styled(Row)`
 		${Alignment(Alignments.VerticallyCentered)}
-		padding: 0.075em 0.2em;
-		height: ${topBarSize}5em;
+		padding: 1px 3px;
+		height: ${topBarSize}px;
 		width: 100%;
 		background-color: ${curWindow.id === activeWindowId
 			? theme.colors.windowTopBarActive
 			: theme.colors.windowTopBarInactive};
 	`
 	const StyledImage = styled.img`
-		min-width: 1.5em;
-		min-height: 1.5em;
+		min-width: 24px;
+		min-height: 24px;
 		background-color: red;
 		user-select: none;
 	`
 
 	const Text = styled.span`
 		color: ${theme.colors.primaryTextInverted};
-		padding-left: 0.25em;
+		padding-left: 3px;
 		font-weight: 500;
 		min-width: fit-content;
 		user-select: none;
@@ -77,7 +77,7 @@ export const WindowDrawerTopBar = ({
 		${Alignment(Alignments.End)}
 		display: flex;
 		justify-content: flex-end;
-		gap: 0.125em;
+		gap: 2px;
 	`
 
 	const Divider = styled.div`
@@ -89,16 +89,16 @@ export const WindowDrawerTopBar = ({
 
 	const TopBarButton = styled(WindowsButton)`
 		${Alignment(Alignments.Centered)};
-		min-width: 1.5em;
-		min-height: 1.5em;
-		max-width: 1.5em;
-		max-height: 1.5em;
+		min-width: 20px;
+		min-height: 20px;
+		max-width: 20px;
+		max-height: 20px;
 		user-select: none;
 	`
 
 	const Icon = styled.img`
-		width: 1em;
-		height: 1em;
+		width: 13px;
+		height: 13px;
 		user-select: none;
 	`
 
