@@ -57,7 +57,6 @@ export const WindowDrawer = () => {
 	const dispatch = useAppDispatch()
 	const windows = useWindows()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
-	const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
@@ -80,8 +79,8 @@ export const WindowDrawer = () => {
 		setDragState({
 			windowId: window.id,
 			dragging: true,
-			windowXOffset: mousePosition.x / fontSize - window.offsetX,
-			windowYOffset: mousePosition.y / fontSize - window.offsetY,
+			windowXOffset: mousePosition.x - window.offsetX,
+			windowYOffset: mousePosition.y - window.offsetY,
 		})
 		setMouseDown(true)
 		document.body.style.userSelect = 'none';
@@ -95,8 +94,8 @@ export const WindowDrawer = () => {
 		 * @remarks may get invoked multiple times
 		 */
 		if (dragState.dragging && !mouseDown) {
-			const offsetX = mousePosition.x / fontSize - dragState.windowXOffset
-			const offsetY = mousePosition.y / fontSize - dragState.windowYOffset
+			const offsetX = mousePosition.x - dragState.windowXOffset
+			const offsetY = mousePosition.y - dragState.windowYOffset
 			const curWindow = windows.find(o => o.id === dragState.windowId)
 
 			// The event gets called multiple times, avoiding the second call
@@ -120,13 +119,13 @@ export const WindowDrawer = () => {
 			}
 
 		}
-	}, [dispatch, dragState, fontSize, mouseDown, mousePosition, windows])
+	}, [dispatch, dragState, mouseDown, mousePosition, windows])
 
 	const getWindowOffset = (window: MyWindow) => {
 		if (dragState.dragging && window.id === dragState.windowId) {
 			return {
-				x: mousePosition.x / fontSize - dragState.windowXOffset,
-				y: mousePosition.y / fontSize - dragState.windowYOffset,
+				x: mousePosition.x - dragState.windowXOffset,
+				y: mousePosition.y - dragState.windowYOffset,
 			}
 		}
 		return {
@@ -138,14 +137,14 @@ export const WindowDrawer = () => {
 	const WindowContainer = styled.div<{ window: MyWindow }>`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
-		border-top: 0.15em outset ${theme.colors.primaryBorderDepressed};
-		border-left: 0.15em outset ${theme.colors.primaryBorderDepressed};
-		border-right: 0.15em inset ${theme.colors.primaryBorderElevated};
-		border-bottom: 0.15em inset ${theme.colors.primaryBorderElevated};
-		width: ${o => o.window.width}em;
-		height: ${o => o.window.height}em;
-		margin-left: ${o => getWindowOffset(o.window).x}em;
-		margin-top: ${o => getWindowOffset(o.window).y}em;
+		border-top: 3px outset ${theme.colors.primaryBorderDepressed};
+		border-left: 3px outset ${theme.colors.primaryBorderDepressed};
+		border-right: 3px inset ${theme.colors.primaryBorderElevated};
+		border-bottom: 3px inset ${theme.colors.primaryBorderElevated};
+		width: ${o => o.window.width}px;
+		height: ${o => o.window.height}px;
+		margin-left: ${o => getWindowOffset(o.window).x}px;
+		margin-top: ${o => getWindowOffset(o.window).y}px;
 	`
 
 	const changeActiveWindowAction = (curWindow: MyWindow) => {
