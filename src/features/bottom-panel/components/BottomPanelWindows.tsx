@@ -16,8 +16,8 @@ export const BottomPanelWindows = () => {
 
 	const Container = styled(Row)`
 		${Alignment(Alignments.CenteredStart)};
-		padding-left: 0.5em;
-		gap: 0.25em;
+		padding-left: 8px;
+		gap: 4px;
 	`
 
 	return (
@@ -40,9 +40,9 @@ export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 
 	const ContainerButton = styled(WindowsButton)`
-		min-height: 2em;
-		min-width: 8em;
-		max-width: 8em;
+		min-height: 27px;
+		min-width: 107px;
+		max-width: 107px;
 	`
 	
 	const extraButtonStyle = () => {
@@ -56,18 +56,18 @@ export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 
 	const ContainerContent = styled(Row)`
 		${Alignment(Alignments.CenteredStart)};
-		padding-left: 0.2em;
-		padding-right: 0.2em;
+		padding-left: 3px;
+		padding-right: 3px;
 	`
 
 	const WindowImage = styled.image`
-		min-width: 1em;
-		min-height: 1em;
+		min-width: 14px;
+		min-height: 14px;
 		background-color: red;
 	`
 
 	const Text = styled.span`
-		margin-left: 0.2em;
+		margin-left: 3px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
