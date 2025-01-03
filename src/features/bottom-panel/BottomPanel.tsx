@@ -13,7 +13,7 @@ export const BottomPanel = () => {
 		pointer-events: none;
 		height: 100%;
 	`
-
+	
 	const BottomBar = styled(Row)`
 		background-color: ${theme.colors.primaryBackground};
 		height: 33px;

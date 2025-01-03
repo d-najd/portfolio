@@ -1,6 +1,7 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
+import type { WindowState } from "../window/WindowSlice";
 import { closeWindow } from "../window/WindowSlice"
 
 export interface WindowDrawer {
@@ -9,7 +10,14 @@ export interface WindowDrawer {
 	 * There can be no active windows so that's why the id is kept
 	 */
 	activeWindowId: number
-	maximized: boolean
+}
+
+export enum WindowDrawerWindowState {
+	Minimized = 1 << 0,
+	/**
+	 * If false shown, if true maximized
+	 */
+	ShownOrMaximized = 1 << 1 
 }
 
 export interface WindowDrawerWindow {
@@ -20,10 +28,10 @@ export interface WindowDrawerWindow {
 	 */
 	drawOrder: number
 	/**
-	 * Current state of the window, maximized is kept in the window drawer menu
-	 * since only one window can be maximized, and it's always the active window
+	 * Current state of the window, maximized is kept in the window drawer menu since only one window can be maximized,
+	 * and it's always the active window
 	 */
-	state: "minimized" | "shown"
+	state: WindowDrawerWindowState
 	width: number
 	height: number
 	offsetY: number
@@ -41,7 +49,7 @@ const initialState: WindowManagerState = {
 			{
 				id: 0,
 				drawOrder: 1,
-				state: "shown",
+				state: WindowDrawerWindowState.ShownOrMaximized,
 				width: 20,
 				height: 20,
 				offsetX: 20,
@@ -50,7 +58,7 @@ const initialState: WindowManagerState = {
 			{
 				id: 1,
 				drawOrder: 0,
-				state: "shown",
+				state: WindowDrawerWindowState.ShownOrMaximized,
 				width: 20,
 				height: 20,
 				offsetX: 30,
@@ -59,7 +67,7 @@ const initialState: WindowManagerState = {
 			{
 				id: 2,
 				drawOrder: 2,
-				state: "shown",
+				state: WindowDrawerWindowState.ShownOrMaximized,
 				width: 20,
 				height: 20,
 				offsetX: 5,
@@ -67,15 +75,14 @@ const initialState: WindowManagerState = {
 			},
 		],
 		activeWindowId: 1,
-		maximized: false,
 	},
 	status: "idle",
 }
 
 interface MoveWindowState {
 	id: number
-	offsetX: number,
-	offsetY: number,
+	offsetX: number
+	offsetY: number
 }
 
 /**
@@ -85,16 +92,17 @@ interface MoveWindowState {
  * @param id id of the window
  */
 const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
-	const curWindow= state.data.windows.find(o => o.id === id)!
-	
+	const curWindow = state.data.windows.find(o => o.id === id)!
+
 	state.data.windows.map(o => {
 		if (o.drawOrder < curWindow.drawOrder) {
 			o.drawOrder++
 		}
-		return o;
+		return o
 	})
 	curWindow.drawOrder = 0
 }
+
 
 export const windowDrawerSlice = createAppSlice({
 	name: "window-drawer",
@@ -102,38 +110,62 @@ export const windowDrawerSlice = createAppSlice({
 	reducers: create => ({
 		changeActiveWindow: (state, action: PayloadAction<number>) => {
 			state.data.activeWindowId = action.payload
-			
 			const window = state.data.windows.find(o => o.id === action.payload)
-			if (window !== undefined) {
-				window.state = "shown"
+			if (window === undefined) {
+				console.log("Invalid window id", action.payload)
+				return
 			}
 			
+			window.state &= ~WindowDrawerWindowState.Minimized
 			reorderAtTopWindow(state, action.payload)
 		},
 		minimizeWindow: (state, action: PayloadAction<number>) => {
-			const window = state.data.windows.find(o => o.id === action.payload)
 			state.data.activeWindowId = -1
-			if (window !== undefined) {
-				window.state = "minimized"
+			const window = state.data.windows.find(o => o.id === action.payload)
+			
+			if (window === undefined) {
+				console.log("Invalid window id", action.payload)
+				return
 			}
+			window.state |= WindowDrawerWindowState.Minimized
+		},
+		maximizeWindow: (state, action: PayloadAction<number>) => {
+			const window = state.data.windows.find(o => o.id === action.payload)
+			if (window === undefined) {
+				console.log("Invalid window id", action.payload)
+				return
+			}
+
+			state.data.activeWindowId = action.payload
+			window.state = WindowDrawerWindowState.ShownOrMaximized
+		},
+		restoreWindow: (state, action: PayloadAction<number>) => {
+			const window = state.data.windows.find(o => o.id === action.payload)
+			if (window === undefined) {
+				console.log("Invalid window id", action.payload)
+				return
+			}
+			
+			state.data.activeWindowId = action.payload
+			window.state = ~WindowDrawerWindowState.ShownOrMaximized
 		},
 		moveWindow: (state, action: PayloadAction<MoveWindowState>) => {
 			state.data.windows.map(o => {
 				if (o.id === action.payload.id) {
 					o.offsetX = action.payload.offsetX
 					o.offsetY = action.payload.offsetY
-					
-					return o;
+
+					return o
 				}
 				return o
 			})
-		}
+		},
 	}),
 	selectors: {
 		selectWindowDrawer: state => state.data,
 		selectWindowDrawerStatus: state => state.status,
 		selectActiveWindowId: state => state.data.activeWindowId,
-		selectWindowDrawerWindows: state => state.data.windows
+		selectWindowDrawerWindows: state => state.data.windows,
 	},
 	extraReducers: builder => {
 		builder.addCase(closeWindow, (state, action) => {
@@ -141,12 +173,15 @@ export const windowDrawerSlice = createAppSlice({
 				state.data.activeWindowId = -1
 			}
 
-			state.data.windows = state.data.windows.filter(o => o.id !== action.payload)
+			state.data.windows = state.data.windows.filter(
+				o => o.id !== action.payload,
+			)
 		})
-	}
+	},
 })
 
-export const { changeActiveWindow, minimizeWindow, moveWindow } = windowDrawerSlice.actions
+export const { changeActiveWindow, minimizeWindow, moveWindow } =
+	windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawer,

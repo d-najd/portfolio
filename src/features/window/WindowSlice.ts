@@ -17,7 +17,7 @@ export interface BaseWindow {
 	name: string
 }
 
-export interface MyWindow extends BaseWindow, WindowDrawerWindow {}
+export interface MyWindow extends BaseWindow, WindowDrawerWindow { }
 
 /**
  * Due to redux functions needing to be completely pure a counter is used as the id for the window
@@ -65,28 +65,52 @@ export const windowSlice = createAppSlice({
 	},
 })
 
-
-const combineWindows = (
-	baseWindow: BaseWindow,
-	windowDrawerWindow: WindowDrawerWindow,
-): MyWindow => {
-	return {
-		...baseWindow,
-		...windowDrawerWindow
-	}
-}
-
+/**
+ * @returns list of combined (all window subtypes mixed into one) opened windows, invalid windows will not be returned
+ * @see useWindow
+ */
 export const useWindows = (): MyWindow[] => {
 	const windowDrawerWindows = useAppSelector(selectWindowDrawerWindows);
 	const baseWindows = useAppSelector(selectBaseWindows)
 
 	return baseWindows.map(baseWindow => {
 		const windowDrawerWindow = windowDrawerWindows.find(o => o.id === baseWindow.id);
-		if (windowDrawerWindow === undefined) {
-			return undefined
-		}
 		return combineWindows(baseWindow, windowDrawerWindow); // Combine matches or return null
-	}).filter((e): e is MyWindow => !!e)
+	}).filter((e): e is MyWindow => !!e) // Filter invalid windows instead of crashing the app
+}
+
+/**
+ * @returns combined (all window subtypes mixed into one) opened window, if invalid 
+ * @param id id of the window to be combined and returned
+ * @see useWindows
+ */
+export const useWindow = (id: number): MyWindow => {
+	const windowDrawerWindows = useAppSelector(selectWindowDrawerWindows);
+	const baseWindows = useAppSelector(selectBaseWindows)
+	
+	const baseWindow = baseWindows.find(baseWindow => baseWindow.id === id);
+	const windowDrawerWindow = windowDrawerWindows.find(o => o.id === baseWindow?.id);
+	
+	return combineWindows(baseWindow, windowDrawerWindow)!; 
+}
+
+/**
+ * @returns combined window types into one type or undefined if something went wrong
+ */
+const combineWindows = (
+	baseWindow: BaseWindow | undefined,
+	windowDrawerWindow: WindowDrawerWindow | undefined,
+): MyWindow | undefined => {
+	if (baseWindow === undefined || windowDrawerWindow === undefined) {
+		console.error("Invalid window passed for combining, seems that not all subtypes exist for the window " +
+			"or the window does not exist at all", [ baseWindow, windowDrawerWindow ])
+		return undefined
+	}
+
+	return {
+		...baseWindow,
+		...windowDrawerWindow
+	}
 }
 
 export const { closeWindow } = windowSlice.actions

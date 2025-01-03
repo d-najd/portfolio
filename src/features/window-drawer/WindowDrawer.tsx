@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react"
 import {
 	changeActiveWindow,
 	moveWindow,
-	selectActiveWindowId,
+	selectActiveWindowId, WindowDrawerWindowState
 } from "./WindowDrawerSlice"
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
 
@@ -157,7 +157,7 @@ export const WindowDrawer = () => {
 	return (
 		<>
 			{windows
-				.filter(o => o.state !== "minimized")
+				.filter(o => WindowDrawerWindowState.Minimized !== (o.state & WindowDrawerWindowState.Minimized))
 				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(window => {
 					return (
