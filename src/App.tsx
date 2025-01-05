@@ -3,6 +3,7 @@ import wallpaperImg from "./resources/images/kolibri-os.png"
 import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
 import { WindowDrawer } from "./features/window-drawer/WindowDrawer"
+import { DesktopIcons } from "./features/desktop-icons/DesktopIcons"
 
 const App = () => {
 	const Wallpaper = styled.div`
@@ -13,11 +14,12 @@ const App = () => {
 		overflow: hidden;
 		position: absolute;
 	`
-
+	
 	return (
 		<>
 			<Wallpaper>
 				<WindowDrawer />
+				<DesktopIcons />
 				<BottomPanel />
 			</Wallpaper>
 		</>
