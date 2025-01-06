@@ -6,6 +6,7 @@ import { Row } from "../../components/Row"
 import { Alignment, Alignments } from "../../components/common/CommonProps"
 import { Column } from "../../components/Column"
 import { BottomPanelWindows } from "./components/BottomPanelWindows"
+import windowsIco from "../../resources/windows_95_icons/Windows/Windows logo (without text).ico"
 
 const bottomPanelHeightTopLine = 2
 const bottomPanelHeightContainer = 33
@@ -45,7 +46,6 @@ export const BottomPanel = () => {
 	`
 
 	const windowsImageStyle = css`
-		rotate: -22.5deg;
 		width: 20px;
 		height: 20px;
 	`
@@ -68,7 +68,7 @@ export const BottomPanel = () => {
 								<WindowsImage>
 									<img
 										css={windowsImageStyle}
-										src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Logo_%281992-2001%29.svg"
+										src={windowsIco}
 										alt={"Windows 95 logo"}
 									/>
 								</WindowsImage>
