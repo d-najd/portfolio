@@ -5,6 +5,7 @@ import { counterSlice } from "../features/counter/counterSlice"
 import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
 import { windowSlice } from "../features/window/WindowSlice"
 import { windowDrawerSlice } from "../features/window-drawer/WindowDrawerSlice"
+import { desktopIconsSlice } from "../features/desktop-icons/DesktopIconsSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -12,7 +13,8 @@ const rootReducer = combineSlices(
 	counterSlice, 
 	quotesApiSlice,
 	windowSlice,
-	windowDrawerSlice
+	windowDrawerSlice,
+	desktopIconsSlice,
 )
 
 // Infer the `RootState` type from the root reducer

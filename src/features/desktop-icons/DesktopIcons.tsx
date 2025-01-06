@@ -1,48 +1,34 @@
 import styled from "@emotion/styled"
+import { selectDesktopIcons } from "./DesktopIconsSlice"
+import { DesktopIconTSX } from "./components/DesktopIcon"
+import { useAppSelector } from "../../app/hooks"
+import useScreenSize from "../../components/useScreenSize"
+import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 
 export const DesktopIcons = () => {
+	const desktopIcons = useAppSelector(selectDesktopIcons)
+	const screenSize = useScreenSize()
+	
 	const Container = styled.div`
+		padding: 14px;
 		position: absolute;
 		width: 100%;
-		height: 100%;
+		height: ${screenSize.height - bottomPanelHeight}px;
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
 		align-content: flex-start;
-		gap: 16px;
-	`
-
-	const Item = styled.div`
-		max-width: 100px; /* Prevents the item from growing too large */
-		max-height: 100px;
-		min-width: 100px; /* Prevents the item from growing too large */
-		min-height: 100px;
-		box-sizing: border-box; /* Ensures padding and border are included in width */
-		background: #f0f0f0;
-		border: 1px solid #ddd;
-		padding: 16px;
-		text-align: center;
+		row-gap: 14px;
+		column-gap: 7px;
 	`
 
 	return (
 		<>
 			<Container>
-				<Item>ITEM1</Item>
-				<Item>ITEM2</Item>
-				<Item>ITEM3</Item>
-				<Item>ITEM4</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
-				<Item>ITEM5</Item>
+				{desktopIcons.map(icon => {
+					return <DesktopIconTSX data={icon} onClick={() => { }}/>
+				})}
 			</Container>
 		</>
 	)
 }
-
-const Icon = (name: string, imageUrl: string) => {}

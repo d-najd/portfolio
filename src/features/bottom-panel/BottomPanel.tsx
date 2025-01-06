@@ -39,7 +39,7 @@ export const BottomPanel = () => {
 		margin-bottom: 1px;
 	`
 
-	const WindowsImage = styled.image`
+	const WindowsImage = styled.image` 
 		width: 20px;
 		height: 20px;
 	`

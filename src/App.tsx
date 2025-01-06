@@ -13,13 +13,13 @@ const App = () => {
 		width: 100%;
 		overflow: hidden;
 		position: absolute;
+		text-decoration-style: dotted;
 	`
-
 	return (
 		<>
 			<Wallpaper>
-				<WindowDrawer />
 				<DesktopIcons />
+				<WindowDrawer />
 				<BottomPanel />
 			</Wallpaper>
 		</>
