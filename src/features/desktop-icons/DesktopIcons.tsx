@@ -8,12 +8,13 @@ import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 export const DesktopIcons = () => {
 	const desktopIcons = useAppSelector(selectDesktopIcons)
 	const screenSize = useScreenSize()
+	const extraBottomPanelHeight = 14
 	
 	const Container = styled.div`
 		padding: 14px;
 		position: absolute;
 		width: 100%;
-		height: ${screenSize.height - bottomPanelHeight}px;
+		height: ${screenSize.height - bottomPanelHeight - extraBottomPanelHeight}px;
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
