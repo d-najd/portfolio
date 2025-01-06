@@ -13,6 +13,7 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		${Alignment(Alignments.VerticallyCentered)};
 		width: 74px;
 		height: 74px;
+		text-align: center;
 	`
 
 	const Icon = styled.img`
@@ -20,7 +21,7 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		min-height: 42px;
 		max-width: 42px;
 		max-height: 42px;
-		background-color: red;
+		image-rendering: pixelated;
 	`
 
 	const Text = styled.span`
@@ -32,7 +33,7 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 
 	return (
 		<Container>
-			<Icon />
+			<Icon src={data.data.iconUrl}/>
 			<Text>{data.data.name}</Text>
 		</Container>
 	)

@@ -1,6 +1,15 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import { createAppSlice } from "../../app/createAppSlice"
 
+import myComputerIco from "../../resources/windows_95_icons/Computers/My Computer.ico"
+import recycleBinIco from "../../resources/windows_95_icons/Recycle Bins/Empty Recycle Bin.ico"
+import resumeIco from "../../resources/windows_95_icons/Notepads & Writing/Writing on sheet.ico"
+import myWorkIco from "../../resources/windows_95_icons/Folders/Documents Folder.ico"
+import sendMailIco from "../../resources/windows_95_icons/Mail & Letters/Mail.ico"
+import linkedInIco from "../../resources/icons/linkedIn.ico"
+import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
+import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
+
 export interface DesktopIcon {
 	id: number
 	name: string
@@ -29,74 +38,42 @@ const initialState: DesktopIconsState = {
 			{
 				id: getNextIconId(),
 				name: "My Computer",
-				iconUrl: ""
+				iconUrl: myComputerIco
 			},
 			{
 				id: getNextIconId(),
 				name: "Recycle Bin",
-				iconUrl: ""
+				iconUrl: recycleBinIco
 			},
 			{
 				id: getNextIconId(),
 				name: "Resume",
-				iconUrl: ""
+				iconUrl: resumeIco
 			},
 			{
 				id: getNextIconId(),
 				name: "My Work",
-				iconUrl: ""
+				iconUrl: myWorkIco
 			},
 			{
 				id: getNextIconId(),
 				name: "Send Mail",
-				iconUrl: ""
+				iconUrl: sendMailIco
 			},
 			{
 				id: getNextIconId(),
 				name: "Linkedin",
-				iconUrl: ""
+				iconUrl: linkedInIco
 			},
 			{
 				id: getNextIconId(),
 				name: "Github",
-				iconUrl: ""
+				iconUrl: githubIco
 			},
 			{
 				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
-			},
-			{
-				id: getNextIconId(),
-				name: "Terminal",
-				iconUrl: ""
+				name: "MS-DOS Prompt",
+				iconUrl: msDosPromptIco
 			},
 		],
 		selectedIcon: -1
