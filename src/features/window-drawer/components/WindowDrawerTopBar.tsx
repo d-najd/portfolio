@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { minimizeWindow, selectActiveWindowId, toggleMaximizeWindow } from "../WindowDrawerSlice"
+import {
+	minimizeWindow,
+	selectActiveWindowId,
+	toggleMaximizeWindow,
+} from "../WindowDrawerSlice"
 import styled from "@emotion/styled"
 import { Row } from "../../../components/Row"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"

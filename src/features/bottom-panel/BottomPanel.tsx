@@ -9,7 +9,8 @@ import { BottomPanelWindows } from "./components/BottomPanelWindows"
 
 const bottomPanelHeightTopLine = 2
 const bottomPanelHeightContainer = 33
-export const bottomPanelHeight = bottomPanelHeightContainer + bottomPanelHeightTopLine
+export const bottomPanelHeight =
+	bottomPanelHeightContainer + bottomPanelHeightTopLine
 
 export const BottomPanel = () => {
 	const Container = styled.div`
@@ -21,7 +22,7 @@ export const BottomPanel = () => {
 	// height: ${temp}px;
 	const BottomBar = styled(Row)`
 		background-color: ${theme.colors.primaryBackground};
-        max-height: ${bottomPanelHeightContainer}px;
+		max-height: ${bottomPanelHeightContainer}px;
 		min-height: ${bottomPanelHeightContainer}px;
 		width: 100vw;
 	`
@@ -32,7 +33,7 @@ export const BottomPanel = () => {
 		min-height: ${bottomPanelHeightTopLine}px;
 		background-color: ${theme.colors.primaryBorderDepressed};
 	`
-	
+
 	const StartButtonStyle = css`
 		margin-left: 4px;
 		margin-bottom: 1px;
@@ -48,7 +49,7 @@ export const BottomPanel = () => {
 		width: 20px;
 		height: 20px;
 	`
-	
+
 	const WindowsImageText = styled.span`
 		font-size: 16px;
 		font-weight: bolder;
@@ -74,7 +75,7 @@ export const BottomPanel = () => {
 								<WindowsImageText>Start</WindowsImageText>
 							</Row>
 						</WindowsButton>
-						<BottomPanelWindows/>
+						<BottomPanelWindows />
 					</BottomBar>
 				</Column>
 			</Container>

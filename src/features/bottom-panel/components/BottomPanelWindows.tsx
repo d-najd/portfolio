@@ -3,9 +3,15 @@ import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import type { MyWindow } from "../../window/WindowSlice"
 import { useWindows } from "../../window/WindowSlice"
-import { WindowsButton, WindowsButtonPressedStyle } from "../../../components/WindowsButton"
+import {
+	WindowsButton,
+	WindowsButtonPressedStyle,
+} from "../../../components/WindowsButton"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { changeActiveWindow, selectActiveWindowId } from "../../window-drawer/WindowDrawerSlice"
+import {
+	changeActiveWindow,
+	selectActiveWindowId,
+} from "../../window-drawer/WindowDrawerSlice"
 import { css } from "@emotion/react"
 
 /**
@@ -44,12 +50,11 @@ export const WindowsContainer = ({ curWindow }: WindowContainerProps) => {
 		min-width: 107px;
 		max-width: 107px;
 	`
-	
+
 	const extraButtonStyle = () => {
 		if (curWindow.id === activeWindowId) {
 			return WindowsButtonPressedStyle
-		}
-		else {
+		} else {
 			return css``
 		}
 	}

@@ -14,7 +14,7 @@ const App = () => {
 		overflow: hidden;
 		position: absolute;
 	`
-	
+
 	return (
 		<>
 			<Wallpaper>

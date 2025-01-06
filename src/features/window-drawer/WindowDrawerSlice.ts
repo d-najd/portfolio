@@ -1,7 +1,6 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
-import type { WindowState } from "../window/WindowSlice";
 import { closeWindow } from "../window/WindowSlice"
 
 export interface WindowDrawer {
@@ -17,7 +16,7 @@ export enum WindowDrawerWindowState {
 	/**
 	 * If false shown, if true maximized
 	 */
-	ShownOrMaximized = 1 << 1 
+	ShownOrMaximized = 1 << 1,
 }
 
 export interface WindowDrawerWindow {
@@ -39,8 +38,8 @@ export interface WindowDrawerWindow {
 }
 
 export interface WindowManagerState {
-	readonly data: WindowDrawer
-	readonly status: defaultSliceStates
+	data: WindowDrawer
+	status: defaultSliceStates
 }
 
 const initialState: WindowManagerState = {
@@ -103,7 +102,6 @@ const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
 	curWindow.drawOrder = 0
 }
 
-
 export const windowDrawerSlice = createAppSlice({
 	name: "window-drawer",
 	initialState,
@@ -115,14 +113,14 @@ export const windowDrawerSlice = createAppSlice({
 				console.log("Invalid window id", action.payload)
 				return
 			}
-			
+
 			window.state &= ~WindowDrawerWindowState.Minimized
 			reorderAtTopWindow(state, action.payload)
 		},
 		minimizeWindow: (state, action: PayloadAction<number>) => {
 			state.data.activeWindowId = -1
 			const window = state.data.windows.find(o => o.id === action.payload)
-			
+
 			if (window === undefined) {
 				console.log("Invalid window id", action.payload)
 				return
@@ -170,8 +168,12 @@ export const windowDrawerSlice = createAppSlice({
 	},
 })
 
-export const { changeActiveWindow, minimizeWindow, toggleMaximizeWindow, moveWindow } =
-	windowDrawerSlice.actions
+export const {
+	changeActiveWindow,
+	minimizeWindow,
+	toggleMaximizeWindow,
+	moveWindow,
+} = windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawer,
