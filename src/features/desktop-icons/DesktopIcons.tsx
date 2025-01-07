@@ -9,12 +9,14 @@ export const DesktopIcons = () => {
 	const desktopIcons = useAppSelector(selectDesktopIcons)
 	const screenSize = useScreenSize()
 	const extraBottomPanelHeight = 14
-	
+
 	const Container = styled.div`
 		padding: 14px;
 		position: absolute;
 		width: 100%;
-		height: ${screenSize.height - bottomPanelHeight - extraBottomPanelHeight}px;
+		height: ${
+				screenSize.height - bottomPanelHeight - extraBottomPanelHeight
+		}px;
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
@@ -22,12 +24,12 @@ export const DesktopIcons = () => {
 		row-gap: 14px;
 		column-gap: 7px;
 	`
-
+	
 	return (
 		<>
 			<Container>
 				{desktopIcons.map(icon => {
-					return <DesktopIconTSX data={icon} onClick={() => { }}/>
+					return <DesktopIconTSX data={icon} />
 				})}
 			</Container>
 		</>

@@ -1,8 +1,11 @@
 {
   "semi": false,
   "arrowParens": "avoid",
+  "proseWrap": "always",
   "bracketSpacing": true,
+  "trailingComma": "none",
   "tabWidth": 4,
   "useTabs": true,
-  "printWidth": 80
+  "printWidth": 80,
+  "editor.formatOnSave": true
 }

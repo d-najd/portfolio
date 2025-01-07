@@ -9,11 +9,17 @@ import sendMailIco from "../../resources/windows_95_icons/Mail & Letters/Mail.ic
 import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
+import { openAndFocusTab } from "../../components/openAndFocusTab"
 
 export interface DesktopIcon {
 	id: number
 	name: string
 	iconUrl: string
+	/**
+	 * If the action isn't url that means no link needs to be opened (no href)
+	 * otherwise it's an url for ex GitHub
+	 */
+	action: (() => void)
 }
 
 export interface DesktopIcons {
@@ -38,45 +44,53 @@ const initialState: DesktopIconsState = {
 			{
 				id: getNextIconId(),
 				name: "My Computer",
-				iconUrl: myComputerIco
+				iconUrl: myComputerIco,
+				action: () => {},
 			},
 			{
 				id: getNextIconId(),
 				name: "Recycle Bin",
-				iconUrl: recycleBinIco
+				iconUrl: recycleBinIco,
+				action: () => {},
 			},
 			{
 				id: getNextIconId(),
 				name: "Resume",
-				iconUrl: resumeIco
+				iconUrl: resumeIco,
+				action: () => {},
 			},
 			{
 				id: getNextIconId(),
 				name: "My Work",
-				iconUrl: myWorkIco
+				iconUrl: myWorkIco,
+				action: () => {},
 			},
 			{
 				id: getNextIconId(),
 				name: "Send Mail",
-				iconUrl: sendMailIco
+				iconUrl: sendMailIco,
+				action: () => {},
 			},
 			{
 				id: getNextIconId(),
-				name: "Linkedin",
-				iconUrl: linkedInIco
+				name: "LinkedIn",
+				iconUrl: linkedInIco,
+				action: () =>  openAndFocusTab("https://www.linkedin.com/in/dimitar-najdovski/"),
 			},
 			{
 				id: getNextIconId(),
 				name: "Github",
-				iconUrl: githubIco
+				iconUrl: githubIco,
+				action: () => openAndFocusTab("https://github.com/d-najd"),
 			},
 			{
 				id: getNextIconId(),
 				name: "MS-DOS Prompt",
-				iconUrl: msDosPromptIco
+				iconUrl: msDosPromptIco,
+				action: () => {},
 			},
 		],
-		selectedIcon: -1
+		selectedIcon: -1,
 	},
 	status: "idle",
 }
@@ -85,13 +99,18 @@ export const desktopIconsSlice = createAppSlice({
 	name: "desktop-icons",
 	initialState,
 	reducers: create => ({
-		
+		onMyWorkClicked: state => {
+		}
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
 		selectDesktopIcons: state => state.data.icons,
 		selectSelectedDesktopIcon: state => state.data.selectedIcon,
-	}
+	},
 })
 
-export const { selectDesktopIconsStatus, selectDesktopIcons, selectSelectedDesktopIcon, } = desktopIconsSlice.selectors
+export const {
+	selectDesktopIconsStatus,
+	selectDesktopIcons,
+	selectSelectedDesktopIcon,
+} = desktopIconsSlice.selectors

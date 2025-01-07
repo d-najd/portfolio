@@ -5,7 +5,6 @@ import { Column } from "../../../components/Column"
 
 interface DesktopIconTSXType {
 	data: DesktopIcon
-	onClick: () => void
 }
 
 export const DesktopIconTSX = (data: DesktopIconTSXType) => {
@@ -14,6 +13,8 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		width: 74px;
 		height: 74px;
 		text-align: center;
+		user-select: all;
+		cursor: pointer;
 	`
 
 	const Icon = styled.img`
@@ -22,6 +23,7 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		max-width: 42px;
 		max-height: 42px;
 		image-rendering: pixelated;
+		user-select: none;
 	`
 
 	const Text = styled.span`
@@ -29,12 +31,19 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		color: white;
 		margin-top: 6px;
 		font-size: small;
+		user-select: none;
 	`
-
+	
 	return (
-		<Container>
-			<Icon src={data.data.iconUrl}/>
-			<Text>{data.data.name}</Text>
-		</Container>
+		<>
+			<Container
+				{...(data.data.action! instanceof URL
+					? { href: data.data.action.href }
+					: { onClick: data.data.action })}
+			>
+				<Icon src={data.data.iconUrl} />
+				<Text>{data.data.name}</Text>
+			</Container>
+		</>
 	)
 }
