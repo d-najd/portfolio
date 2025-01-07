@@ -1,10 +1,13 @@
 import type { DesktopIcon } from "../DesktopIconsSlice"
+import { selectDesktopIcon } from "../DesktopIconsSlice"
+import { selectSelectedDesktopIcon } from "../DesktopIconsSlice"
 import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { Column } from "../../../components/Column"
 import type { DoubleClickState } from "../DesktopIcons"
 import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
 import type React from "react"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 
 interface DesktopIconTSXType {
 	iconData: DesktopIcon
@@ -17,6 +20,9 @@ export const DesktopIconTSX = ({
 	doubleClickState,
 	setDoubleClickState
 }: DesktopIconTSXType) => {
+	const dispatch = useAppDispatch()
+	const selectedIcon = useAppSelector(selectSelectedDesktopIcon)
+
 	const Container = styled(Column)`
 		${Alignment(Alignments.VerticallyCentered)};
 		width: 74px;
@@ -26,21 +32,41 @@ export const DesktopIconTSX = ({
 		cursor: pointer;
 	`
 
-	const Icon = styled.img`
+	const IconWrapper = styled.div`
+		position: relative;
 		min-width: 42px;
 		min-height: 42px;
 		max-width: 42px;
 		max-height: 42px;
+		user-select: none;
+		background-color: ${selectedIcon === iconData.id
+			? "rgba(0, 0, 255, 0.65)"
+			: "transparent"};
+	`
+
+	const Icon = styled.img`
+		min-width: 42px;
+		min-height: 42px;
 		image-rendering: pixelated;
 		user-select: none;
+		background-color: transparent;
+		opacity: ${selectedIcon === iconData.id ? 55 : 100}%;
 	`
 
 	const Text = styled.span`
 		${Alignment(Alignments.HorizontallyCentered)};
 		color: white;
-		margin-top: 6px;
+		margin-top: 2px;
+		padding: 2px 1px;
 		font-size: small;
 		user-select: none;
+
+		background-color: ${selectedIcon === iconData.id
+			? "blue"
+			: "transparent"};
+		border: ${selectedIcon === iconData.id
+			? "rgba(255, 255, 255, 0.7) dotted 2px"
+			: "none"};
 	`
 
 	const onDoubleClickAction = () => {
@@ -53,6 +79,7 @@ export const DesktopIconTSX = ({
 			setDoubleClickState(defaultDoubleClickState())
 			iconData.action()
 		} else {
+			dispatch(selectDesktopIcon(iconData.id))
 			setDoubleClickState({
 				timeStamp: new Date(),
 				id: iconData.id
@@ -63,7 +90,9 @@ export const DesktopIconTSX = ({
 	return (
 		<>
 			<Container onClick={onDoubleClickAction}>
-				<Icon src={iconData.iconUrl} />
+				<IconWrapper>
+					<Icon src={iconData.iconUrl} />
+				</IconWrapper>
 				<Text>{iconData.name}</Text>
 			</Container>
 		</>

@@ -10,12 +10,13 @@ import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import { openAndFocusTab } from "../../components/openAndFocusTab"
+import type { PayloadAction } from "@reduxjs/toolkit"
 
 export interface DesktopIcon {
 	id: number
 	name: string
 	iconUrl: string
-	action: (() => void)
+	action: () => void
 }
 
 export interface DesktopIcons {
@@ -41,72 +42,80 @@ const initialState: DesktopIconsState = {
 				id: getNextIconId(),
 				name: "My Computer",
 				iconUrl: myComputerIco,
-				action: () => {},
+				action: () => {}
 			},
 			{
 				id: getNextIconId(),
 				name: "Recycle Bin",
 				iconUrl: recycleBinIco,
-				action: () => {},
+				action: () => {}
 			},
 			{
 				id: getNextIconId(),
 				name: "Resume",
 				iconUrl: resumeIco,
-				action: () => {},
+				action: () => {}
 			},
 			{
 				id: getNextIconId(),
 				name: "My Work",
 				iconUrl: myWorkIco,
-				action: () => {},
+				action: () => {}
 			},
 			{
 				id: getNextIconId(),
 				name: "Send Mail",
 				iconUrl: sendMailIco,
-				action: () => {},
+				action: () => {}
 			},
 			{
 				id: getNextIconId(),
 				name: "LinkedIn",
 				iconUrl: linkedInIco,
-				action: () =>  openAndFocusTab("https://www.linkedin.com/in/dimitar-najdovski/"),
+				action: () =>
+					openAndFocusTab(
+						"https://www.linkedin.com/in/dimitar-najdovski/"
+					)
 			},
 			{
 				id: getNextIconId(),
 				name: "Github",
 				iconUrl: githubIco,
-				action: () => openAndFocusTab("https://github.com/d-najd"),
+				action: () => openAndFocusTab("https://github.com/d-najd")
 			},
 			{
 				id: getNextIconId(),
 				name: "MS-DOS Prompt",
 				iconUrl: msDosPromptIco,
-				action: () => {},
-			},
+				action: () => {}
+			}
 		],
-		selectedIcon: -1,
+		selectedIcon: -1
 	},
-	status: "idle",
+	status: "idle"
 }
 
 export const desktopIconsSlice = createAppSlice({
 	name: "desktop-icons",
 	initialState,
 	reducers: create => ({
-		onMyWorkClicked: state => {
-		}
+		selectIcon: (state, action: PayloadAction<number>) => {
+			state.data.selectedIcon = action.payload
+		},
+		onMyWorkClicked: state => {}
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
 		selectDesktopIcons: state => state.data.icons,
-		selectSelectedDesktopIcon: state => state.data.selectedIcon,
-	},
+		selectSelectedDesktopIcon: state => state.data.selectedIcon
+	}
 })
+
+export const { selectIcon: selectDesktopIcon, onMyWorkClicked } =
+	desktopIconsSlice.actions
 
 export const {
 	selectDesktopIconsStatus,
 	selectDesktopIcons,
-	selectSelectedDesktopIcon,
+	selectSelectedDesktopIcon
 } = desktopIconsSlice.selectors
