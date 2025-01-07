@@ -32,24 +32,17 @@ export const DesktopIconTSX = ({
 		cursor: pointer;
 	`
 
-	const IconWrapper = styled.div`
-		position: relative;
+	const Icon = styled.img`
 		min-width: 42px;
 		min-height: 42px;
 		max-width: 42px;
 		max-height: 42px;
+		image-rendering: pixelated;
 		user-select: none;
+		pointer-events: none;
 		background-color: ${selectedIcon === iconData.id
 			? "rgba(0, 0, 255, 0.65)"
 			: "transparent"};
-	`
-
-	const Icon = styled.img`
-		min-width: 42px;
-		min-height: 42px;
-		image-rendering: pixelated;
-		user-select: none;
-		background-color: transparent;
 		opacity: ${selectedIcon === iconData.id ? 55 : 100}%;
 	`
 
@@ -90,9 +83,7 @@ export const DesktopIconTSX = ({
 	return (
 		<>
 			<Container onClick={onDoubleClickAction}>
-				<IconWrapper>
-					<Icon src={iconData.iconUrl} />
-				</IconWrapper>
+				<Icon src={iconData.iconUrl} />
 				<Text>{iconData.name}</Text>
 			</Container>
 		</>

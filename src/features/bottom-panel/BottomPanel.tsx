@@ -20,7 +20,6 @@ export const BottomPanel = () => {
 		height: 100%;
 	`
 
-	// height: ${temp}px;
 	const BottomBar = styled(Row)`
 		background-color: ${theme.colors.primaryBackground};
 		max-height: ${bottomPanelHeightContainer}px;
@@ -40,14 +39,11 @@ export const BottomPanel = () => {
 		margin-bottom: 1px;
 	`
 
-	const WindowsImage = styled.image` 
+	const WindowsImage = styled.img`
 		width: 20px;
 		height: 20px;
-	`
-
-	const windowsImageStyle = css`
-		width: 20px;
-		height: 20px;
+		pointer-events: none;
+		user-select: none;
 	`
 
 	const WindowsImageText = styled.span`
@@ -65,13 +61,10 @@ export const BottomPanel = () => {
 					<BottomBar css={Alignment(Alignments.CenteredStart)}>
 						<WindowsButton css={StartButtonStyle}>
 							<Row css={Alignment(Alignments.CenteredStart)}>
-								<WindowsImage>
-									<img
-										css={windowsImageStyle}
-										src={windowsIco}
-										alt={"Windows 95 logo"}
-									/>
-								</WindowsImage>
+								<WindowsImage
+									src={windowsIco}
+									alt={"Windows 95 logo"}
+								/>
 								<WindowsImageText>Start</WindowsImageText>
 							</Row>
 						</WindowsButton>
