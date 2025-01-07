@@ -15,10 +15,6 @@ export interface DesktopIcon {
 	id: number
 	name: string
 	iconUrl: string
-	/**
-	 * If the action isn't url that means no link needs to be opened (no href)
-	 * otherwise it's an url for ex GitHub
-	 */
 	action: (() => void)
 }
 

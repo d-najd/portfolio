@@ -2,12 +2,21 @@ import type { DesktopIcon } from "../DesktopIconsSlice"
 import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { Column } from "../../../components/Column"
+import type { DoubleClickState } from "../DesktopIcons"
+import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
+import type React from "react"
 
 interface DesktopIconTSXType {
-	data: DesktopIcon
+	iconData: DesktopIcon
+	doubleClickState: DoubleClickState
+	setDoubleClickState: React.Dispatch<DoubleClickState>
 }
 
-export const DesktopIconTSX = (data: DesktopIconTSXType) => {
+export const DesktopIconTSX = ({
+	iconData,
+	doubleClickState,
+	setDoubleClickState
+}: DesktopIconTSXType) => {
 	const Container = styled(Column)`
 		${Alignment(Alignments.VerticallyCentered)};
 		width: 74px;
@@ -33,16 +42,29 @@ export const DesktopIconTSX = (data: DesktopIconTSXType) => {
 		font-size: small;
 		user-select: none;
 	`
-	
+
+	const onDoubleClickAction = () => {
+		if (
+			iconData.id === doubleClickState.id &&
+			Date.now() - doubleClickState.timeStamp.getTime() <=
+				doubleClickTolerance
+		) {
+			// Clicked
+			setDoubleClickState(defaultDoubleClickState())
+			iconData.action()
+		} else {
+			setDoubleClickState({
+				timeStamp: new Date(),
+				id: iconData.id
+			})
+		}
+	}
+
 	return (
 		<>
-			<Container
-				{...(data.data.action! instanceof URL
-					? { href: data.data.action.href }
-					: { onClick: data.data.action })}
-			>
-				<Icon src={data.data.iconUrl} />
-				<Text>{data.data.name}</Text>
+			<Container onClick={onDoubleClickAction}>
+				<Icon src={iconData.iconUrl} />
+				<Text>{iconData.name}</Text>
 			</Container>
 		</>
 	)
