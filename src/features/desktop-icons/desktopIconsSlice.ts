@@ -10,30 +10,17 @@ import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import {
-	DesktopIconType,
-	GetActionByDesktopIconType
-} from "./desktopIconActions"
+import { DesktopIconType } from "./desktopIconActions"
 
-interface DesktopIconInternal {
+export interface DesktopIcon {
 	id: number
 	name: string
 	iconUrl: string
 	iconType: DesktopIconType
 }
 
-/**
- * Extra values that are returned when returning the icon to the user
- */
-export interface DesktopIcon extends DesktopIconInternal {
-	/**
-	 * Action when the user clicks on the desktop icon
-	 */
-	action: () => {}
-}
-
 interface DesktopIconsState {
-	icons: DesktopIconInternal[]
+	icons: DesktopIcon[]
 	selectedIcon: number
 	status: defaultSliceStates
 }
@@ -110,20 +97,9 @@ export const desktopIconsSlice = createAppSlice({
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
-		selectDesktopIcon: (state, id: number) => {
-			const value = state.icons.find(o => o.id === id)!
-			return {
-				...value,
-				action: GetActionByDesktopIconType(value.iconType)
-			} as DesktopIcon
-		},
-		selectDesktopIcons: state =>
-			state.icons.map(o => {
-				return {
-					...o,
-					action: GetActionByDesktopIconType(o.iconType)
-				} as DesktopIcon
-			}),
+		selectDesktopIcon: (state, id: number) =>
+			state.icons.find(o => o.id === id)!,
+		selectDesktopIcons: state => state.icons,
 		selectSelectedDesktopIcon: state => state.selectedIcon
 	}
 })
