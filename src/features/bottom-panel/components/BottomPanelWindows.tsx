@@ -1,17 +1,17 @@
 import { Row } from "../../../components/Row"
 import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
-import type { MyWindow } from "../../window/WindowSlice"
-import { useWindows } from "../../window/WindowSlice"
+import type { MyWindow } from "../../window/windowSlice"
+import { useWindows } from "../../window/windowSlice"
 import {
 	WindowsButton,
-	WindowsButtonPressedStyle,
+	WindowsButtonPressedStyle
 } from "../../../components/WindowsButton"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
 	changeActiveWindow,
-	selectActiveWindowId,
-} from "../../window-drawer/WindowDrawerSlice"
+	selectActiveWindowId
+} from "../../window-drawer/windowDrawerSlice"
 import { css } from "@emotion/react"
 
 /**

@@ -3,13 +3,13 @@ import {
 	minimizeWindow,
 	selectActiveWindowId,
 	toggleMaximizeWindow
-} from "../WindowDrawerSlice"
+} from "../windowDrawerSlice"
 import styled from "@emotion/styled"
 import { Row } from "../../../components/Row"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import theme from "../../../theme/theme"
-import type { MyWindow } from "../../window/WindowSlice"
-import { closeWindow } from "../../window/WindowSlice"
+import type { MyWindow } from "../../window/windowSlice"
+import { closeWindow } from "../../window/windowSlice"
 import { WindowsButton } from "../../../components/WindowsButton"
 import minimizeIcon from "../../../resources/icons/minimize-icon.png"
 import maximizeIcon from "../../../resources/icons/maximize-icon.png"

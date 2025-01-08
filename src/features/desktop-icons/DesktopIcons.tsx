@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { selectDesktopIcons } from "./DesktopIconsSlice"
+import { selectDesktopIcons } from "./desktopIconsSlice"
 import { DesktopIconTSX } from "./components/DesktopIcon"
 import { useAppSelector } from "../../app/hooks"
 import useScreenSize from "../../components/useScreenSize"

@@ -1,7 +1,7 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
-import { closeWindow } from "../window/WindowSlice"
+import { closeWindow } from "../window/windowSlice"
 
 export interface WindowDrawer {
 	windows: WindowDrawerWindow[]
@@ -16,7 +16,7 @@ export enum WindowDrawerWindowState {
 	/**
 	 * If false shown, if true maximized
 	 */
-	ShownOrMaximized = 1 << 1,
+	ShownOrMaximized = 1 << 1
 }
 
 export interface WindowDrawerWindow {
@@ -52,7 +52,7 @@ const initialState: WindowManagerState = {
 				width: 320,
 				height: 320,
 				offsetX: 320,
-				offsetY: 80,
+				offsetY: 80
 			},
 			{
 				id: 1,
@@ -61,7 +61,7 @@ const initialState: WindowManagerState = {
 				width: 320,
 				height: 320,
 				offsetX: 480,
-				offsetY: 80,
+				offsetY: 80
 			},
 			{
 				id: 2,
@@ -70,12 +70,12 @@ const initialState: WindowManagerState = {
 				width: 320,
 				height: 320,
 				offsetX: 80,
-				offsetY: 480,
-			},
+				offsetY: 480
+			}
 		],
-		activeWindowId: 1,
+		activeWindowId: 1
 	},
-	status: "idle",
+	status: "idle"
 }
 
 interface MoveWindowState {
@@ -147,13 +147,13 @@ export const windowDrawerSlice = createAppSlice({
 				}
 				return o
 			})
-		},
+		}
 	}),
 	selectors: {
 		selectWindowDrawer: state => state.data,
 		selectWindowDrawerStatus: state => state.status,
 		selectActiveWindowId: state => state.data.activeWindowId,
-		selectWindowDrawerWindows: state => state.data.windows,
+		selectWindowDrawerWindows: state => state.data.windows
 	},
 	extraReducers: builder => {
 		builder.addCase(closeWindow, (state, action) => {
@@ -162,22 +162,22 @@ export const windowDrawerSlice = createAppSlice({
 			}
 
 			state.data.windows = state.data.windows.filter(
-				o => o.id !== action.payload,
+				o => o.id !== action.payload
 			)
 		})
-	},
+	}
 })
 
 export const {
 	changeActiveWindow,
 	minimizeWindow,
 	toggleMaximizeWindow,
-	moveWindow,
+	moveWindow
 } = windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawer,
 	selectWindowDrawerStatus,
 	selectWindowDrawerWindows,
-	selectActiveWindowId,
+	selectActiveWindowId
 } = windowDrawerSlice.selectors

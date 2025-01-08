@@ -1,7 +1,7 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import type { WindowDrawerWindow } from "../window-drawer/WindowDrawerSlice"
-import { selectWindowDrawerWindows } from "../window-drawer/WindowDrawerSlice"
+import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
+import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "../../app/createAppSlice"
 import { useAppSelector } from "../../app/hooks"
 
@@ -37,18 +37,18 @@ const initialState: WindowState = {
 	data: [
 		{
 			id: getNextWindowId(),
-			name: "Window 1",
+			name: "Window 1"
 		},
 		{
 			id: getNextWindowId(),
-			name: "Window 2",
+			name: "Window 2"
 		},
 		{
 			id: getNextWindowId(),
-			name: "Window 3",
-		},
+			name: "Window 3"
+		}
 	],
-	status: "idle",
+	status: "idle"
 }
 
 export const windowSlice = createAppSlice({
@@ -57,12 +57,12 @@ export const windowSlice = createAppSlice({
 	reducers: create => ({
 		closeWindow: (state, action: PayloadAction<number>) => {
 			state.data = state.data.filter(o => o.id !== action.payload)
-		},
+		}
 	}),
 	selectors: {
 		selectWindowsStatus: state => state.status,
-		selectBaseWindows: state => state.data,
-	},
+		selectBaseWindows: state => state.data
+	}
 })
 
 /**
@@ -76,7 +76,7 @@ export const useWindows = (): MyWindow[] => {
 	return baseWindows
 		.map(baseWindow => {
 			const windowDrawerWindow = windowDrawerWindows.find(
-				o => o.id === baseWindow.id,
+				o => o.id === baseWindow.id
 			)
 			return combineWindows(baseWindow, windowDrawerWindow) // Combine matches or return null
 		})
@@ -94,7 +94,7 @@ export const useWindow = (id: number): MyWindow => {
 
 	const baseWindow = baseWindows.find(baseWindow => baseWindow.id === id)
 	const windowDrawerWindow = windowDrawerWindows.find(
-		o => o.id === baseWindow?.id,
+		o => o.id === baseWindow?.id
 	)
 
 	return combineWindows(baseWindow, windowDrawerWindow)!
@@ -105,20 +105,20 @@ export const useWindow = (id: number): MyWindow => {
  */
 const combineWindows = (
 	baseWindow: BaseWindow | undefined,
-	windowDrawerWindow: WindowDrawerWindow | undefined,
+	windowDrawerWindow: WindowDrawerWindow | undefined
 ): MyWindow | undefined => {
 	if (baseWindow === undefined || windowDrawerWindow === undefined) {
 		console.error(
 			"Invalid window passed for combining, seems that not all subtypes exist for the window " +
 				"or the window does not exist at all",
-			[baseWindow, windowDrawerWindow],
+			[baseWindow, windowDrawerWindow]
 		)
 		return undefined
 	}
 
 	return {
 		...baseWindow,
-		...windowDrawerWindow,
+		...windowDrawerWindow
 	}
 }
 

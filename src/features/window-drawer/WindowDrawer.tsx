@@ -1,5 +1,5 @@
-import type { MyWindow } from "../window/WindowSlice"
-import { useWindows } from "../window/WindowSlice"
+import type { MyWindow } from "../window/windowSlice"
+import { useWindows } from "../window/windowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
@@ -9,8 +9,8 @@ import {
 	changeActiveWindow,
 	moveWindow,
 	selectActiveWindowId,
-	WindowDrawerWindowState,
-} from "./WindowDrawerSlice"
+	WindowDrawerWindowState
+} from "./windowDrawerSlice"
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 import useScreenSize from "../../components/useScreenSize"
@@ -47,7 +47,7 @@ const defaultWindowState: DragState = {
 	windowId: -1,
 	dragging: false,
 	windowXOffset: -1,
-	windowYOffset: -1,
+	windowYOffset: -1
 }
 
 /**
@@ -64,7 +64,7 @@ export const WindowDrawer = () => {
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
-		y: 0,
+		y: 0
 	})
 
 	/**
@@ -84,7 +84,7 @@ export const WindowDrawer = () => {
 			windowId: curWindow.id,
 			dragging: true,
 			windowXOffset: mousePosition.x - curWindow.offsetX,
-			windowYOffset: mousePosition.y - curWindow.offsetY,
+			windowYOffset: mousePosition.y - curWindow.offsetY
 		})
 		setMouseDown(true)
 		document.body.style.userSelect = "none"
@@ -116,8 +116,8 @@ export const WindowDrawer = () => {
 					moveWindow({
 						id: dragState.windowId,
 						offsetX: offsetX,
-						offsetY: offsetY,
-					}),
+						offsetY: offsetY
+					})
 				)
 				setDragState(defaultWindowState)
 			}
@@ -131,19 +131,19 @@ export const WindowDrawer = () => {
 		) {
 			return {
 				x: 0,
-				y: 0,
+				y: 0
 			}
 		}
 
 		if (dragState.dragging && curWindow.id === dragState.windowId) {
 			return {
 				x: mousePosition.x - dragState.windowXOffset,
-				y: mousePosition.y - dragState.windowYOffset,
+				y: mousePosition.y - dragState.windowYOffset
 			}
 		}
 		return {
 			x: curWindow.offsetX,
-			y: curWindow.offsetY,
+			y: curWindow.offsetY
 		}
 	}
 
@@ -156,12 +156,12 @@ export const WindowDrawer = () => {
 			const extraSize = 3
 			return {
 				width: screenSize.width - extraSize,
-				height: screenSize.height - bottomPanelHeight - extraSize,
+				height: screenSize.height - bottomPanelHeight - extraSize
 			}
 		} else {
 			return {
 				width: curWindow.width,
-				height: curWindow.height,
+				height: curWindow.height
 			}
 		}
 	}
@@ -191,7 +191,7 @@ export const WindowDrawer = () => {
 				.filter(
 					o =>
 						WindowDrawerWindowState.Minimized !==
-						(o.state & WindowDrawerWindowState.Minimized),
+						(o.state & WindowDrawerWindowState.Minimized)
 				)
 				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(window => {
@@ -210,7 +210,9 @@ export const WindowDrawer = () => {
 										onDragStart={() => {
 											onDragStart(window)
 										}}
-										nonDraggableState={overNonDraggableState}
+										nonDraggableState={
+											overNonDraggableState
+										}
 										nonDraggableEntered={() =>
 											setOverNonDraggableState(true)
 										}
@@ -236,13 +238,13 @@ export const WindowDrawer = () => {
 const MousePositionHandler = (
 	setMouseDown: React.Dispatch<boolean>,
 	setMousePosition: React.Dispatch<MousePosition>,
-	overNonDraggableState: boolean,
+	overNonDraggableState: boolean
 ) => {
 	useEffect(() => {
 		const handleMouseMove = (event: MouseEvent) => {
 			setMousePosition({
 				x: event.clientX,
-				y: event.clientY,
+				y: event.clientY
 			})
 		}
 

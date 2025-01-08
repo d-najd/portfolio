@@ -1,20 +1,16 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { counterSlice } from "../features/counter/counterSlice"
-import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
-import { windowSlice } from "../features/window/WindowSlice"
-import { windowDrawerSlice } from "../features/window-drawer/WindowDrawerSlice"
-import { desktopIconsSlice } from "../features/desktop-icons/DesktopIconsSlice"
+import { windowSlice } from "../features/window/windowSlice"
+import { windowDrawerSlice } from "../features/window-drawer/windowDrawerSlice"
+import { desktopIconsSlice } from "../features/desktop-icons/desktopIconsSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices(
-	counterSlice, 
-	quotesApiSlice,
 	windowSlice,
 	windowDrawerSlice,
-	desktopIconsSlice,
+	desktopIconsSlice
 )
 
 // Infer the `RootState` type from the root reducer
@@ -27,10 +23,12 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
 		reducer: rootReducer,
 		// Adding the api middleware enables caching, invalidation, polling,
 		// and other useful features of `rtk-query`.
+		/*
 		middleware: getDefaultMiddleware => {
 			return getDefaultMiddleware().concat(quotesApiSlice.middleware)
 		},
-		preloadedState,
+		 */
+		preloadedState
 	})
 	// configure listeners using the provided defaults
 	// optional, but required for `refetchOnFocus`/`refetchOnReconnect` behaviors
