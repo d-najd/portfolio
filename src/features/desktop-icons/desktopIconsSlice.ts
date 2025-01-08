@@ -9,18 +9,25 @@ import sendMailIco from "../../resources/windows_95_icons/Mail & Letters/Mail.ic
 import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
-import { openAndFocusTab } from "../../components/openAndFocusTab"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import { DesktopIconType, GetActionByDesktopIcon } from "./desktopIconActions"
 
-export interface DesktopIcon {
+interface DesktopIconInternal {
 	id: number
 	name: string
 	iconUrl: string
-	action: () => void
+	iconType: DesktopIconType
+}
+
+/**
+ * Extra values that are returned when returning the icon to the user
+ */
+export interface DesktopIcon extends DesktopIconInternal {
+	action: () => {}
 }
 
 export interface DesktopIcons {
-	icons: DesktopIcon[]
+	icons: DesktopIconInternal[]
 	selectedIcon: number
 }
 
@@ -42,52 +49,49 @@ const initialState: DesktopIconsState = {
 				id: getNextIconId(),
 				name: "My Computer",
 				iconUrl: myComputerIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			},
 			{
 				id: getNextIconId(),
 				name: "Recycle Bin",
 				iconUrl: recycleBinIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			},
 			{
 				id: getNextIconId(),
 				name: "Resume",
 				iconUrl: resumeIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			},
 			{
 				id: getNextIconId(),
 				name: "Projects",
 				iconUrl: projectsIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			},
 			{
 				id: getNextIconId(),
 				name: "Send Mail",
 				iconUrl: sendMailIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			},
 			{
 				id: getNextIconId(),
 				name: "LinkedIn",
 				iconUrl: linkedInIco,
-				action: () =>
-					openAndFocusTab(
-						"https://www.linkedin.com/in/dimitar-najdovski/"
-					)
+				iconType: DesktopIconType.LinkedIn
 			},
 			{
 				id: getNextIconId(),
 				name: "Github",
 				iconUrl: githubIco,
-				action: () => openAndFocusTab("https://github.com/d-najd")
+				iconType: DesktopIconType.Github
 			},
 			{
 				id: getNextIconId(),
 				name: "MS-DOS Prompt",
 				iconUrl: msDosPromptIco,
-				action: () => {}
+				iconType: DesktopIconType.Undefined
 			}
 		],
 		selectedIcon: -1
@@ -99,23 +103,37 @@ export const desktopIconsSlice = createAppSlice({
 	name: "desktop-icons",
 	initialState,
 	reducers: create => ({
-		selectIcon: (state, action: PayloadAction<number>) => {
+		onSelectDesktopIcon: (state, action: PayloadAction<number>) => {
 			state.data.selectedIcon = action.payload
 		},
 		onProjectsClicked: state => {}
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
-		selectDesktopIcons: state => state.data.icons,
+		selectDesktopIcon: (state, id: number) => {
+			const value = state.data.icons.find(o => o.id === id)!
+			return {
+				...value,
+				action: GetActionByDesktopIcon(value.iconType)
+			} as DesktopIcon
+		},
+		selectDesktopIcons: state =>
+			state.data.icons.map(o => {
+				return {
+					...o,
+					action: GetActionByDesktopIcon(o.iconType)
+				} as DesktopIcon
+			}),
 		selectSelectedDesktopIcon: state => state.data.selectedIcon
 	}
 })
 
-export const { selectIcon: selectDesktopIcon, onProjectsClicked } =
+export const { onSelectDesktopIcon, onProjectsClicked } =
 	desktopIconsSlice.actions
 
 export const {
 	selectDesktopIconsStatus,
 	selectDesktopIcons,
+	selectDesktopIcon,
 	selectSelectedDesktopIcon
 } = desktopIconsSlice.selectors

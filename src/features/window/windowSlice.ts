@@ -5,7 +5,7 @@ import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "../../app/createAppSlice"
 import { useAppSelector } from "../../app/hooks"
 
-export interface BaseWindow {
+interface BaseWindow {
 	/**
 	 * Window id is being used instead of index because the index will be pain to update in every part of the app which
 	 * may alter it
@@ -17,6 +17,9 @@ export interface BaseWindow {
 	name: string
 }
 
+/**
+ * Used as return type
+ */
 export interface MyWindow extends BaseWindow, WindowDrawerWindow {}
 
 /**

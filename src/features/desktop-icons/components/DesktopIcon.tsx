@@ -1,4 +1,5 @@
 import type { DesktopIcon } from "../desktopIconsSlice"
+import { onSelectDesktopIcon } from "../desktopIconsSlice"
 import { selectDesktopIcon } from "../desktopIconsSlice"
 import { selectSelectedDesktopIcon } from "../desktopIconsSlice"
 import styled from "@emotion/styled"
@@ -72,7 +73,7 @@ export const DesktopIconTSX = ({
 			setDoubleClickState(defaultDoubleClickState())
 			iconData.action()
 		} else {
-			dispatch(selectDesktopIcon(iconData.id))
+			dispatch(onSelectDesktopIcon(iconData.id))
 			setDoubleClickState({
 				timeStamp: new Date(),
 				id: iconData.id

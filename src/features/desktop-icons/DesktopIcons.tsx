@@ -65,6 +65,7 @@ export const DesktopIcons = () => {
 							iconData={icon}
 							doubleClickState={doubleClickState}
 							setDoubleClickState={setDoubleClickState}
+							key={icon.id}
 						/>
 					)
 				})}

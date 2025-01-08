@@ -30,7 +30,12 @@ export const BottomPanelWindows = () => {
 		<>
 			<Container>
 				{windows.map(curWindow => {
-					return <WindowsContainer curWindow={curWindow} />
+					return (
+						<WindowsContainer
+							curWindow={curWindow}
+							key={curWindow.id}
+						/>
+					)
 				})}
 			</Container>
 		</>
