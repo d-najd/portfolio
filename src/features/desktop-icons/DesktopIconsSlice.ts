@@ -4,7 +4,7 @@ import { createAppSlice } from "../../app/createAppSlice"
 import myComputerIco from "../../resources/windows_95_icons/Computers/My Computer.ico"
 import recycleBinIco from "../../resources/windows_95_icons/Recycle Bins/Empty Recycle Bin.ico"
 import resumeIco from "../../resources/windows_95_icons/Notepads & Writing/Writing on sheet.ico"
-import myWorkIco from "../../resources/windows_95_icons/Folders/Documents Folder.ico"
+import projectsIco from "../../resources/windows_95_icons/Folders/Documents Folder.ico"
 import sendMailIco from "../../resources/windows_95_icons/Mail & Letters/Mail.ico"
 import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
@@ -58,8 +58,8 @@ const initialState: DesktopIconsState = {
 			},
 			{
 				id: getNextIconId(),
-				name: "My Work",
-				iconUrl: myWorkIco,
+				name: "Projects",
+				iconUrl: projectsIco,
 				action: () => {}
 			},
 			{
@@ -102,7 +102,7 @@ export const desktopIconsSlice = createAppSlice({
 		selectIcon: (state, action: PayloadAction<number>) => {
 			state.data.selectedIcon = action.payload
 		},
-		onMyWorkClicked: state => {}
+		onProjectsClicked: state => {}
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
@@ -111,7 +111,7 @@ export const desktopIconsSlice = createAppSlice({
 	}
 })
 
-export const { selectIcon: selectDesktopIcon, onMyWorkClicked } =
+export const { selectIcon: selectDesktopIcon, onProjectsClicked } =
 	desktopIconsSlice.actions
 
 export const {

@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
 	minimizeWindow,
 	selectActiveWindowId,
-	toggleMaximizeWindow,
+	toggleMaximizeWindow
 } from "../WindowDrawerSlice"
 import styled from "@emotion/styled"
 import { Row } from "../../../components/Row"
@@ -42,7 +42,7 @@ export const WindowDrawerTopBar = ({
 	onDragStart,
 	nonDraggableState,
 	nonDraggableEntered,
-	nonDraggableExited,
+	nonDraggableExited
 }: TopBarPreps) => {
 	const dispatch = useAppDispatch()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
@@ -121,6 +121,7 @@ export const WindowDrawerTopBar = ({
 	return (
 		<Root>
 			<Container
+				// @ts-ignore
 				onPointerDown={handleDrag}
 				onPointerEnter={nonDraggableExited}
 			>
@@ -138,7 +139,9 @@ export const WindowDrawerTopBar = ({
 					<TopBarButton
 						onPointerEnter={nonDraggableEntered}
 						onPointerLeave={nonDraggableExited}
-						onClick={() => dispatch(toggleMaximizeWindow(curWindow.id))}
+						onClick={() =>
+							dispatch(toggleMaximizeWindow(curWindow.id))
+						}
 					>
 						<Icon src={maximizeIcon} />
 					</TopBarButton>
