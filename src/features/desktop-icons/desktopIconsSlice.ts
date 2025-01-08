@@ -23,6 +23,9 @@ interface DesktopIconInternal {
  * Extra values that are returned when returning the icon to the user
  */
 export interface DesktopIcon extends DesktopIconInternal {
+	/**
+	 * Action when the user clicks on the desktop icon
+	 */
 	action: () => {}
 }
 

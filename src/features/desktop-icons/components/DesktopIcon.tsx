@@ -1,6 +1,5 @@
 import type { DesktopIcon } from "../desktopIconsSlice"
 import { onSelectDesktopIcon } from "../desktopIconsSlice"
-import { selectDesktopIcon } from "../desktopIconsSlice"
 import { selectSelectedDesktopIcon } from "../desktopIconsSlice"
 import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
