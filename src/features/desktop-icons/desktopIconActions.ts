@@ -12,7 +12,7 @@ export enum DesktopIconType {
 	LinkedIn = "LinkedIn"
 }
 
-export const GetActionByDesktopIcon = (
+export const GetActionByDesktopIconType = (
 	iconType: DesktopIconType
 ): (() => void) => {
 	switch (iconType) {

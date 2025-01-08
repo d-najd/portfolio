@@ -31,13 +31,13 @@ function getNextWindowId(): number {
 	return windowIdCounter++
 }
 
-export interface WindowState {
-	data: BaseWindow[]
+interface WindowState {
+	windows: BaseWindow[]
 	status: defaultSliceStates
 }
 
 const initialState: WindowState = {
-	data: [
+	windows: [
 		{
 			id: getNextWindowId(),
 			name: "Window 1"
@@ -59,12 +59,12 @@ export const windowSlice = createAppSlice({
 	initialState,
 	reducers: create => ({
 		closeWindow: (state, action: PayloadAction<number>) => {
-			state.data = state.data.filter(o => o.id !== action.payload)
+			state.windows = state.windows.filter(o => o.id !== action.payload)
 		}
 	}),
 	selectors: {
 		selectWindowsStatus: state => state.status,
-		selectBaseWindows: state => state.data
+		selectBaseWindows: state => state.windows
 	}
 })
 

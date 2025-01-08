@@ -9,7 +9,7 @@ import {
 	changeActiveWindow,
 	moveWindow,
 	selectActiveWindowId,
-	WindowDrawerWindowState
+	WindowState
 } from "./windowDrawerSlice"
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
@@ -126,8 +126,8 @@ export const WindowDrawer = () => {
 
 	const getWindowOffset = (curWindow: MyWindow) => {
 		if (
-			WindowDrawerWindowState.ShownOrMaximized !==
-			(curWindow.state & WindowDrawerWindowState.ShownOrMaximized)
+			WindowState.ShownOrMaximized !==
+			(curWindow.state & WindowState.ShownOrMaximized)
 		) {
 			return {
 				x: 0,
@@ -149,8 +149,8 @@ export const WindowDrawer = () => {
 
 	const getWindowSize = (curWindow: MyWindow) => {
 		if (
-			WindowDrawerWindowState.ShownOrMaximized !==
-			(curWindow.state & WindowDrawerWindowState.ShownOrMaximized)
+			WindowState.ShownOrMaximized !==
+			(curWindow.state & WindowState.ShownOrMaximized)
 		) {
 			// Size due to borders?
 			const extraSize = 3
@@ -190,8 +190,8 @@ export const WindowDrawer = () => {
 			{windows
 				.filter(
 					o =>
-						WindowDrawerWindowState.Minimized !==
-						(o.state & WindowDrawerWindowState.Minimized)
+						WindowState.Minimized !==
+						(o.state & WindowState.Minimized)
 				)
 				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(window => {

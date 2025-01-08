@@ -10,7 +10,10 @@ import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { DesktopIconType, GetActionByDesktopIcon } from "./desktopIconActions"
+import {
+	DesktopIconType,
+	GetActionByDesktopIconType
+} from "./desktopIconActions"
 
 interface DesktopIconInternal {
 	id: number
@@ -29,13 +32,9 @@ export interface DesktopIcon extends DesktopIconInternal {
 	action: () => {}
 }
 
-export interface DesktopIcons {
+interface DesktopIconsState {
 	icons: DesktopIconInternal[]
 	selectedIcon: number
-}
-
-export interface DesktopIconsState {
-	data: DesktopIcons
 	status: defaultSliceStates
 }
 
@@ -46,59 +45,57 @@ function getNextIconId(): number {
 }
 
 const initialState: DesktopIconsState = {
-	data: {
-		icons: [
-			{
-				id: getNextIconId(),
-				name: "My Computer",
-				iconUrl: myComputerIco,
-				iconType: DesktopIconType.Undefined
-			},
-			{
-				id: getNextIconId(),
-				name: "Recycle Bin",
-				iconUrl: recycleBinIco,
-				iconType: DesktopIconType.Undefined
-			},
-			{
-				id: getNextIconId(),
-				name: "Resume",
-				iconUrl: resumeIco,
-				iconType: DesktopIconType.Undefined
-			},
-			{
-				id: getNextIconId(),
-				name: "Projects",
-				iconUrl: projectsIco,
-				iconType: DesktopIconType.Undefined
-			},
-			{
-				id: getNextIconId(),
-				name: "Send Mail",
-				iconUrl: sendMailIco,
-				iconType: DesktopIconType.Undefined
-			},
-			{
-				id: getNextIconId(),
-				name: "LinkedIn",
-				iconUrl: linkedInIco,
-				iconType: DesktopIconType.LinkedIn
-			},
-			{
-				id: getNextIconId(),
-				name: "Github",
-				iconUrl: githubIco,
-				iconType: DesktopIconType.Github
-			},
-			{
-				id: getNextIconId(),
-				name: "MS-DOS Prompt",
-				iconUrl: msDosPromptIco,
-				iconType: DesktopIconType.Undefined
-			}
-		],
-		selectedIcon: -1
-	},
+	icons: [
+		{
+			id: getNextIconId(),
+			name: "My Computer",
+			iconUrl: myComputerIco,
+			iconType: DesktopIconType.Undefined
+		},
+		{
+			id: getNextIconId(),
+			name: "Recycle Bin",
+			iconUrl: recycleBinIco,
+			iconType: DesktopIconType.Undefined
+		},
+		{
+			id: getNextIconId(),
+			name: "Resume",
+			iconUrl: resumeIco,
+			iconType: DesktopIconType.Undefined
+		},
+		{
+			id: getNextIconId(),
+			name: "Projects",
+			iconUrl: projectsIco,
+			iconType: DesktopIconType.Undefined
+		},
+		{
+			id: getNextIconId(),
+			name: "Send Mail",
+			iconUrl: sendMailIco,
+			iconType: DesktopIconType.Undefined
+		},
+		{
+			id: getNextIconId(),
+			name: "LinkedIn",
+			iconUrl: linkedInIco,
+			iconType: DesktopIconType.LinkedIn
+		},
+		{
+			id: getNextIconId(),
+			name: "Github",
+			iconUrl: githubIco,
+			iconType: DesktopIconType.Github
+		},
+		{
+			id: getNextIconId(),
+			name: "MS-DOS Prompt",
+			iconUrl: msDosPromptIco,
+			iconType: DesktopIconType.Undefined
+		}
+	],
+	selectedIcon: -1,
 	status: "idle"
 }
 
@@ -107,27 +104,27 @@ export const desktopIconsSlice = createAppSlice({
 	initialState,
 	reducers: create => ({
 		onSelectDesktopIcon: (state, action: PayloadAction<number>) => {
-			state.data.selectedIcon = action.payload
+			state.selectedIcon = action.payload
 		},
 		onProjectsClicked: state => {}
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
 		selectDesktopIcon: (state, id: number) => {
-			const value = state.data.icons.find(o => o.id === id)!
+			const value = state.icons.find(o => o.id === id)!
 			return {
 				...value,
-				action: GetActionByDesktopIcon(value.iconType)
+				action: GetActionByDesktopIconType(value.iconType)
 			} as DesktopIcon
 		},
 		selectDesktopIcons: state =>
-			state.data.icons.map(o => {
+			state.icons.map(o => {
 				return {
 					...o,
-					action: GetActionByDesktopIcon(o.iconType)
+					action: GetActionByDesktopIconType(o.iconType)
 				} as DesktopIcon
 			}),
-		selectSelectedDesktopIcon: state => state.data.selectedIcon
+		selectSelectedDesktopIcon: state => state.selectedIcon
 	}
 })
 
