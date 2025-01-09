@@ -6,6 +6,7 @@ import {
 	onProjectsWindowOpened,
 	windowIdCounter
 } from "../window/windowSlice"
+import { WindowType } from "../windows/WindowType"
 
 export enum WindowState {
 	Minimized = 1 << 0,
@@ -22,6 +23,10 @@ export interface WindowDrawerWindow {
 	 * meaning 0 at top and n at bottom
 	 */
 	drawOrder: number
+	/**
+	 * Necessary for determining which content to draw for which window
+	 */
+	windowType: WindowType
 	/**
 	 * Current state of the window, maximized is kept in the window drawer menu since only one window can be maximized,
 	 * and it's always the active window
@@ -47,6 +52,7 @@ const initialState: WindowManagerState = {
 		{
 			id: 0,
 			drawOrder: 1,
+			windowType: WindowType.Undefined,
 			state: WindowState.ShownOrMaximized,
 			width: 320,
 			height: 320,
@@ -56,6 +62,7 @@ const initialState: WindowManagerState = {
 		{
 			id: 1,
 			drawOrder: 0,
+			windowType: WindowType.Undefined,
 			state: WindowState.ShownOrMaximized,
 			width: 320,
 			height: 320,
@@ -65,6 +72,7 @@ const initialState: WindowManagerState = {
 		{
 			id: 2,
 			drawOrder: 2,
+			windowType: WindowType.Undefined,
 			state: WindowState.ShownOrMaximized,
 			width: 320,
 			height: 320,
@@ -167,6 +175,7 @@ export const windowDrawerSlice = createAppSlice({
 				state.windows.push({
 					id: windowIdCounter,
 					drawOrder: 0,
+					windowType: WindowType.Projects,
 					state: WindowState.ShownOrMaximized,
 					width: 320,
 					height: 320,

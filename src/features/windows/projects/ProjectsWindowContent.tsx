@@ -7,6 +7,7 @@ export const ProjectsWindowContent = () => {
 
 	const Container = styled.div`
 		position: absolute;
+		background-color: red;
 		width: 333px;
 		height: 200px;
 	`

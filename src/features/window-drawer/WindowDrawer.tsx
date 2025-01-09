@@ -221,7 +221,6 @@ export const WindowDrawer = () => {
 										}
 									></WindowDrawerTopBar>
 								</Column>
-								{window.name}
 							</WindowContainer>
 						</React.Fragment>
 					)
