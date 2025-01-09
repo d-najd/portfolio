@@ -55,7 +55,7 @@ const initialState: DesktopIconsState = {
 			id: getNextIconId(),
 			name: "Projects",
 			iconUrl: projectsIco,
-			iconType: DesktopIconType.Undefined
+			iconType: DesktopIconType.Projects
 		},
 		{
 			id: getNextIconId(),

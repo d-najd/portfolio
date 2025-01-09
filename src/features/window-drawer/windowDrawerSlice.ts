@@ -1,7 +1,11 @@
 import type { defaultSliceStates } from "../../utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
-import { closeWindow } from "../window/windowSlice"
+import {
+	closeWindow,
+	onProjectsWindowOpened,
+	windowIdCounter
+} from "../window/windowSlice"
 
 export enum WindowState {
 	Minimized = 1 << 0,
@@ -149,13 +153,28 @@ export const windowDrawerSlice = createAppSlice({
 		selectWindowDrawerWindows: state => state.windows
 	},
 	extraReducers: builder => {
-		builder.addCase(closeWindow, (state, action) => {
-			if (action.payload === state.activeWindowId) {
-				state.activeWindowId = -1
-			}
+		builder
+			.addCase(closeWindow, (state, action) => {
+				if (action.payload === state.activeWindowId) {
+					state.activeWindowId = -1
+				}
 
-			state.windows = state.windows.filter(o => o.id !== action.payload)
-		})
+				state.windows = state.windows.filter(
+					o => o.id !== action.payload
+				)
+			})
+			.addCase(onProjectsWindowOpened, state => {
+				state.windows.push({
+					id: windowIdCounter,
+					drawOrder: 0,
+					state: WindowState.ShownOrMaximized,
+					width: 320,
+					height: 320,
+					offsetX: 480,
+					offsetY: 80
+				})
+				state.activeWindowId = windowIdCounter
+			})
 	}
 })
 

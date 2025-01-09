@@ -4,6 +4,7 @@ import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
 import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "../../app/createAppSlice"
 import { useAppSelector } from "../../app/hooks"
+import { ProjectType } from "../windows/projects/projectsActions"
 
 interface BaseWindow {
 	/**
@@ -25,10 +26,11 @@ export interface MyWindow extends BaseWindow, WindowDrawerWindow {}
 /**
  * Due to redux functions needing to be completely pure a counter is used as the id for the window
  */
-let windowIdCounter = 0
+export let windowIdCounter = -1
 
 function getNextWindowId(): number {
-	return windowIdCounter++
+	windowIdCounter++
+	return windowIdCounter
 }
 
 interface WindowState {
@@ -60,6 +62,12 @@ export const windowSlice = createAppSlice({
 	reducers: create => ({
 		closeWindow: (state, action: PayloadAction<number>) => {
 			state.windows = state.windows.filter(o => o.id !== action.payload)
+		},
+		onProjectsWindowOpened: state => {
+			state.windows.push({
+				id: getNextWindowId(),
+				name: ProjectType.Portfolio
+			})
 		}
 	}),
 	selectors: {
@@ -125,6 +133,6 @@ const combineWindows = (
 	}
 }
 
-export const { closeWindow } = windowSlice.actions
+export const { closeWindow, onProjectsWindowOpened } = windowSlice.actions
 
 export const { selectBaseWindows } = windowSlice.selectors

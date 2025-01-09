@@ -4,13 +4,15 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import { windowSlice } from "../features/window/windowSlice"
 import { windowDrawerSlice } from "../features/window-drawer/windowDrawerSlice"
 import { desktopIconsSlice } from "../features/desktop-icons/desktopIconsSlice"
+import { projectsSlice } from "../features/windows/projects/projectsSlice"
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices(
 	windowSlice,
 	windowDrawerSlice,
-	desktopIconsSlice
+	desktopIconsSlice,
+	projectsSlice
 )
 
 // Infer the `RootState` type from the root reducer

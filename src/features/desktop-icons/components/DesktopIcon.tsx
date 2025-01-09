@@ -1,5 +1,8 @@
-import { DesktopIcon, onSelectDesktopIcon } from "../desktopIconsSlice"
-import { selectSelectedDesktopIcon } from "../desktopIconsSlice"
+import type { DesktopIcon } from "../desktopIconsSlice"
+import {
+	onSelectDesktopIcon,
+	selectSelectedDesktopIcon
+} from "../desktopIconsSlice"
 import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { Column } from "../../../components/Column"
@@ -7,7 +10,7 @@ import type { DoubleClickState } from "../DesktopIcons"
 import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
 import type React from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { GetActionByDesktopIconType } from "../desktopIconActions"
+import { ExecuteActionByDesktopIconType } from "../desktopIconActions"
 
 interface DesktopIconTSXType {
 	iconData: DesktopIcon
@@ -70,8 +73,7 @@ export const DesktopIconTSX = ({
 		) {
 			// Clicked
 			setDoubleClickState(defaultDoubleClickState())
-			const iconAction = GetActionByDesktopIconType(iconData.iconType)
-			iconAction()
+			ExecuteActionByDesktopIconType(iconData.iconType, dispatch)
 		} else {
 			dispatch(onSelectDesktopIcon(iconData.id))
 			setDoubleClickState({
