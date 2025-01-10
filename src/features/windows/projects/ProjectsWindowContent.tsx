@@ -3,6 +3,7 @@ import { selectWindowProjectsList } from "./projectsSlice"
 import styled from "@emotion/styled"
 import type { MyWindow } from "../../window/windowSlice"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
+import { transparentize } from "polished"
 
 interface ProjectsWindowContentProps {
 	myWindow: MyWindow
@@ -34,16 +35,40 @@ export const ProjectsWindowContent = ({
 		gap: 17px;
 	`
 
-	const ContentContainer = styled.div`
+	const Container = styled.div`
 		display: flex;
 		background-color: red;
-		width: 450px;
-		height: 275px;
+		min-height: 275px;
+		max-height: 275px;
+		max-width: 450px;
+		min-width: 450px;
+
+		&:hover > .movable {
+			transform: translateY(-250px);
+			transition: all 0.4s;
+		}
+	`
+
+	const ContentContainer = styled.div`
+		position: absolute;
+		width: 100%;
+		height: 100%;
 	`
 
 	const Video = styled.a`
 		background-color: red;
+		height: 100%;
+		width: 100%;
 	`
+
+	const HoverAppear = styled.div`
+		position: absolute;
+		transform: translateY(50px);
+		width: 450px;
+		height: 275px;
+		background-color: ${transparentize(0.5, "black")};
+	`
+
 	const Title = styled.span``
 	const Description = styled.span``
 
@@ -51,10 +76,13 @@ export const ProjectsWindowContent = ({
 		<Root>
 			{listProjects.map((o, index) => {
 				return (
-					<ContentContainer>
-						<Video></Video>
-						<Title>{o.title}</Title>
-					</ContentContainer>
+					<Container>
+						<ContentContainer>
+							<Video></Video>
+							<Title>{o.title}</Title>
+						</ContentContainer>
+						<HoverAppear className="movable" />
+					</Container>
 				)
 			})}
 		</Root>
