@@ -244,9 +244,10 @@ export const WindowDrawer = () => {
 								</Column>
 								<GetWindowContentByWindowType
 									myWindow={window}
-									contentWidth={window.width}
+									contentWidth={getWindowSize(window).width}
 									contentHeight={
-										window.height - WindowDrawerTopBarHeight
+										getWindowSize(window).height -
+										WindowDrawerTopBarHeight
 									}
 								/>
 							</WindowContainer>

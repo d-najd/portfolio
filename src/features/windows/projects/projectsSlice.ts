@@ -27,6 +27,70 @@ const initialState: ProjectsState = {
 			repo: "https://www.github.com",
 			videoLink: ",",
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		}
 	],
 	status: "idle"

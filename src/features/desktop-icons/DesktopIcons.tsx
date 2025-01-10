@@ -42,12 +42,13 @@ export const DesktopIcons = () => {
 	)
 
 	const Container = styled.div`
-		padding: 14px;
 		position: absolute;
 		width: 100%;
 		height: ${screenSize.height -
 		bottomPanelHeight -
 		extraBottomPanelHeight}px;
+
+		padding: 14px;
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
