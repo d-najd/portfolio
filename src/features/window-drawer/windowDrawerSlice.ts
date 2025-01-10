@@ -6,7 +6,6 @@ import {
 	onProjectsWindowOpened,
 	windowIdCounter
 } from "../window/windowSlice"
-import { WindowType } from "../windows/WindowType"
 
 export enum WindowState {
 	Minimized = 1 << 0,
@@ -14,6 +13,14 @@ export enum WindowState {
 	 * If false shown, if true maximized
 	 */
 	ShownOrMaximized = 1 << 1
+}
+
+/**
+ * @see {GetWindowContentByWindowType}
+ */
+export enum WindowType {
+	Undefined = "Undefined",
+	Projects = "Projects"
 }
 
 export interface WindowDrawerWindow {

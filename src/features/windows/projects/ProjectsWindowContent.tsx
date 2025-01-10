@@ -1,15 +1,32 @@
 import { useAppSelector } from "../../../app/hooks"
 import { selectWindowProjectsList } from "./projectsSlice"
 import styled from "@emotion/styled"
+import type { MyWindow } from "../../window/windowSlice"
 
-export const ProjectsWindowContent = () => {
+interface ProjectsWindowContentProps {
+	myWindow: MyWindow
+	/** px */
+	contentWidth: number
+	/** px */
+	contentHeight: number
+}
+
+export const ProjectsWindowContent = ({
+	myWindow,
+	contentWidth,
+	contentHeight
+}: ProjectsWindowContentProps) => {
 	const listProjects = useAppSelector(selectWindowProjectsList)
 
-	const Container = styled.div`
+	const Root = styled.div`
 		position: absolute;
+		min-width: ${myWindow.width}px;
+		height: ${myWindow.height - 31}px;
 		background-color: red;
-		width: 333px;
-		height: 200px;
+	`
+
+	const ContentContainer = styled.div`
+		background-color: red;
 	`
 
 	const Video = styled.a`
@@ -21,12 +38,7 @@ export const ProjectsWindowContent = () => {
 	return (
 		<>
 			{listProjects.map(o => {
-				return (
-					<Container>
-						<Video />
-						<Title>{o.title}</Title>
-					</Container>
-				)
+				return <Root key={o.title}></Root>
 			})}
 		</>
 	)

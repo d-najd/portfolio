@@ -3,8 +3,7 @@ import { useWindows } from "../window/windowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
-import { Column } from "../../components/Column"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import {
 	changeActiveWindow,
 	moveWindow,
@@ -14,6 +13,10 @@ import {
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 import useScreenSize from "../../components/useScreenSize"
+import {
+	GetWindowContentByWindowType
+} from "../windows/GetWindowContentByWindowType"
+import { Column } from "../../components/Column"
 
 /**
  * Position of the mouse in pixels
@@ -49,6 +52,11 @@ const defaultWindowState: DragState = {
 	windowXOffset: -1,
 	windowYOffset: -1
 }
+
+/**
+ * Should be fine since all windows have the same top bar height
+ */
+let WindowDrawerTopBarHeight = 0
 
 /**
  * Handles drawing of the windows
@@ -185,6 +193,11 @@ export const WindowDrawer = () => {
 		}
 	}
 
+	const windowTopBarHeight = useRef<HTMLDivElement | null>(null)
+	if (windowTopBarHeight.current) {
+		WindowDrawerTopBarHeight = windowTopBarHeight.current.offsetHeight
+	}
+
 	return (
 		<>
 			{windows
@@ -205,22 +218,31 @@ export const WindowDrawer = () => {
 								}}
 							>
 								<Column>
-									<WindowDrawerTopBar
-										curWindow={window}
-										onDragStart={() => {
-											onDragStart(window)
-										}}
-										nonDraggableState={
-											overNonDraggableState
-										}
-										nonDraggableEntered={() =>
-											setOverNonDraggableState(true)
-										}
-										nonDraggableExited={() =>
-											setOverNonDraggableState(false)
-										}
-									></WindowDrawerTopBar>
+									<div ref={windowTopBarHeight}>
+										<WindowDrawerTopBar
+											curWindow={window}
+											onDragStart={() => {
+												onDragStart(window)
+											}}
+											nonDraggableState={
+												overNonDraggableState
+											}
+											nonDraggableEntered={() =>
+												setOverNonDraggableState(true)
+											}
+											nonDraggableExited={() =>
+												setOverNonDraggableState(false)
+											}
+										/>
+									</div>
 								</Column>
+								<GetWindowContentByWindowType
+									myWindow={window}
+									contentWidth={window.width}
+									contentHeight={
+										window.height - WindowDrawerTopBarHeight
+									}
+								/>
 							</WindowContainer>
 						</React.Fragment>
 					)
