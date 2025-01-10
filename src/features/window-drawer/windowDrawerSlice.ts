@@ -184,8 +184,8 @@ export const windowDrawerSlice = createAppSlice({
 					drawOrder: 0,
 					windowType: WindowType.Projects,
 					state: WindowState.ShownOrMaximized,
-					width: 320,
-					height: 320,
+					width: 950,
+					height: 500,
 					offsetX: 480,
 					offsetY: 80
 				})

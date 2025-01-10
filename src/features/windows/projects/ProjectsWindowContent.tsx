@@ -20,7 +20,7 @@ export const ProjectsWindowContent = ({
 	const listProjects = useAppSelector(selectWindowProjectsList)
 
 	const Root = styled.div`
-		${Alignment(Alignments.HorizontallyCentered)};
+		${Alignment(Alignments.HorizontallyCentered)}
 		position: absolute;
 		width: ${contentWidth}px;
 		height: ${contentHeight}px;
