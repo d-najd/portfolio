@@ -155,16 +155,18 @@ export const WindowDrawer = () => {
 		}
 	}
 
+	const borderSize = 3
+
 	const getWindowSize = (curWindow: MyWindow) => {
+		// On maximize
 		if (
 			WindowState.ShownOrMaximized !==
 			(curWindow.state & WindowState.ShownOrMaximized)
 		) {
 			// Size due to borders?
-			const extraSize = 3
 			return {
-				width: screenSize.width - extraSize,
-				height: screenSize.height - bottomPanelHeight - extraSize
+				width: screenSize.width - borderSize,
+				height: screenSize.height - bottomPanelHeight - borderSize
 			}
 		} else {
 			return {
@@ -177,10 +179,14 @@ export const WindowDrawer = () => {
 	const WindowContainer = styled.div<{ curWindow: MyWindow }>`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
-		border-top: 3px outset ${theme.colors.primaryBorderDepressed};
-		border-left: 3px outset ${theme.colors.primaryBorderDepressed};
-		border-right: 3px inset ${theme.colors.primaryBorderElevated};
-		border-bottom: 3px inset ${theme.colors.primaryBorderElevated};
+		border-top: ${borderSize}px outset
+			${theme.colors.primaryBorderDepressed};
+		border-left: ${borderSize}px outset
+			${theme.colors.primaryBorderDepressed};
+		border-right: ${borderSize}px inset
+			${theme.colors.primaryBorderElevated};
+		border-bottom: ${borderSize}px inset
+			${theme.colors.primaryBorderElevated};
 		width: ${o => getWindowSize(o.curWindow).width}px;
 		height: ${o => getWindowSize(o.curWindow).height}px;
 		margin-left: ${o => getWindowOffset(o.curWindow).x}px;

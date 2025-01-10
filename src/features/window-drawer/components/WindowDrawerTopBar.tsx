@@ -48,14 +48,12 @@ export const WindowDrawerTopBar = ({
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 
 	const Root = styled.div`
-		padding-right: 7px;
-		padding-left: 1px;
-		padding-top: 1px;
+		padding-right: 6px;
 	`
 
 	const Container = styled(Row)`
 		${Alignment(Alignments.VerticallyCentered)}
-		padding: 1px 3px;
+		padding: 2px 3px;
 		height: ${topBarSize}px;
 		width: 100%;
 		background-color: ${curWindow.id === activeWindowId

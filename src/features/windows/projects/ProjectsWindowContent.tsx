@@ -20,13 +20,15 @@ export const ProjectsWindowContent = ({
 
 	const Root = styled.div`
 		position: absolute;
-		min-width: ${myWindow.width}px;
-		height: ${myWindow.height - 31}px;
-		background-color: red;
+		width: ${contentWidth}px;
+		height: ${contentHeight}px;
+		overflow: hidden;
 	`
 
 	const ContentContainer = styled.div`
-		background-color: red;
+		background-color: green;
+		width: 500px;
+		height: 500px;
 	`
 
 	const Video = styled.a`
@@ -38,7 +40,14 @@ export const ProjectsWindowContent = ({
 	return (
 		<>
 			{listProjects.map(o => {
-				return <Root key={o.title}></Root>
+				return (
+					<Root key={o.title}>
+						<ContentContainer>
+							<Video></Video>
+							<Title>{o.title}</Title>
+						</ContentContainer>
+					</Root>
+				)
 			})}
 		</>
 	)
