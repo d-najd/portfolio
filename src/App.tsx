@@ -4,6 +4,10 @@ import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
 import { WindowDrawer } from "./features/window-drawer/WindowDrawer"
 import { DesktopIcons } from "./features/desktop-icons/DesktopIcons"
+import { useDispatch } from "react-redux"
+import { onProjectsWindowOpened } from "./features/window/windowSlice"
+
+let test = false
 
 const App = () => {
 	const Wallpaper = styled.div`
@@ -15,6 +19,13 @@ const App = () => {
 		position: absolute;
 		text-decoration-style: dotted;
 	`
+
+	const dispatch = useDispatch()
+	if (!test) {
+		test = true
+		dispatch(onProjectsWindowOpened())
+	}
+
 	return (
 		<>
 			<Wallpaper>

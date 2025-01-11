@@ -1,9 +1,12 @@
 import { useAppSelector } from "../../../app/hooks"
+import type { Project } from "./projectsSlice"
 import { selectWindowProjectsList } from "./projectsSlice"
 import styled from "@emotion/styled"
 import type { MyWindow } from "../../window/windowSlice"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { transparentize } from "polished"
+import { useState } from "react"
+import { keyframes } from "@emotion/react"
 
 interface ProjectsWindowContentProps {
 	myWindow: MyWindow
@@ -12,6 +15,10 @@ interface ProjectsWindowContentProps {
 	/** px */
 	contentHeight: number
 }
+
+const containerWidth = 450
+const containerHeight = 275
+const hoverContainerInitialHeight = 50
 
 export const ProjectsWindowContent = ({
 	myWindow,
@@ -35,18 +42,29 @@ export const ProjectsWindowContent = ({
 		gap: 17px;
 	`
 
+	return (
+		<Root>
+			{listProjects.map((o, index) => {
+				return <ProjectWindowContentItem project={o} key={index} />
+			})}
+		</Root>
+	)
+}
+
+interface ProjectWindowContentItemProps {
+	project: Project
+}
+
+const ProjectWindowContentItem = ({
+	project
+}: ProjectWindowContentItemProps) => {
+	const [animateHover, setAnimateHover] = useState(false)
+
 	const Container = styled.div`
 		display: flex;
 		background-color: red;
-		min-height: 275px;
-		max-height: 275px;
-		max-width: 450px;
-		min-width: 450px;
-
-		&:hover > .movable {
-			transform: translateY(-250px);
-			transition: all 0.4s;
-		}
+		height: ${containerHeight}px;
+		width: ${containerWidth}px;
 	`
 
 	const ContentContainer = styled.div`
@@ -61,30 +79,57 @@ export const ProjectsWindowContent = ({
 		width: 100%;
 	`
 
-	const HoverAppear = styled.div`
+	const HoverContainer = styled.div`
 		position: absolute;
-		transform: translateY(50px);
-		width: 450px;
-		height: 275px;
-		background-color: ${transparentize(0.5, "black")};
+		${Alignment(Alignments.Bottom)};
+		width: ${containerWidth};
+		height: ${containerHeight}px;
 	`
+
+	/*
+	
+		height: ${animateHover
+			? containerHeight
+			: hoverContainerInitialHeight}px;
+	 */
+
+	const hoverAppear = keyframes`
+		from {
+			height: ${hoverContainerInitialHeight}px;
+		}
+		to {
+			height: ${containerHeight}px;
+		}
+	`
+	const HoverAppear = styled.div<{ animateHover: boolean }>`
+		width: ${containerWidth}px;
+		height: ${animateHover
+			? containerHeight
+			: hoverContainerInitialHeight}px;
+
+		background-color: ${transparentize(0.3, "black")};
+
+		animation: ${animateHover ? hoverAppear : "none"} 0.6s;
+	`
+
+	if (animateHover) {
+		console.log(animateHover)
+	}
 
 	const Title = styled.span``
 	const Description = styled.span``
 
 	return (
-		<Root>
-			{listProjects.map((o, index) => {
-				return (
-					<Container>
-						<ContentContainer>
-							<Video></Video>
-							<Title>{o.title}</Title>
-						</ContentContainer>
-						<HoverAppear className="movable" />
-					</Container>
-				)
-			})}
-		</Root>
+		<>
+			<Container onMouseOver={o => setAnimateHover(true)}>
+				<ContentContainer>
+					<Video></Video>
+					<Title>{project.title}</Title>
+				</ContentContainer>
+				<HoverContainer>
+					<HoverAppear animateHover={animateHover} />
+				</HoverContainer>
+			</Container>
+		</>
 	)
 }
