@@ -3,6 +3,7 @@ import { createAppSlice } from "../../../app/createAppSlice"
 import { ProjectType } from "./projectsActions"
 
 export interface Project {
+	id: number
 	title: string
 	description: string
 	repo: string
@@ -19,9 +20,17 @@ export interface ProjectsState {
 	status: defaultSliceStates
 }
 
+export let projectIdCounter = -1
+
+function getNextProjectId(): number {
+	projectIdCounter++
+	return projectIdCounter
+}
+
 const initialState: ProjectsState = {
 	projects: [
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -29,6 +38,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -36,6 +46,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -43,6 +54,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -50,14 +62,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
-		},
-
-		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -65,6 +70,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -72,6 +78,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -79,6 +86,7 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
@@ -86,6 +94,15 @@ const initialState: ProjectsState = {
 			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
 		},
 		{
+			id: getNextProjectId(),
+			title: ProjectType.Portfolio,
+			description: "Description",
+			repo: "https://www.github.com",
+			videoLink: ",",
+			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+		},
+		{
+			id: getNextProjectId(),
 			title: ProjectType.Portfolio,
 			description: "Description",
 			repo: "https://www.github.com",
