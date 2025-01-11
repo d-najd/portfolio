@@ -101,6 +101,15 @@ const ProjectWindowContentItem = ({
 			height: ${containerHeight}px;
 		}
 	`
+	const hoverDisappear = keyframes`
+		from {
+			height: ${hoverContainerInitialHeight}px;
+		}
+		to {
+			height: ${containerHeight}px;
+		}
+	`
+
 	const HoverAppear = styled.div<{ animateHover: boolean }>`
 		width: ${containerWidth}px;
 		height: ${animateHover
@@ -111,17 +120,12 @@ const ProjectWindowContentItem = ({
 
 		animation: ${animateHover ? hoverAppear : "none"} 0.6s;
 	`
-
-	if (animateHover) {
-		console.log(animateHover)
-	}
-
 	const Title = styled.span``
 	const Description = styled.span``
 
 	return (
 		<>
-			<Container onMouseOver={o => setAnimateHover(true)}>
+			<Container onMouseEnter={o => setAnimateHover(true)}>
 				<ContentContainer>
 					<Video></Video>
 					<Title>{project.title}</Title>
