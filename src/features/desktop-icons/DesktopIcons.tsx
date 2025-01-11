@@ -1,7 +1,8 @@
 import styled from "@emotion/styled"
 import { selectDesktopIcons } from "./desktopIconsSlice"
-import { DesktopIconTSX } from "./components/DesktopIcon"
+import { DesktopIcon as DesktopIconTSX } from "./components/DesktopIcon"
 import { useAppSelector } from "../../app/hooks"
+import type { ScreenSize } from "../../components/useScreenSize"
 import useScreenSize from "../../components/useScreenSize"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 import { useState } from "react"
@@ -31,35 +32,38 @@ export const defaultDoubleClickState = (): DoubleClickState => ({
  * click and execute the action
  */
 export const doubleClickTolerance = 500
+const extraBottomPanelHeight = 14
+
+interface ContainerProps {
+	screenSize: ScreenSize
+}
+
+const Container = styled.div<ContainerProps>`
+	position: absolute;
+	width: 100%;
+	height: ${o =>
+		o.screenSize.height - bottomPanelHeight - extraBottomPanelHeight}px;
+
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	row-gap: 14px;
+	column-gap: 7px;
+`
 
 export const DesktopIcons = () => {
 	const desktopIcons = useAppSelector(selectDesktopIcons)
 	const screenSize = useScreenSize()
-	const extraBottomPanelHeight = 14
 
 	const [doubleClickState, setDoubleClickState] = useState<DoubleClickState>(
 		defaultDoubleClickState()
 	)
 
-	const Container = styled.div`
-		position: absolute;
-		width: 100%;
-		height: ${screenSize.height -
-		bottomPanelHeight -
-		extraBottomPanelHeight}px;
-
-		padding: 14px;
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-		align-content: flex-start;
-		row-gap: 14px;
-		column-gap: 7px;
-	`
-
 	return (
 		<>
-			<Container>
+			<Container screenSize={screenSize}>
 				{desktopIcons.map(icon => {
 					return (
 						<DesktopIconTSX

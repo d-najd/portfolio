@@ -46,7 +46,7 @@ const Text = styled.span`
 	text-overflow: ellipsis;
 `
 
-export interface BottomPanelWindowProps {
+interface BottomPanelWindowProps {
 	curWindow: MyWindow
 }
 
