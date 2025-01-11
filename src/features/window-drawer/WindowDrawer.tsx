@@ -3,7 +3,8 @@ import { useWindows } from "../window/windowSlice"
 import styled from "@emotion/styled"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import theme from "../../theme/theme"
-import React, { useEffect, useRef, useState } from "react"
+import type React from "react";
+import { useEffect, useState } from "react"
 import {
 	changeActiveWindow,
 	moveWindow,
@@ -12,6 +13,7 @@ import {
 } from "./windowDrawerSlice"
 import { WindowDrawerTopBar } from "./components/WindowDrawerTopBar"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
+import type { ScreenSize } from "../../components/useScreenSize"
 import useScreenSize from "../../components/useScreenSize"
 import {
 	GetWindowContentByWindowType
@@ -56,7 +58,7 @@ const defaultWindowState: DragState = {
 /**
  * Should be fine since all windows have the same top bar height
  */
-let WindowDrawerTopBarHeight = 0
+// let WindowDrawerTopBarHeight = 0
 
 /**
  * Handles drawing of the windows
@@ -67,8 +69,16 @@ let WindowDrawerTopBarHeight = 0
 export const WindowDrawer = () => {
 	const dispatch = useAppDispatch()
 	const windows = useWindows()
-	const activeWindowId = useAppSelector(selectActiveWindowId)
+	// const activeWindowId = useAppSelector(selectActiveWindowId)
 	const screenSize = useScreenSize()
+
+	/*
+	const [animateHover, setAnimateHover] = useState(false)
+	useEffect(() => {
+		console.log("SECOND" + animateHover)
+		setAnimateHover(true)
+	}, [animateHover])
+	 */
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
@@ -132,6 +142,55 @@ export const WindowDrawer = () => {
 		}
 	}, [dispatch, dragState, mouseDown, mousePosition, windows])
 
+	return (
+		<>
+			{windows
+				.filter(
+					o =>
+						WindowState.Minimized !==
+						(o.state & WindowState.Minimized)
+				)
+				.sort((b, o) => o.drawOrder - b.drawOrder)
+				.map(myWindow => {
+					return (
+						<WindowDrawerWindow
+							myWindow={myWindow}
+							dragState={dragState}
+							mousePosition={mousePosition}
+							screenSize={screenSize}
+							overNonDraggableState={overNonDraggableState}
+							setOverNonDraggableState={setOverNonDraggableState}
+							onDragStart={onDragStart}
+							key={myWindow.id}
+						/>
+					)
+				})}
+		</>
+	)
+}
+
+interface WindowDrawerWindowProps {
+	myWindow: MyWindow
+	dragState: DragState
+	mousePosition: MousePosition
+	screenSize: ScreenSize
+	overNonDraggableState: boolean
+	setOverNonDraggableState: React.Dispatch<boolean>
+	onDragStart: (curWindow: MyWindow) => void
+}
+
+const WindowDrawerWindow = ({
+	myWindow,
+	dragState,
+	mousePosition,
+	screenSize,
+	overNonDraggableState,
+	setOverNonDraggableState,
+	onDragStart
+}: WindowDrawerWindowProps) => {
+	const dispatch = useAppDispatch()
+	const activeWindowId = useAppSelector(selectActiveWindowId)
+
 	const getWindowOffset = (curWindow: MyWindow) => {
 		if (
 			WindowState.ShownOrMaximized !==
@@ -176,7 +235,7 @@ export const WindowDrawer = () => {
 		}
 	}
 
-	const WindowContainer = styled.div<{ curWindow: MyWindow }>`
+	const WindowContainer = styled.div`
 		position: absolute;
 		background-color: ${theme.colors.primaryBackground};
 		border-top: ${borderSize}px outset
@@ -187,10 +246,10 @@ export const WindowDrawer = () => {
 			${theme.colors.primaryBorderElevated};
 		border-bottom: ${borderSize}px inset
 			${theme.colors.primaryBorderElevated};
-		width: ${o => getWindowSize(o.curWindow).width}px;
-		height: ${o => getWindowSize(o.curWindow).height}px;
-		margin-left: ${o => getWindowOffset(o.curWindow).x}px;
-		margin-top: ${o => getWindowOffset(o.curWindow).y}px;
+		width: ${getWindowSize(myWindow).width}px;
+		height: ${getWindowSize(myWindow).height}px;
+		margin-left: ${getWindowOffset(myWindow).x}px;
+		margin-top: ${getWindowOffset(myWindow).y}px;
 	`
 
 	const changeActiveWindowAction = (curWindow: MyWindow) => {
@@ -199,61 +258,47 @@ export const WindowDrawer = () => {
 		}
 	}
 
+	const windowTopBarHeight = 31
+	/*
 	const windowTopBarHeight = useRef<HTMLDivElement | null>(null)
 	if (windowTopBarHeight.current) {
 		WindowDrawerTopBarHeight = windowTopBarHeight.current.offsetHeight
 	}
+	 */
 
 	return (
 		<>
-			{windows
-				.filter(
-					o =>
-						WindowState.Minimized !==
-						(o.state & WindowState.Minimized)
-				)
-				.sort((b, o) => o.drawOrder - b.drawOrder)
-				.map(window => {
-					return (
-						<React.Fragment key={window.id}>
-							<WindowContainer
-								key={window.id}
-								curWindow={window}
-								onPointerDown={() => {
-									changeActiveWindowAction(window)
-								}}
-							>
-								<Column>
-									<div ref={windowTopBarHeight}>
-										<WindowDrawerTopBar
-											curWindow={window}
-											onDragStart={() => {
-												onDragStart(window)
-											}}
-											nonDraggableState={
-												overNonDraggableState
-											}
-											nonDraggableEntered={() =>
-												setOverNonDraggableState(true)
-											}
-											nonDraggableExited={() =>
-												setOverNonDraggableState(false)
-											}
-										/>
-									</div>
-								</Column>
-								<GetWindowContentByWindowType
-									myWindow={window}
-									contentWidth={getWindowSize(window).width}
-									contentHeight={
-										getWindowSize(window).height -
-										WindowDrawerTopBarHeight
-									}
-								/>
-							</WindowContainer>
-						</React.Fragment>
-					)
-				})}
+			<WindowContainer
+				key={myWindow.id}
+				onPointerDown={() => {
+					changeActiveWindowAction(myWindow)
+				}}
+			>
+				<Column>
+					<div>
+						<WindowDrawerTopBar
+							curWindow={myWindow}
+							onDragStart={() => {
+								onDragStart(myWindow)
+							}}
+							nonDraggableState={overNonDraggableState}
+							nonDraggableEntered={() =>
+								setOverNonDraggableState(true)
+							}
+							nonDraggableExited={() =>
+								setOverNonDraggableState(false)
+							}
+						/>
+					</div>
+				</Column>
+				<GetWindowContentByWindowType
+					myWindow={myWindow}
+					contentWidth={getWindowSize(myWindow).width}
+					contentHeight={
+						getWindowSize(myWindow).height - windowTopBarHeight
+					}
+				/>
+			</WindowContainer>
 		</>
 	)
 }
