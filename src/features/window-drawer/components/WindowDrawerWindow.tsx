@@ -14,10 +14,11 @@ import theme from "../../../theme/theme"
 import { WindowDrawerTopBar, WindowTopBarHeight } from "./WindowDrawerTopBar"
 import { GetWindowContentByWindowType } from "../../windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
+import type { Position, Size } from "../../../components/transforms"
 
 interface WindowContainerProps {
-	size: Transform
-	offset: Transform
+	size: Size
+	offset: Position
 }
 
 const borderSize = 3
@@ -28,8 +29,8 @@ const WindowContainer = styled.div<WindowContainerProps>`
 	border-left: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
 	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
 	border-bottom: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
-	width: ${o => o.size.x}px;
-	height: ${o => o.size.y}px;
+	width: ${o => o.size.width}px;
+	height: ${o => o.size.height}px;
 	margin-left: ${o => o.offset.x}px;
 	margin-top: ${o => o.offset.y}px;
 `
@@ -56,7 +57,7 @@ export const WindowDrawerWindow = ({
 	const screenSize = useScreenSize()
 
 	const getWindowOffset = useCallback(
-		(curWindow: MyWindow): Transform => {
+		(curWindow: MyWindow): Position => {
 			if (
 				WindowState.ShownOrMaximized !==
 				(curWindow.state & WindowState.ShownOrMaximized)
@@ -82,7 +83,7 @@ export const WindowDrawerWindow = ({
 	)
 
 	const getWindowSize = useCallback(
-		(curWindow: MyWindow): Transform => {
+		(curWindow: MyWindow): Size => {
 			// On maximize
 			if (
 				WindowState.ShownOrMaximized !==
@@ -90,13 +91,13 @@ export const WindowDrawerWindow = ({
 			) {
 				// Size due to borders?
 				return {
-					x: screenSize.x - borderSize,
-					y: screenSize.y - bottomPanelHeight - borderSize
+					width: screenSize.width - borderSize,
+					height: screenSize.height - bottomPanelHeight - borderSize
 				}
 			} else {
 				return {
-					x: curWindow.width,
-					y: curWindow.height
+					width: curWindow.width,
+					height: curWindow.height
 				}
 			}
 		},
@@ -133,10 +134,8 @@ export const WindowDrawerWindow = ({
 				/>
 				<GetWindowContentByWindowType
 					myWindow={myWindow}
-					contentWidth={getWindowSize(myWindow).x}
-					contentHeight={
-						getWindowSize(myWindow).y - WindowTopBarHeight
-					}
+					width={getWindowSize(myWindow).width}
+					height={getWindowSize(myWindow).height - WindowTopBarHeight}
 				/>
 			</WindowContainer>
 		</>

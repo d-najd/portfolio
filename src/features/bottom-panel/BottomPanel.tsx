@@ -7,7 +7,6 @@ import { Alignment, Alignments } from "../../components/common/CommonProps"
 import { Column } from "../../components/Column"
 import { BottomPanelWindows } from "./components/BottomPanelWindows"
 import windowsIco from "../../resources/windows_95_icons/Windows/Windows logo (without text).ico"
-import React from "react"
 
 const bottomPanelHeightTopLine = 2
 const bottomPanelHeightContainer = 33

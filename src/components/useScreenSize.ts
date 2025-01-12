@@ -1,17 +1,17 @@
-// useScreenSize.js
 import { useEffect, useState } from "react"
+import type { Size } from "./transforms"
 
-const useScreenSize = (): Transform => {
-	const [screenSize, setScreenSize] = useState<Transform>({
-		x: window.innerWidth,
-		y: window.innerHeight
+const useScreenSize = (): Size => {
+	const [screenSize, setScreenSize] = useState<Size>({
+		width: window.innerWidth,
+		height: window.innerHeight
 	})
 
 	useEffect(() => {
 		const handleResize = () => {
 			setScreenSize({
-				x: window.innerWidth,
-				y: window.innerHeight
+				width: window.innerWidth,
+				height: window.innerHeight
 			})
 		}
 

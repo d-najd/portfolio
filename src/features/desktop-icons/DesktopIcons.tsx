@@ -5,6 +5,7 @@ import { useAppSelector } from "../../app/hooks"
 import useScreenSize from "../../components/useScreenSize"
 import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
 import { useState } from "react"
+import type { Size } from "../../components/transforms"
 
 /**
  * Used for keeping track of whether the user has double-clicked an icon so that
@@ -34,14 +35,14 @@ export const doubleClickTolerance = 500
 const extraBottomPanelHeight = 14
 
 interface ContainerProps {
-	screenSize: Transform
+	screenSize: Size
 }
 
 const Container = styled.div<ContainerProps>`
 	position: absolute;
 	width: 100%;
 	height: ${o =>
-		o.screenSize.y - bottomPanelHeight - extraBottomPanelHeight}px;
+		o.screenSize.height - bottomPanelHeight - extraBottomPanelHeight}px;
 
 	padding: 14px;
 	display: flex;

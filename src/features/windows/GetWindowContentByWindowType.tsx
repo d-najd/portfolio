@@ -1,30 +1,25 @@
-import { ProjectsWindowContent } from "./projects/ProjectsWindowContent"
+import { ProjectsWindowContent } from "./projects/components/ProjectsWindowContent"
 import type { ReactNode } from "react"
 import type { MyWindow } from "../window/windowSlice"
 import { WindowType } from "../window-drawer/windowDrawerSlice"
+import type { Size } from "../../components/transforms"
 
-interface GetWindowContentByWindowTypeProps {
+interface GetWindowContentByWindowTypeProps extends Size {
 	myWindow: MyWindow
 	/** px */
-	contentWidth: number
+	width: number
 	/** px */
-	contentHeight: number
+	height: number
 }
 
 export const GetWindowContentByWindowType = ({
 	myWindow,
-	contentWidth,
-	contentHeight
+	width,
+	height
 }: GetWindowContentByWindowTypeProps): ReactNode => {
 	switch (myWindow.windowType) {
 		case WindowType.Projects:
-			return (
-				<ProjectsWindowContent
-					myWindow={myWindow}
-					contentWidth={contentWidth}
-					contentHeight={contentHeight}
-				/>
-			)
+			return <ProjectsWindowContent width={width} height={height} />
 		default:
 			return <>{myWindow.windowType}</>
 	}

@@ -3,7 +3,6 @@ import styled from "@emotion/styled"
 import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { useWindows } from "../../window/windowSlice"
 import { BottomPanelWindow } from "./BottomPanelWindow"
-import React from "react"
 
 const Container = styled(Row)`
 	${Alignment(Alignments.CenteredStart)};
