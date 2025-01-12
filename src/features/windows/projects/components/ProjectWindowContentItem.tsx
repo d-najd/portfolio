@@ -1,5 +1,5 @@
 import type { Project } from "../projectsSlice"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import {
 	Alignment,
@@ -7,6 +7,7 @@ import {
 } from "../../../../components/common/CommonProps"
 import { keyframes } from "@emotion/react"
 import { transparentize } from "polished"
+import { MathExtensions } from "../../../../components/mathExtensions"
 
 const containerWidth = 450
 const containerHeight = 275
@@ -56,14 +57,36 @@ const hoverDisappear = keyframes`
 	}
 `
 
-const HoverAppear = styled.div<{ animateHover: boolean }>`
-	width: ${containerWidth}px;
+interface HoverTimer {
+	percentage: number
+	lastUpdate: number
+}
+
+const animationLength = 600
+
+/*
+	animation: ${o => (o.animateHover ? hoverAppear : "none")}
+		${animationLength}ms;
+		
+	animation: ${o =>
+			o.animateHover === HoverState.Idle
+				? "none"
+				: o.animateHover === HoverState.Hovering
+					? hoverAppear
+					: hoverDisappear}
+		${animationLength}ms;
+	animation-play-state: paused;
+	
 	height: ${o =>
-		o.animateHover ? containerHeight : hoverContainerInitialHeight}px;
+		o.animateHover === HoverState.Hovering
+			? containerHeight
+			: hoverContainerInitialHeight}px;
+ */
 
+const HoverAppear = styled.div<{ height: number }>`
+	width: ${containerWidth}px;
+	height: ${o => o.height}px;
 	background-color: ${transparentize(0.3, "black")};
-
-	animation: ${o => (o.animateHover ? hoverAppear : "none")} 0.6s;
 `
 const Title = styled.span``
 const Description = styled.span``
@@ -76,16 +99,51 @@ export const ProjectWindowContentItem = ({
 	project
 }: ProjectWindowContentItemProps) => {
 	const [animateHover, setAnimateHover] = useState(false)
+	const [hoverTimer, setHoverTimer] = useState(0)
 
+	useEffect(() => {
+		let timer = 0
+
+		const stepTime = 12
+		const stepSize = 8 * stepTime
+		if (animateHover) {
+			timer = setTimeout(() => {
+				setHoverTimer(
+					Math.min(1, hoverTimer + stepSize / animationLength)
+				)
+			}, stepTime)
+		} else {
+			timer = setTimeout(() => {
+				setHoverTimer(
+					Math.max(0, hoverTimer - stepSize / animationLength)
+				)
+			}, stepTime)
+		}
+
+		return () => {
+			clearTimeout(timer)
+		}
+	}, [animateHover, hoverTimer])
+
+	// noinspection JSSuspiciousNameCombination
 	return (
 		<>
-			<Container onMouseEnter={() => setAnimateHover(true)}>
+			<Container
+				onMouseEnter={() => setAnimateHover(true)}
+				onMouseLeave={() => setAnimateHover(false)}
+			>
 				<ContentContainer>
 					<Video></Video>
 					<Title>{project.title}</Title>
 				</ContentContainer>
 				<HoverContainer>
-					<HoverAppear animateHover={animateHover} />
+					<HoverAppear
+						height={MathExtensions.lerp(
+							hoverContainerInitialHeight,
+							containerHeight,
+							hoverTimer
+						)}
+					/>
 				</HoverContainer>
 			</Container>
 		</>
