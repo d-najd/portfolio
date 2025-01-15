@@ -63,7 +63,6 @@ export const Alignment = (alignment: Alignments): SerializedStyles => {
 		display: flex;
 		justify-content: ${justifyContentMap[alignment]};
 		align-items: ${alignItemsMap[alignment]};
-		text-align: ${alignItemsMap[alignment]};
 	`
 }
 
@@ -72,6 +71,5 @@ export const AlignmentSelf = (alignment: Alignments): SerializedStyles => {
 		display: flex;
 		justify-self: ${justifyContentMap[alignment]};
 		align-self: ${alignItemsMap[alignment]};
-		text-align: ${alignItemsMap[alignment]};
 	`
 }

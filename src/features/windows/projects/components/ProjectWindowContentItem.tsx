@@ -15,7 +15,7 @@ import type { Project } from "@/features/windows/projects/projectsSlice"
 import githubIco from "@/resources/icons/GitHub_Invertocat_Light.svg"
 
 const containerWidth = 450
-const containerHeight = 275
+const containerHeight = 270
 const hoverContainerInitialHeight = 30
 const bottomBarHeight = 69
 
@@ -24,8 +24,8 @@ const containerPaddingHorizontal = 12
 const Container = styled.div`
 	display: flex;
 	background-color: red;
-	height: ${containerHeight}px;
 	width: ${containerWidth}px;
+	height: ${containerHeight}px;
 `
 
 const ContentContainer = styled.div`
@@ -66,6 +66,7 @@ const Description = styled.span<{ height: number }>`
 	padding-top: 16px;
 	overflow: hidden;
 	text-overflow: clip;
+	font-size: 0.9em;
 	max-height: ${o => o.height}px;
 	width: ${containerWidth}px;
 	color: ${theme.colors.primaryTextInverted};
@@ -83,32 +84,46 @@ const HoverContentContainer = styled.div<{ height: number }>`
 
 const HoverBottomBarContainer = styled.div`
 	position: absolute;
-	${Alignment(Alignments.BottomStart)}
+	${Alignment(Alignments.BottomStart)};
 	width: 100%;
 	height: 100%;
 `
 
 const HoverBottomBar = styled(Row)<{ height: number }>`
 	width: 100%;
-
 	height: ${o => o.height}px;
 	padding-left: ${containerPaddingHorizontal}px;
 	padding-right: ${containerPaddingHorizontal}px;
-
 	box-sizing: border-box;
 `
 
-const HoverBottomBarTechUsed = styled.span`
-	${AlignmentSelf(Alignments.CenteredStart)}
+const HoverBottomBarTechUsedHolder = styled(Column)`
+	${Alignment(Alignments.TopStart)};
+	height: 100%;
 	width: 100%;
 	overflow: hidden;
 	color: ${theme.colors.primaryTextInverted};
 `
 
+const HoverBottomBarTechUsed = styled.b`
+	margin-top: 8px;
+	${AlignmentSelf(Alignments.TopStart)}
+	width: 100%;
+	overflow: hidden;
+	font-weight: bold;
+`
+
+const HoverBottomBarTechUsedText = styled.span`
+	${AlignmentSelf(Alignments.HorizontallyCentered)};
+	font-size: 0.825em;
+	padding-top: 10px;
+	overflow: hidden;
+`
+
 const HoverBottomIconHolder = styled(Column)`
 	height: 100%;
 	width: 42px;
-	margin-right: 12px;
+	margin-right: 4px;
 	gap: 6px;
 	${AlignmentSelf(Alignments.End)};
 	${Alignment(Alignments.Centered)}
@@ -134,7 +149,7 @@ const HandleHoverTransition = (
 		let timer = 0
 
 		const stepTime = 16
-		const animationLength = 1500
+		const animationLength = 150
 		if (animateHover) {
 			timer = setTimeout(() => {
 				setHoverProgress(
@@ -189,7 +204,14 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 			</Description>
 			<HoverBottomBarContainer>
 				<HoverBottomBar height={bottomBarHeightCalculated}>
-					<HoverBottomBarTechUsed>HELLO WORLD</HoverBottomBarTechUsed>
+					<HoverBottomBarTechUsedHolder>
+						<HoverBottomBarTechUsed>
+							Technologies used:
+						</HoverBottomBarTechUsed>
+						<HoverBottomBarTechUsedText>
+							{project.technologiesUsed}
+						</HoverBottomBarTechUsedText>
+					</HoverBottomBarTechUsedHolder>
 					<HoverBottomIconHolder>
 						<HoverBottomIcon src={githubIco} />
 						<HoverBottomIconText>Repo</HoverBottomIconText>

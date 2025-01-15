@@ -1,5 +1,5 @@
-import { openAndFocusTab } from "../../../components/openAndFocusTab"
-import type { AppDispatch } from "../../../app/store"
+import { openAndFocusTab } from "@/components/openAndFocusTab"
+import type { AppDispatch } from "@/app/store"
 
 /**
  * Contains list of all the projects that are planned to be listed in the

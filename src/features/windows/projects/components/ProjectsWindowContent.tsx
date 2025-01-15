@@ -1,15 +1,13 @@
-import { useAppSelector } from "../../../../app/hooks"
+import { useAppSelector } from "@/app/hooks"
 import { selectWindowProjectsList } from "../projectsSlice"
 import styled from "@emotion/styled"
-import {
-	Alignment,
-	Alignments
-} from "../../../../components/common/CommonProps"
+import { Alignment, Alignments } from "@/components/common/CommonProps"
 import { ProjectWindowContentItem } from "./ProjectWindowContentItem"
-import type { Size } from "../../../../components/transforms"
+import type { Size } from "@/components/transforms"
 
 const Root = styled.div<Size>`
-	${Alignment(Alignments.HorizontallyCentered)}
+	${Alignment(Alignments.HorizontallyCentered)};
+	box-sizing: border-box;
 	position: absolute;
 	width: ${o => o.width}px;
 	height: ${o => o.height}px;
