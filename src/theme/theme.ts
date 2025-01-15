@@ -1,17 +1,16 @@
-import { useTheme } from "@emotion/react"
 import { lighten } from "polished"
 
 export interface ThemeType {
 	colors: {
-		primaryBackground: string,
+		primaryBackground: string
 		primaryBackgroundActive: string
-		primaryText: string,
-		primaryTextInverted: string,
-		primaryBorderElevated: string,
-		primaryBorderDepressed: string,
-		windowTopBarActive: string,
-		windowTopBarInactive: string,
-	},
+		primaryText: string
+		primaryTextInverted: string
+		primaryBorderElevated: string
+		primaryBorderDepressed: string
+		windowTopBarActive: string
+		windowTopBarInactive: string
+	}
 }
 
 export const light: ThemeType = {
@@ -23,12 +22,15 @@ export const light: ThemeType = {
 		primaryBorderElevated: "#555555",
 		primaryBorderDepressed: "#FFFFFF",
 		windowTopBarActive: "#00007C",
-		windowTopBarInactive: "#7B7D7B",
-	},
+		windowTopBarInactive: "#7B7D7B"
+	}
 }
 
 // Color overrides
-light.colors.primaryBackgroundActive = lighten(0.15, light.colors.primaryBackground)
+light.colors.primaryBackgroundActive = lighten(
+	0.15,
+	light.colors.primaryBackground
+)
 
 // noinspection UnnecessaryLocalVariableJS
 let theme = light

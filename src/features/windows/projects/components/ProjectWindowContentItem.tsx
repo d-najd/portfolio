@@ -1,11 +1,11 @@
 import type { Project } from "../projectsSlice"
+import type React from "react"
 import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import {
 	Alignment,
 	Alignments
 } from "../../../../components/common/CommonProps"
-import { keyframes } from "@emotion/react"
 import { transparentize } from "polished"
 import { MathExtensions } from "../../../../components/mathExtensions"
 
@@ -39,50 +39,6 @@ const HoverContainer = styled.div`
 	height: ${containerHeight}px;
 `
 
-const hoverAppear = keyframes`
-	from {
-		height: ${hoverContainerInitialHeight}px;
-	}
-	to {
-		height: ${containerHeight}px;
-	}
-`
-
-const hoverDisappear = keyframes`
-	from {
-		height: ${hoverContainerInitialHeight}px;
-	}
-	to {
-		height: ${containerHeight}px;
-	}
-`
-
-interface HoverTimer {
-	percentage: number
-	lastUpdate: number
-}
-
-const animationLength = 600
-
-/*
-	animation: ${o => (o.animateHover ? hoverAppear : "none")}
-		${animationLength}ms;
-		
-	animation: ${o =>
-			o.animateHover === HoverState.Idle
-				? "none"
-				: o.animateHover === HoverState.Hovering
-					? hoverAppear
-					: hoverDisappear}
-		${animationLength}ms;
-	animation-play-state: paused;
-	
-	height: ${o =>
-		o.animateHover === HoverState.Hovering
-			? containerHeight
-			: hoverContainerInitialHeight}px;
- */
-
 const HoverAppear = styled.div<{ height: number }>`
 	width: ${containerWidth}px;
 	height: ${o => o.height}px;
@@ -95,27 +51,26 @@ interface ProjectWindowContentItemProps {
 	project: Project
 }
 
-export const ProjectWindowContentItem = ({
-	project
-}: ProjectWindowContentItemProps) => {
-	const [animateHover, setAnimateHover] = useState(false)
-	const [hoverTimer, setHoverTimer] = useState(0)
-
+const HandleHoverTransition = (
+	animateHover: boolean,
+	hoverProgress: number,
+	setHoverProgress: React.Dispatch<number>
+) => {
 	useEffect(() => {
 		let timer = 0
 
-		const stepTime = 12
-		const stepSize = 8 * stepTime
+		const stepTime = 16
+		const animationLength = 150
 		if (animateHover) {
 			timer = setTimeout(() => {
-				setHoverTimer(
-					Math.min(1, hoverTimer + stepSize / animationLength)
+				setHoverProgress(
+					Math.min(1, hoverProgress + stepTime / animationLength)
 				)
 			}, stepTime)
 		} else {
 			timer = setTimeout(() => {
-				setHoverTimer(
-					Math.max(0, hoverTimer - stepSize / animationLength)
+				setHoverProgress(
+					Math.max(0, hoverProgress - stepTime / animationLength)
 				)
 			}, stepTime)
 		}
@@ -123,7 +78,16 @@ export const ProjectWindowContentItem = ({
 		return () => {
 			clearTimeout(timer)
 		}
-	}, [animateHover, hoverTimer])
+	}, [animateHover, hoverProgress])
+}
+
+export const ProjectWindowContentItem = ({
+	project
+}: ProjectWindowContentItemProps) => {
+	const [animateHover, setAnimateHover] = useState(false)
+	const [hoverProgress, setHoverProgress] = useState(0)
+
+	HandleHoverTransition(animateHover, hoverProgress, setHoverProgress)
 
 	// noinspection JSSuspiciousNameCombination
 	return (
@@ -141,9 +105,9 @@ export const ProjectWindowContentItem = ({
 						height={MathExtensions.lerp(
 							hoverContainerInitialHeight,
 							containerHeight,
-							hoverTimer
+							hoverProgress
 						)}
-					/>
+					></HoverAppear>
 				</HoverContainer>
 			</Container>
 		</>
