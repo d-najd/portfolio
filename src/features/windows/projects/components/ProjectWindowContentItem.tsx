@@ -8,10 +8,12 @@ import {
 } from "../../../../components/common/CommonProps"
 import { transparentize } from "polished"
 import { MathExtensions } from "../../../../components/mathExtensions"
+import theme from "../../../../theme/theme"
 
 const containerWidth = 450
 const containerHeight = 275
-const hoverContainerInitialHeight = 50
+const hoverContainerInitialHeight = 30
+const bottomBarHeight = 75
 
 const Container = styled.div`
 	display: flex;
@@ -37,6 +39,7 @@ const HoverContainer = styled.div`
 	${Alignment(Alignments.Bottom)};
 	width: ${containerWidth};
 	height: ${containerHeight}px;
+	text-overflow: clip;
 `
 
 const HoverAppear = styled.div<{ height: number }>`
@@ -44,12 +47,24 @@ const HoverAppear = styled.div<{ height: number }>`
 	height: ${o => o.height}px;
 	background-color: ${transparentize(0.3, "black")};
 `
-const Title = styled.span``
-const Description = styled.span``
+const Title = styled.span`
+	position: absolute;
+	${Alignment(Alignments.Centered)}
+	color: ${theme.colors.primaryTextInverted};
+	height: ${hoverContainerInitialHeight}px;
+	width: 100%;
+`
 
-interface ProjectWindowContentItemProps {
-	project: Project
-}
+const Description = styled.span<{ height: number }>`
+	position: absolute;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background-color: yellow;
+	height: ${o => o.height}px;
+	width: ${containerWidth}px;
+`
+
+const HoverBottomBar = styled.div<{ height: number }>``
 
 const HandleHoverTransition = (
 	animateHover: boolean,
@@ -81,6 +96,44 @@ const HandleHoverTransition = (
 	}, [animateHover, hoverProgress])
 }
 
+const getHeight = (hoverProgress: number) => {
+	// noinspection JSSuspiciousNameCombination
+	return MathExtensions.lerp(
+		hoverContainerInitialHeight,
+		containerHeight,
+		hoverProgress
+	)
+}
+
+interface HoverContentProps {
+	project: Project
+	hoverProgress: number
+}
+
+const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
+	if (hoverProgress === 0) {
+		return <Title>{project.title}</Title>
+	}
+
+	const height = getHeight(hoverProgress)
+	const descriptionHeight = Math.min(
+		height,
+		containerHeight - bottomBarHeight
+	)
+
+	return (
+		<>
+			<Description height={descriptionHeight}>
+				{project.description}
+			</Description>
+		</>
+	)
+}
+
+interface ProjectWindowContentItemProps {
+	project: Project
+}
+
 export const ProjectWindowContentItem = ({
 	project
 }: ProjectWindowContentItemProps) => {
@@ -98,16 +151,14 @@ export const ProjectWindowContentItem = ({
 			>
 				<ContentContainer>
 					<Video></Video>
-					<Title>{project.title}</Title>
 				</ContentContainer>
 				<HoverContainer>
-					<HoverAppear
-						height={MathExtensions.lerp(
-							hoverContainerInitialHeight,
-							containerHeight,
-							hoverProgress
-						)}
-					></HoverAppear>
+					<HoverAppear height={getHeight(hoverProgress)}>
+						<HoverContent
+							project={project}
+							hoverProgress={hoverProgress}
+						/>
+					</HoverAppear>
 				</HoverContainer>
 			</Container>
 		</>
