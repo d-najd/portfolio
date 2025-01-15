@@ -112,7 +112,7 @@ const HandleHoverTransition = (
 		let timer = 0
 
 		const stepTime = 16
-		const animationLength = 150
+		const animationLength = 1500
 		if (animateHover) {
 			timer = setTimeout(() => {
 				setHoverProgress(
@@ -153,12 +153,9 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 	}
 
 	const height = getHeight(hoverProgress)
-	const descriptionHeight = Math.min(
-		height,
-		containerHeight - bottomBarHeight
-	)
+	const descriptionHeight = Math.max(0, height - bottomBarHeight)
 
-	const bottomBarHeightCalculated = Math.min(
+	const bottomBarHeightCalculated = Math.max(
 		bottomBarHeight,
 		Math.max(bottomBarHeight, 0)
 	)
