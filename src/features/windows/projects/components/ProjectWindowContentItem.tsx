@@ -9,11 +9,15 @@ import {
 import { transparentize } from "polished"
 import { MathExtensions } from "../../../../components/mathExtensions"
 import theme from "../../../../theme/theme"
+import { Row } from "../../../../components/Row"
+import { Column } from "../../../../components/Column"
 
 const containerWidth = 450
 const containerHeight = 275
 const hoverContainerInitialHeight = 30
 const bottomBarHeight = 69
+
+const containerPaddingHorizontal = 12
 
 const Container = styled.div`
 	display: flex;
@@ -58,14 +62,14 @@ const Description = styled.span<{ height: number }>`
 	position: absolute;
 	box-sizing: border-box;
 	padding-top: 16px;
-	padding-left: 12px;
-	padding-right: 12px;
 	overflow: hidden;
 	text-overflow: clip;
 	max-height: ${o => o.height}px;
 	width: ${containerWidth}px;
 	color: ${theme.colors.primaryTextInverted};
 	margin-bottom: 100px;
+	padding-left: ${containerPaddingHorizontal}px;
+	padding-right: ${containerPaddingHorizontal}px;
 `
 
 const HoverContentContainer = styled.div<{ height: number }>`
@@ -82,25 +86,24 @@ const HoverBottomBarContainer = styled.div`
 	height: 100%;
 `
 
-const HoverBottomBar = styled.div<{ height: number }>`
+const HoverBottomBar = styled(Row)<{ height: number }>`
 	${Alignment(Alignments.VerticallyCentered)}
-	width: 100%;
+	max-width: 100%;
 	height: ${o => o.height}px;
+	padding-left: ${containerPaddingHorizontal}px;
+	padding-right: ${containerPaddingHorizontal}px;
+
+	box-sizing: border-box;
 `
 
 const HoverBottomBarTechUsed = styled.span`
-	box-sizing: border-box;
 	width: 100%;
-	position: absolute;
 	overflow: hidden;
 	color: ${theme.colors.primaryTextInverted};
 `
 
-const DescriptionHolder = styled.div`
-	margin-bottom: 100px;
+const HoverBottomIconHolder = styled(Column)`
 	height: 100%;
-	width: 100%;
-	background-color: yellow;
 `
 
 const HandleHoverTransition = (
