@@ -1,16 +1,18 @@
-import type { Project } from "../projectsSlice"
-import type React from "react"
-import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import {
 	Alignment,
-	Alignments
-} from "../../../../components/common/CommonProps"
+	Alignments,
+	AlignmentSelf
+} from "@/components/common/CommonProps"
 import { transparentize } from "polished"
-import { MathExtensions } from "../../../../components/mathExtensions"
 import theme from "../../../../theme/theme"
-import { Row } from "../../../../components/Row"
-import { Column } from "../../../../components/Column"
+import { Row } from "@/components/Row"
+import { Column } from "@/components/Column"
+import type React from "react"
+import { useEffect, useState } from "react"
+import { MathExtensions } from "@/components/mathExtensions"
+import type { Project } from "@/features/windows/projects/projectsSlice"
+import githubIco from "@/resources/icons/GitHub_Invertocat_Light.svg"
 
 const containerWidth = 450
 const containerHeight = 275
@@ -87,8 +89,8 @@ const HoverBottomBarContainer = styled.div`
 `
 
 const HoverBottomBar = styled(Row)<{ height: number }>`
-	${Alignment(Alignments.VerticallyCentered)}
-	max-width: 100%;
+	width: 100%;
+
 	height: ${o => o.height}px;
 	padding-left: ${containerPaddingHorizontal}px;
 	padding-right: ${containerPaddingHorizontal}px;
@@ -97,6 +99,7 @@ const HoverBottomBar = styled(Row)<{ height: number }>`
 `
 
 const HoverBottomBarTechUsed = styled.span`
+	${AlignmentSelf(Alignments.CenteredStart)}
 	width: 100%;
 	overflow: hidden;
 	color: ${theme.colors.primaryTextInverted};
@@ -104,6 +107,22 @@ const HoverBottomBarTechUsed = styled.span`
 
 const HoverBottomIconHolder = styled(Column)`
 	height: 100%;
+	width: 42px;
+	margin-right: 12px;
+	gap: 6px;
+	${AlignmentSelf(Alignments.End)};
+	${Alignment(Alignments.Centered)}
+`
+
+const HoverBottomIcon = styled.img`
+	width: 34px;
+	height: 34px;
+`
+
+const HoverBottomIconText = styled.span`
+	color: ${theme.colors.primaryTextInverted};
+	font-size: 0.8em;
+	font-weight: 500;
 `
 
 const HandleHoverTransition = (
@@ -133,7 +152,7 @@ const HandleHoverTransition = (
 		return () => {
 			clearTimeout(timer)
 		}
-	}, [animateHover, hoverProgress])
+	}, [animateHover, hoverProgress, setHoverProgress])
 }
 
 const getHeight = (hoverProgress: number) => {
@@ -171,6 +190,10 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 			<HoverBottomBarContainer>
 				<HoverBottomBar height={bottomBarHeightCalculated}>
 					<HoverBottomBarTechUsed>HELLO WORLD</HoverBottomBarTechUsed>
+					<HoverBottomIconHolder>
+						<HoverBottomIcon src={githubIco} />
+						<HoverBottomIconText>Repo</HoverBottomIconText>
+					</HoverBottomIconHolder>
 				</HoverBottomBar>
 			</HoverBottomBarContainer>
 		</HoverContentContainer>
@@ -197,7 +220,7 @@ export const ProjectWindowContentItem = ({
 				onMouseLeave={() => setAnimateHover(false)}
 			>
 				<ContentContainer>
-					<Video></Video>
+					<Video />
 				</ContentContainer>
 				<HoverContainer>
 					<HoverAppear height={getHeight(hoverProgress)}>
