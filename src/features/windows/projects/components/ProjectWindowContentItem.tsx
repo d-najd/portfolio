@@ -13,7 +13,7 @@ import theme from "../../../../theme/theme"
 const containerWidth = 450
 const containerHeight = 275
 const hoverContainerInitialHeight = 30
-const bottomBarHeight = 75
+const bottomBarHeight = 69
 
 const Container = styled.div`
 	display: flex;
@@ -29,7 +29,6 @@ const ContentContainer = styled.div`
 `
 
 const Video = styled.a`
-	background-color: red;
 	height: 100%;
 	width: 100%;
 `
@@ -57,14 +56,52 @@ const Title = styled.span`
 
 const Description = styled.span<{ height: number }>`
 	position: absolute;
+	box-sizing: border-box;
+	padding-top: 16px;
+	padding-left: 12px;
+	padding-right: 12px;
 	overflow: hidden;
-	text-overflow: ellipsis;
-	background-color: yellow;
-	height: ${o => o.height}px;
+	text-overflow: clip;
+	max-height: ${o => o.height}px;
 	width: ${containerWidth}px;
+	color: ${theme.colors.primaryTextInverted};
+	margin-bottom: 100px;
 `
 
-const HoverBottomBar = styled.div<{ height: number }>``
+const HoverContentContainer = styled.div<{ height: number }>`
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: ${o => o.height}px;
+`
+
+const HoverBottomBarContainer = styled.div`
+	position: absolute;
+	${Alignment(Alignments.BottomStart)}
+	width: 100%;
+	height: 100%;
+`
+
+const HoverBottomBar = styled.div<{ height: number }>`
+	${Alignment(Alignments.VerticallyCentered)}
+	width: 100%;
+	height: ${o => o.height}px;
+`
+
+const HoverBottomBarTechUsed = styled.span`
+	box-sizing: border-box;
+	width: 100%;
+	position: absolute;
+	overflow: hidden;
+	color: ${theme.colors.primaryTextInverted};
+`
+
+const DescriptionHolder = styled.div`
+	margin-bottom: 100px;
+	height: 100%;
+	width: 100%;
+	background-color: yellow;
+`
 
 const HandleHoverTransition = (
 	animateHover: boolean,
@@ -121,12 +158,22 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 		containerHeight - bottomBarHeight
 	)
 
+	const bottomBarHeightCalculated = Math.min(
+		bottomBarHeight,
+		Math.max(bottomBarHeight, 0)
+	)
+
 	return (
-		<>
+		<HoverContentContainer height={height}>
 			<Description height={descriptionHeight}>
 				{project.description}
 			</Description>
-		</>
+			<HoverBottomBarContainer>
+				<HoverBottomBar height={bottomBarHeightCalculated}>
+					<HoverBottomBarTechUsed>HELLO WORLD</HoverBottomBarTechUsed>
+				</HoverBottomBar>
+			</HoverBottomBarContainer>
+		</HoverContentContainer>
 	)
 }
 

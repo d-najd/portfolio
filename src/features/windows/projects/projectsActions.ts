@@ -6,7 +6,7 @@ import type { AppDispatch } from "../../../app/store"
  * projects window
  */
 export enum ProjectType {
-	Portfolio = "Portfolio",
+	Portfolio = "Windows 95 Inspired Portfolio",
 	BugTracker = "Bugtracker"
 }
 
