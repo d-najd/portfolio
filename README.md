@@ -19,7 +19,10 @@ theme -> theme setup
 ui -> ui utilities  
 utils -> utilities which may be used independently of ui stuff (more generic)
 
-##### Note
+#### Notes
 
-Import for the style (xThing.style.tsx) is usually done like so  
-```import { * as S } from "./XThing.style.tsx";```
+* Import for the style (XThing.style.tsx) is usually done like so  
+  ```import { * as S } from "./XThing.style.tsx";```
+* Component should only have 1 component return (ex XThing.tsx should export
+  XThing.tsx as component and no other components), if there are more components
+  move them to another script.
