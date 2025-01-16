@@ -6,7 +6,6 @@ import {
 } from "../windowDrawerSlice"
 import styled from "@emotion/styled"
 import { Row } from "../../../components/Row"
-import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import theme from "../../../theme/theme"
 import type { MyWindow } from "../../window/windowSlice"
 import { closeWindow } from "../../window/windowSlice"
@@ -16,6 +15,7 @@ import maximizeIcon from "../../../resources/icons/maximize-icon.png"
 import closeIcon from "../../../resources/icons/close-icon.png"
 import type React from "react"
 import { useCallback } from "react"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 /**
  * Size of the top bar, this is here

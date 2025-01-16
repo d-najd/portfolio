@@ -1,9 +1,9 @@
 import styled from "@emotion/styled"
 import { Column } from "@/components/Column"
 import { Row } from "@/components/Row"
-import { Alignment, Alignments } from "@/components/common/CommonProps"
 import theme from "@/theme/theme"
 import { WindowsButton } from "@/components/WindowsButton"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 const bottomPanelHeightTopLine = 2
 const bottomPanelHeightContainer = 33

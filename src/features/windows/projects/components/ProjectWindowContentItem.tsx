@@ -1,18 +1,14 @@
 import styled from "@emotion/styled"
-import {
-	Alignment,
-	Alignments,
-	AlignmentSelf
-} from "@/components/common/CommonProps"
 import { transparentize } from "polished"
 import theme from "../../../../theme/theme"
 import { Row } from "@/components/Row"
 import { Column } from "@/components/Column"
 import type React from "react"
 import { useEffect, useState } from "react"
-import { MathExtensions } from "@/components/mathExtensions"
+import { MathExtensions } from "@/utils/mathExtensions"
 import type { Project } from "@/features/windows/projects/projectsSlice"
 import githubIco from "@/resources/icons/GitHub_Invertocat_Light.svg"
+import { Alignment, Alignments, AlignmentSelf } from "@/ui/alignment"
 
 const containerWidth = 450
 const containerHeight = 272

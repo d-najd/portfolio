@@ -1,14 +1,5 @@
-import type { ReactNode } from "react"
-import type { SerializedStyles } from "@emotion/react"
+import type { SerializedStyles } from "@emotion/react";
 import { css } from "@emotion/react"
-
-/**
- * Default props, to avoid boiler-plate code
- */
-export type DefaultProps = {
-	className?: string
-	children: ReactNode
-}
 
 export enum Alignments {
 	Top = "top",
@@ -24,6 +15,28 @@ export enum Alignments {
 	CenteredEnd = "centered-end",
 	BottomStart = "bottom-start",
 	BottomEnd = "bottom-end"
+}
+
+/**
+ * Alignment of the child components
+ */
+export const Alignment = (alignment: Alignments): SerializedStyles => {
+	return css`
+		display: flex;
+		justify-content: ${justifyContentMap[alignment]};
+		align-items: ${alignItemsMap[alignment]};
+	`
+}
+
+/**
+ * Alignment of self
+ */
+export const AlignmentSelf = (alignment: Alignments): SerializedStyles => {
+	return css`
+		display: flex;
+		justify-self: ${justifyContentMap[alignment]};
+		align-self: ${alignItemsMap[alignment]};
+	`
 }
 
 const justifyContentMap: Record<Alignments, string> = {
@@ -56,20 +69,4 @@ const alignItemsMap: Record<Alignments, string> = {
 	[Alignments.CenteredEnd]: "center",
 	[Alignments.BottomStart]: "flex-end",
 	[Alignments.BottomEnd]: "flex-end"
-}
-
-export const Alignment = (alignment: Alignments): SerializedStyles => {
-	return css`
-		display: flex;
-		justify-content: ${justifyContentMap[alignment]};
-		align-items: ${alignItemsMap[alignment]};
-	`
-}
-
-export const AlignmentSelf = (alignment: Alignments): SerializedStyles => {
-	return css`
-		display: flex;
-		justify-self: ${justifyContentMap[alignment]};
-		align-self: ${alignItemsMap[alignment]};
-	`
 }

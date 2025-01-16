@@ -1,4 +1,4 @@
-import { openAndFocusTab } from "@/components/openAndFocusTab"
+import { openAndFocusTab } from "@/utils/openAndFocusTab"
 import type { AppDispatch } from "@/app/store"
 
 /**

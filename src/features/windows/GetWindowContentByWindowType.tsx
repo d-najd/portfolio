@@ -2,7 +2,7 @@ import { ProjectsWindowContent } from "./projects/components/ProjectsWindowConte
 import type { ReactNode } from "react"
 import type { MyWindow } from "../window/windowSlice"
 import { WindowType } from "../window-drawer/windowDrawerSlice"
-import type { Size } from "../../components/transforms"
+import type { Size } from "../../ui/transforms"
 
 interface GetWindowContentByWindowTypeProps extends Size {
 	myWindow: MyWindow

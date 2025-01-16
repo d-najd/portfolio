@@ -1,8 +1,8 @@
 import { Row } from "@/components/Row"
 import styled from "@emotion/styled"
-import { Alignment, Alignments } from "@/components/common/CommonProps"
 import { BottomPanelWindow } from "./BottomPanelWindow"
 import { useWindows } from "@/features/window/windowSlice"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 export const BottomPanelWindows = () => {
 	const windows = useWindows()

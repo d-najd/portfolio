@@ -11,7 +11,7 @@ import {
 } from "@/components/WindowsButton"
 import { css } from "@emotion/react"
 import { Row } from "@/components/Row"
-import { Alignment, Alignments } from "@/components/common/CommonProps"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 interface BottomPanelWindowProps {
 	curWindow: MyWindow

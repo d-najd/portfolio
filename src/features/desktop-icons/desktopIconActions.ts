@@ -1,4 +1,4 @@
-import { openAndFocusTab } from "../../components/openAndFocusTab"
+import { openAndFocusTab } from "../../utils/openAndFocusTab"
 import { onProjectsWindowOpened } from "../window/windowSlice"
 import type { AppDispatch } from "../../app/store"
 

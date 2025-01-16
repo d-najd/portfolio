@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/app/hooks"
 import { selectWindowProjectsList } from "../projectsSlice"
 import styled from "@emotion/styled"
-import { Alignment, Alignments } from "@/components/common/CommonProps"
 import { ProjectWindowContentItem } from "./ProjectWindowContentItem"
-import type { Size } from "@/components/transforms"
+import type { Size } from "@/ui/transforms"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 const Root = styled.div<Size>`
 	${Alignment(Alignments.HorizontallyCentered)};

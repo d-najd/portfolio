@@ -1,8 +1,8 @@
 import { Row } from "@/components/Row"
-import { Alignment, Alignments } from "@/components/common/CommonProps"
 import { BottomPanelWindows } from "./components/BottomPanelWindows"
 import windowsIco from "@/resources/windows_95_icons/Windows/Windows logo (without text).ico"
 import * as S from "./BottomPanel.styles"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 export const BottomPanel = () => {
 	return (

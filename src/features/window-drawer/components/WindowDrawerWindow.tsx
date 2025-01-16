@@ -1,5 +1,5 @@
 import type { MyWindow } from "../../window/windowSlice"
-import useScreenSize from "../../../components/useScreenSize"
+import useScreenSize from "../../../hooks/useScreenSize"
 import type React from "react"
 import { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -14,7 +14,7 @@ import theme from "../../../theme/theme"
 import { WindowDrawerTopBar, WindowTopBarHeight } from "./WindowDrawerTopBar"
 import { GetWindowContentByWindowType } from "../../windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
-import type { Position, Size } from "../../../components/transforms"
+import type { Position, Size } from "../../../ui/transforms"
 
 interface WindowContainerProps {
 	size: Size

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { Size } from "./transforms"
+import type { Size } from "../ui/transforms"
 
 const useScreenSize = (): Size => {
 	const [screenSize, setScreenSize] = useState<Size>({

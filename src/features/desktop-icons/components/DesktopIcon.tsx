@@ -4,7 +4,6 @@ import {
 	selectSelectedDesktopIcon
 } from "../desktopIconsSlice"
 import styled from "@emotion/styled"
-import { Alignment, Alignments } from "../../../components/common/CommonProps"
 import { Column } from "../../../components/Column"
 import type { DoubleClickState } from "../DesktopIcons"
 import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
@@ -12,6 +11,7 @@ import type React from "react"
 import { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { ExecuteActionByDesktopIconType } from "../desktopIconActions"
+import { Alignment, Alignments } from "@/ui/alignment"
 
 const Container = styled(Column)`
 	${Alignment(Alignments.VerticallyCentered)};
