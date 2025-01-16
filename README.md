@@ -10,7 +10,7 @@ features -> UI and state
 component  
 |____XThing.tsx -> React component  
 |____xThingSlice.ts -> The slice    
-|____XThing.style.tsx -> if component contains more than 3 subcomponents
+|____XThing.style.tsx -> if component has >=3 or has too much subcomponent code
 |____README.md -> Optional readme  
 |__windows -> Contains collection of window contents
 hooks -> Reusable hooks  
