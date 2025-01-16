@@ -1,5 +1,5 @@
-import type { MyWindow } from "../../window/windowSlice"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import type { MyWindow } from "@/features/window/windowSlice"
+import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
 	selectActiveWindowId
@@ -8,18 +8,36 @@ import styled from "@emotion/styled"
 import {
 	WindowsButton,
 	WindowsButtonPressedStyle
-} from "../../../components/WindowsButton"
+} from "@/components/WindowsButton"
 import { css } from "@emotion/react"
-import { Row } from "../../../components/Row"
-import { Alignment, Alignments } from "../../../components/common/CommonProps"
+import { Row } from "@/components/Row"
+import { Alignment, Alignments } from "@/components/common/CommonProps"
 
-const ContainerButton = styled(WindowsButton)`
-	min-height: 27px;
-	min-width: 107px;
-	max-width: 107px;
-`
+interface BottomPanelWindowProps {
+	curWindow: MyWindow
+}
 
-const extraButtonStyle = (curWindow: MyWindow, activeWindowId: number) => {
+export const BottomPanelWindow = ({ curWindow }: BottomPanelWindowProps) => {
+	const dispatch = useAppDispatch()
+	const activeWindowId = useAppSelector(selectActiveWindowId)
+
+	return (
+		<ContainerButton
+			onClick={() => dispatch(changeActiveWindow(curWindow.id))}
+			css={pressedButtonStyleOverride(curWindow, activeWindowId)}
+		>
+			<Row css={Alignment(Alignments.CenteredStart)}>
+				<Image />
+				<Text>{curWindow.name}</Text>
+			</Row>
+		</ContainerButton>
+	)
+}
+
+const pressedButtonStyleOverride = (
+	curWindow: MyWindow,
+	activeWindowId: number
+) => {
 	if (curWindow.id === activeWindowId) {
 		return WindowsButtonPressedStyle
 	} else {
@@ -27,13 +45,13 @@ const extraButtonStyle = (curWindow: MyWindow, activeWindowId: number) => {
 	}
 }
 
-const ContainerContent = styled(Row)`
-	${Alignment(Alignments.CenteredStart)};
-	padding-left: 3px;
-	padding-right: 3px;
+const ContainerButton = styled(WindowsButton)`
+	padding-left: 7px;
+	height: 27px;
+	width: 107px;
 `
 
-const WindowImage = styled.image`
+const Image = styled.image`
 	min-width: 14px;
 	min-height: 14px;
 	background-color: red;
@@ -45,26 +63,3 @@ const Text = styled.span`
 	overflow: hidden;
 	text-overflow: ellipsis;
 `
-
-interface BottomPanelWindowProps {
-	curWindow: MyWindow
-}
-
-export const BottomPanelWindow = ({ curWindow }: BottomPanelWindowProps) => {
-	const dispatch = useAppDispatch()
-	const activeWindowId = useAppSelector(selectActiveWindowId)
-
-	return (
-		<>
-			<ContainerButton
-				onClick={() => dispatch(changeActiveWindow(curWindow.id))}
-				css={extraButtonStyle(curWindow, activeWindowId)}
-			>
-				<ContainerContent>
-					<WindowImage />
-					<Text>{curWindow.name}</Text>
-				</ContainerContent>
-			</ContainerButton>
-		</>
-	)
-}

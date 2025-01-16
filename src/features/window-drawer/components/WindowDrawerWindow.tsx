@@ -8,7 +8,7 @@ import {
 	selectActiveWindowId,
 	WindowState
 } from "../windowDrawerSlice"
-import { bottomPanelHeight } from "../../bottom-panel/BottomPanel"
+import { bottomPanelHeight } from "../../bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
 import theme from "../../../theme/theme"
 import { WindowDrawerTopBar, WindowTopBarHeight } from "./WindowDrawerTopBar"

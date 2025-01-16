@@ -3,7 +3,7 @@ import { selectDesktopIcons } from "./desktopIconsSlice"
 import { DesktopIcon as DesktopIconTSX } from "./components/DesktopIcon"
 import { useAppSelector } from "../../app/hooks"
 import useScreenSize from "../../components/useScreenSize"
-import { bottomPanelHeight } from "../bottom-panel/BottomPanel"
+import { bottomPanelHeight } from "../bottom-panel/BottomPanel.styles"
 import { useState } from "react"
 import type { Size } from "../../components/transforms"
 
