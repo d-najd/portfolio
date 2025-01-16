@@ -17,4 +17,9 @@ hooks -> Reusable hooks
 resources -> images/videos/icons  
 theme -> theme setup  
 ui -> ui utilities  
-utils -> utilities which may be used independently of ui stuff (more generic)  
+utils -> utilities which may be used independently of ui stuff (more generic)
+
+##### Note
+
+Imports if for the style (xThing.style.tsx) is usually done like so  
+```import { * as S } from "./XThing.style.tsx";```
