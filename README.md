@@ -12,7 +12,7 @@ component
 |____xThingSlice.ts -> The slice    
 |____XThing.style.tsx -> if component has >=3 or has too much subcomponent code
 |____README.md -> Optional readme  
-|__windows -> Contains collection of window contents
+|__windows -> Contains collection of window contents  
 hooks -> Reusable hooks  
 resources -> images/videos/icons  
 theme -> theme setup  
