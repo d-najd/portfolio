@@ -1,11 +1,11 @@
 import styled from "@emotion/styled"
 import { selectDesktopIcons } from "./desktopIconsSlice"
-import { DesktopIcon as DesktopIconTSX } from "./components/DesktopIcon"
-import { useAppSelector } from "../../app/hooks"
-import useScreenSize from "../../hooks/useScreenSize"
-import { bottomPanelHeight } from "../bottom-panel/BottomPanel.styles"
+import { DesktopIconTSX } from "./components/DesktopIcon"
+import { useAppSelector } from "@/app/hooks"
+import useScreenSize from "@/hooks/useScreenSize"
+import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import { useState } from "react"
-import type { Size } from "../../ui/transforms"
+import type { Size } from "@/ui/transforms"
 
 /**
  * Used for keeping track of whether the user has double-clicked an icon so that
@@ -34,11 +34,35 @@ export const defaultDoubleClickState = (): DoubleClickState => ({
 export const doubleClickTolerance = 500
 const extraBottomPanelHeight = 14
 
-interface ContainerProps {
+interface Props {
 	screenSize: Size
 }
 
-const Container = styled.div<ContainerProps>`
+export const DesktopIcons = () => {
+	const desktopIcons = useAppSelector(selectDesktopIcons)
+	const screenSize = useScreenSize()
+
+	const [doubleClickState, setDoubleClickState] = useState<DoubleClickState>(
+		defaultDoubleClickState()
+	)
+
+	return (
+		<Container screenSize={screenSize}>
+			{desktopIcons.map(icon => {
+				return (
+					<DesktopIconTSX
+						iconData={icon}
+						doubleClickState={doubleClickState}
+						setDoubleClickState={setDoubleClickState}
+						key={icon.id}
+					/>
+				)
+			})}
+		</Container>
+	)
+}
+
+const Container = styled.div<Props>`
 	position: absolute;
 	width: 100%;
 	height: ${o =>
@@ -52,29 +76,3 @@ const Container = styled.div<ContainerProps>`
 	row-gap: 14px;
 	column-gap: 7px;
 `
-
-export const DesktopIcons = () => {
-	const desktopIcons = useAppSelector(selectDesktopIcons)
-	const screenSize = useScreenSize()
-
-	const [doubleClickState, setDoubleClickState] = useState<DoubleClickState>(
-		defaultDoubleClickState()
-	)
-
-	return (
-		<>
-			<Container screenSize={screenSize}>
-				{desktopIcons.map(icon => {
-					return (
-						<DesktopIconTSX
-							iconData={icon}
-							doubleClickState={doubleClickState}
-							setDoubleClickState={setDoubleClickState}
-							key={icon.id}
-						/>
-					)
-				})}
-			</Container>
-		</>
-	)
-}

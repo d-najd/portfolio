@@ -13,11 +13,11 @@ import { css } from "@emotion/react"
 import { Row } from "@/components/Row"
 import { Alignment, Alignments } from "@/ui/alignment"
 
-interface BottomPanelWindowProps {
+interface Props {
 	curWindow: MyWindow
 }
 
-export const BottomPanelWindow = ({ curWindow }: BottomPanelWindowProps) => {
+export const BottomPanelWindow = ({ curWindow }: Props) => {
 	const dispatch = useAppDispatch()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 
