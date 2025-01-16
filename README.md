@@ -21,5 +21,5 @@ utils -> utilities which may be used independently of ui stuff (more generic)
 
 ##### Note
 
-Imports for the style (xThing.style.tsx) is usually done like so  
+Import for the style (xThing.style.tsx) is usually done like so  
 ```import { * as S } from "./XThing.style.tsx";```
