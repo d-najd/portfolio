@@ -15,7 +15,7 @@ import type { Project } from "@/features/windows/projects/projectsSlice"
 import githubIco from "@/resources/icons/GitHub_Invertocat_Light.svg"
 
 const containerWidth = 450
-const containerHeight = 270
+const containerHeight = 272
 const hoverContainerInitialHeight = 30
 const bottomBarHeight = 69
 
@@ -23,7 +23,7 @@ const containerPaddingHorizontal = 12
 
 const Container = styled.div`
 	display: flex;
-	background-color: red;
+	background-color: gray;
 	width: ${containerWidth}px;
 	height: ${containerHeight}px;
 `
@@ -52,93 +52,41 @@ const HoverAppear = styled.div<{ height: number }>`
 	height: ${o => o.height}px;
 	background-color: ${transparentize(0.3, "black")};
 `
-const Title = styled.span`
-	position: absolute;
-	${Alignment(Alignments.Centered)}
-	color: ${theme.colors.primaryTextInverted};
-	height: ${hoverContainerInitialHeight}px;
-	width: 100%;
-`
 
-const Description = styled.span<{ height: number }>`
-	position: absolute;
-	box-sizing: border-box;
-	padding-top: 16px;
-	overflow: hidden;
-	text-overflow: clip;
-	font-size: 0.9em;
-	max-height: ${o => o.height}px;
-	width: ${containerWidth}px;
-	color: ${theme.colors.primaryTextInverted};
-	margin-bottom: 100px;
-	padding-left: ${containerPaddingHorizontal}px;
-	padding-right: ${containerPaddingHorizontal}px;
-`
+interface ProjectWindowContentItemProps {
+	project: Project
+}
 
-const HoverContentContainer = styled.div<{ height: number }>`
-	position: absolute;
-	overflow: hidden;
-	width: 100%;
-	height: ${o => o.height}px;
-`
+export const ProjectWindowContentItem = ({
+	project
+}: ProjectWindowContentItemProps) => {
+	const [animateHover, setAnimateHover] = useState(false)
+	const [hoverProgress, setHoverProgress] = useState(0)
 
-const HoverBottomBarContainer = styled.div`
-	position: absolute;
-	${Alignment(Alignments.BottomStart)};
-	width: 100%;
-	height: 100%;
-`
+	HandleHoverTransition(animateHover, hoverProgress, setHoverProgress)
 
-const HoverBottomBar = styled(Row)<{ height: number }>`
-	width: 100%;
-	height: ${o => o.height}px;
-	padding-left: ${containerPaddingHorizontal}px;
-	padding-right: ${containerPaddingHorizontal}px;
-	box-sizing: border-box;
-`
-
-const HoverBottomBarTechUsedHolder = styled(Column)`
-	${Alignment(Alignments.TopStart)};
-	height: 100%;
-	width: 100%;
-	overflow: hidden;
-	color: ${theme.colors.primaryTextInverted};
-`
-
-const HoverBottomBarTechUsed = styled.b`
-	margin-top: 8px;
-	${AlignmentSelf(Alignments.TopStart)}
-	width: 100%;
-	overflow: hidden;
-	font-weight: bold;
-`
-
-const HoverBottomBarTechUsedText = styled.span`
-	${AlignmentSelf(Alignments.HorizontallyCentered)};
-	font-size: 0.825em;
-	padding-top: 10px;
-	overflow: hidden;
-`
-
-const HoverBottomIconHolder = styled(Column)`
-	height: 100%;
-	width: 42px;
-	margin-right: 4px;
-	gap: 6px;
-	${AlignmentSelf(Alignments.End)};
-	${Alignment(Alignments.Centered)}
-`
-
-const HoverBottomIcon = styled.img`
-	width: 34px;
-	height: 34px;
-`
-
-const HoverBottomIconText = styled.span`
-	color: ${theme.colors.primaryTextInverted};
-	font-size: 0.8em;
-	font-weight: 500;
-`
+	// noinspection JSSuspiciousNameCombination
+	return (
+		<>
+			<Container
+				onMouseEnter={() => setAnimateHover(true)}
+				onMouseLeave={() => setAnimateHover(false)}
+			>
+				<ContentContainer>
+					<Video />
+				</ContentContainer>
+				<HoverContainer>
+					<HoverAppear height={getHeight(hoverProgress)}>
+						<HoverContent
+							project={project}
+							hoverProgress={hoverProgress}
+						/>
+					</HoverAppear>
+				</HoverContainer>
+			</Container>
+		</>
+	)
+}
 
 const HandleHoverTransition = (
 	animateHover: boolean,
@@ -179,6 +127,97 @@ const getHeight = (hoverProgress: number) => {
 	)
 }
 
+const Title = styled.span`
+	position: absolute;
+	${Alignment(Alignments.Centered)}
+	color: ${theme.colors.primaryTextInverted};
+	height: ${hoverContainerInitialHeight}px;
+	width: 100%;
+`
+
+const HoverContentContainer = styled.div<{ height: number }>`
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: ${o => o.height}px;
+`
+
+const Description = styled.span<{ height: number }>`
+	position: absolute;
+	box-sizing: border-box;
+	padding-top: 16px;
+	overflow: hidden;
+	text-overflow: clip;
+	font-size: 0.9em;
+	max-height: ${o => o.height}px;
+	width: ${containerWidth}px;
+	color: ${theme.colors.primaryTextInverted};
+	margin-bottom: 100px;
+	padding-left: ${containerPaddingHorizontal}px;
+	padding-right: ${containerPaddingHorizontal}px;
+`
+
+const HoverBottomBarContainer = styled.div`
+	position: absolute;
+	${Alignment(Alignments.BottomStart)};
+	width: 100%;
+	height: 100%;
+`
+
+const HoverBottomBar = styled(Row)<{ height: number }>`
+	width: 100%;
+	height: ${o => o.height}px;
+	padding-left: ${containerPaddingHorizontal}px;
+	padding-right: ${containerPaddingHorizontal}px;
+	box-sizing: border-box;
+`
+
+const TechUsed = styled(Column)`
+	${Alignment(Alignments.TopStart)};
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	color: ${theme.colors.primaryTextInverted};
+`
+
+const TechUsedTitle = styled.b`
+	margin-top: 8px;
+	${AlignmentSelf(Alignments.TopStart)}
+	width: 100%;
+	overflow: hidden;
+	font-weight: bold;
+	user-select: none;
+`
+
+const TechUsedText = styled.span`
+	${AlignmentSelf(Alignments.HorizontallyCentered)};
+	font-size: 0.825em;
+	padding-top: 10px;
+	overflow: hidden;
+`
+
+const HoverBottomIconHolder = styled(Column)`
+	height: 100%;
+	width: 42px;
+	margin-right: 4px;
+	gap: 6px;
+	${AlignmentSelf(Alignments.End)};
+	${Alignment(Alignments.Centered)}
+`
+
+const HoverBottomIcon = styled.img`
+	width: 34px;
+	height: 34px;
+	user-select: none;
+`
+
+const HoverBottomIconText = styled.span`
+	color: ${theme.colors.primaryTextInverted};
+	font-size: 0.8em;
+	font-weight: 500;
+	user-select: none;
+`
+
 interface HoverContentProps {
 	project: Project
 	hoverProgress: number
@@ -204,14 +243,10 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 			</Description>
 			<HoverBottomBarContainer>
 				<HoverBottomBar height={bottomBarHeightCalculated}>
-					<HoverBottomBarTechUsedHolder>
-						<HoverBottomBarTechUsed>
-							Technologies used:
-						</HoverBottomBarTechUsed>
-						<HoverBottomBarTechUsedText>
-							{project.technologiesUsed}
-						</HoverBottomBarTechUsedText>
-					</HoverBottomBarTechUsedHolder>
+					<TechUsed>
+						<TechUsedTitle>Technologies used:</TechUsedTitle>
+						<TechUsedText>{project.technologiesUsed}</TechUsedText>
+					</TechUsed>
 					<HoverBottomIconHolder>
 						<HoverBottomIcon src={githubIco} />
 						<HoverBottomIconText>Repo</HoverBottomIconText>
@@ -219,40 +254,5 @@ const HoverContent = ({ project, hoverProgress }: HoverContentProps) => {
 				</HoverBottomBar>
 			</HoverBottomBarContainer>
 		</HoverContentContainer>
-	)
-}
-
-interface ProjectWindowContentItemProps {
-	project: Project
-}
-
-export const ProjectWindowContentItem = ({
-	project
-}: ProjectWindowContentItemProps) => {
-	const [animateHover, setAnimateHover] = useState(false)
-	const [hoverProgress, setHoverProgress] = useState(0)
-
-	HandleHoverTransition(animateHover, hoverProgress, setHoverProgress)
-
-	// noinspection JSSuspiciousNameCombination
-	return (
-		<>
-			<Container
-				onMouseEnter={() => setAnimateHover(true)}
-				onMouseLeave={() => setAnimateHover(false)}
-			>
-				<ContentContainer>
-					<Video />
-				</ContentContainer>
-				<HoverContainer>
-					<HoverAppear height={getHeight(hoverProgress)}>
-						<HoverContent
-							project={project}
-							hoverProgress={hoverProgress}
-						/>
-					</HoverAppear>
-				</HoverContainer>
-			</Container>
-		</>
 	)
 }

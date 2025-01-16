@@ -14,7 +14,6 @@ const Root = styled.div<Size>`
 	padding-top: 17px;
 	overflow: hidden;
 	display: flex;
-	background-color: yellow;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: flex-start;
