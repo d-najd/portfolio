@@ -6,12 +6,12 @@ app -> react store, slices, hooks, etc... setup
 components -> Reusable components  
 features -> UI and state  
 |__x-thing  
-|____components -> optional folder containing components for the main
+|_____components -> optional folder containing components for the main
 component  
-|____XThing.tsx -> React component  
-|____xThingSlice.ts -> The slice    
-|____XThing.style.tsx -> if component has >=3 or has too much subcomponent code
-|____README.md -> Optional readme  
+|_____XThing.tsx -> React component  
+|_____xThingSlice.ts -> The slice    
+|_____XThing.style.tsx -> if component has >=3 or has too much subcomponent code
+|_____README.md -> Optional readme  
 |__windows -> Contains collection of window contents  
 hooks -> Reusable hooks  
 resources -> images/videos/icons  
