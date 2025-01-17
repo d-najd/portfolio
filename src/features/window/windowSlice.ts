@@ -4,7 +4,6 @@ import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
 import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "../../app/createAppSlice"
 import { useAppSelector } from "../../app/hooks"
-import { ProjectType } from "../windows/projects/projectsActions"
 
 interface BaseWindow {
 	/**
@@ -66,7 +65,7 @@ export const windowSlice = createAppSlice({
 		onProjectsWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: ProjectType.Portfolio
+				name: "Portfolio"
 			})
 		}
 	}),
