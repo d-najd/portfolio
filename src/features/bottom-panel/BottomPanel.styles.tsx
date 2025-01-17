@@ -41,7 +41,7 @@ export const WindowsImage = styled.img`
 `
 
 export const WindowsImageText = styled.span`
+	padding-left: 4px;
 	font-size: 16px;
 	font-weight: bolder;
-	padding-left: 4px;
 `

@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+
 import { selectDesktopIcons } from "./desktopIconsSlice"
 import { DesktopIconTSX } from "./components/DesktopIcon"
 import { useAppSelector } from "@/app/hooks"
@@ -64,12 +65,11 @@ export const DesktopIcons = () => {
 
 const Container = styled.div<Props>`
 	position: absolute;
+	display: flex;
 	width: 100%;
 	height: ${o =>
 		o.screenSize.height - bottomPanelHeight - extraBottomPanelHeight}px;
-
 	padding: 14px;
-	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
 	align-content: flex-start;

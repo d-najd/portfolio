@@ -1,41 +1,23 @@
-import type { MyWindow } from "../../window/windowSlice"
-import useScreenSize from "../../../hooks/useScreenSize"
+import type { MyWindow } from "@/features/window/windowSlice"
+import useScreenSize from "@/hooks/useScreenSize"
 import type React from "react"
 import { useCallback } from "react"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
 	selectActiveWindowId,
 	WindowState
 } from "../windowDrawerSlice"
-import { bottomPanelHeight } from "../../bottom-panel/BottomPanel.styles"
+import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
-import theme from "../../../theme/theme"
-import { WindowDrawerTopBar, WindowTopBarHeight } from "./WindowDrawerTopBar"
-import { GetWindowContentByWindowType } from "../../windows/GetWindowContentByWindowType"
+import theme from "@/theme/theme"
+import { WindowDrawerTopBar } from "./WindowDrawerTopBar"
+import { WindowTopBarHeight } from "./WindowDrawerTopBar.styles"
+import { GetWindowContentByWindowType } from "@/features/windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
-import type { Position, Size } from "../../../ui/transforms"
+import type { Position, Size } from "@/ui/transforms"
 
-interface WindowContainerProps {
-	size: Size
-	offset: Position
-}
-
-const borderSize = 3
-const WindowContainer = styled.div<WindowContainerProps>`
-	position: absolute;
-	background-color: ${theme.colors.primaryBackground};
-	border-top: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
-	border-left: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
-	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
-	border-bottom: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
-	width: ${o => o.size.width}px;
-	height: ${o => o.size.height}px;
-	margin-left: ${o => o.offset.x}px;
-	margin-top: ${o => o.offset.y}px;
-`
-
-interface WindowDrawerWindowProps {
+interface Props {
 	myWindow: MyWindow
 	dragState: DragState
 	mousePosition: MousePosition
@@ -51,7 +33,7 @@ export const WindowDrawerWindow = ({
 	overNonDraggableState,
 	setOverNonDraggableState,
 	onDragStart
-}: WindowDrawerWindowProps) => {
+}: Props) => {
 	const dispatch = useAppDispatch()
 	const activeWindowId = useAppSelector(selectActiveWindowId)
 	const screenSize = useScreenSize()
@@ -141,3 +123,22 @@ export const WindowDrawerWindow = ({
 		</>
 	)
 }
+
+interface WindowContainerProps {
+	size: Size
+	offset: Position
+}
+
+const borderSize = 3
+const WindowContainer = styled.div<WindowContainerProps>`
+	position: absolute;
+	width: ${o => o.size.width}px;
+	height: ${o => o.size.height}px;
+	margin-left: ${o => o.offset.x}px;
+	margin-top: ${o => o.offset.y}px;
+	border-top: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
+	border-left: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
+	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
+	border-bottom: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
+	background-color: ${theme.colors.primaryBackground};
+`

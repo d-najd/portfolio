@@ -46,9 +46,9 @@ const pressedButtonStyleOverride = (
 }
 
 const ContainerButton = styled(WindowsButton)`
-	padding-left: 7px;
-	height: 27px;
 	width: 107px;
+	height: 27px;
+	padding-left: 7px;
 `
 
 const Image = styled.image`

@@ -18,10 +18,8 @@ interface IconProps {
 }
 
 export const Icon = styled.img<IconProps>`
-	min-width: 42px;
-	min-height: 42px;
-	max-width: 42px;
-	max-height: 42px;
+	width: 42px;
+	height: 42px;
 	image-rendering: pixelated;
 	user-select: none;
 	pointer-events: none;
@@ -34,9 +32,9 @@ export const Icon = styled.img<IconProps>`
 
 export const Text = styled.span<IconProps>`
 	${Alignment(Alignments.HorizontallyCentered)};
-	color: white;
 	margin-top: 2px;
 	padding: 2px 1px;
+	color: white;
 	font-size: small;
 	user-select: none;
 
