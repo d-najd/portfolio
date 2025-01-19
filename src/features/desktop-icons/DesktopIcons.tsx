@@ -75,4 +75,5 @@ const Container = styled.div<Props>`
 	align-content: flex-start;
 	row-gap: 14px;
 	column-gap: 7px;
+	pointer-events: none;
 `

@@ -89,11 +89,9 @@ export const WindowDrawerWindow = React.memo(
 
 		const changeActiveWindowAction = useCallback(
 			(curWindow: MyWindow) => {
-				if (activeWindowId !== curWindow.id) {
-					dispatch(changeActiveWindow(curWindow.id))
-				}
+				dispatch(changeActiveWindow(curWindow.id))
 			},
-			[activeWindowId, dispatch],
+			[dispatch],
 		)
 
 		return (

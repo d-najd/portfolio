@@ -10,6 +10,7 @@ export const Container = styled(Column)`
 	text-align: center;
 	user-select: all;
 	cursor: pointer;
+	pointer-events: all;
 `
 
 interface IconProps {

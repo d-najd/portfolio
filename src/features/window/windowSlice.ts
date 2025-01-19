@@ -68,6 +68,11 @@ export const windowSlice = createAppSlice({
 				name: "Portfolio",
 			})
 		},
+		/**
+		 * Called whenever the wallpaper or something else is pressed that 
+		 * should unfocus everything from active windows to icons.
+		 */
+		unfocus: state => {}
 	}),
 	selectors: {
 		selectWindowsStatus: state => state.status,
@@ -132,6 +137,6 @@ const combineWindows = (
 	}
 }
 
-export const { closeWindow, onProjectsWindowOpened } = windowSlice.actions
+export const { closeWindow, onProjectsWindowOpened, unfocus } = windowSlice.actions
 
 export const { selectBaseWindows } = windowSlice.selectors

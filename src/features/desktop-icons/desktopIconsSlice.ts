@@ -11,6 +11,8 @@ import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { DesktopIconType } from "./desktopIconActions"
+import { unfocus } from "@/features/window/windowSlice"
+import { changeActiveWindow } from "@/features/window-drawer/windowDrawerSlice"
 
 export interface DesktopIcon {
 	id: number
@@ -86,6 +88,10 @@ const initialState: DesktopIconsState = {
 	status: "idle",
 }
 
+const unfocusIcons = (state: DesktopIconsState) => {
+	state.selectedIcon = -1
+}
+
 export const desktopIconsSlice = createAppSlice({
 	name: "desktop-icons",
 	initialState,
@@ -101,6 +107,15 @@ export const desktopIconsSlice = createAppSlice({
 			state.icons.find(o => o.id === id)!,
 		selectDesktopIcons: state => state.icons,
 		selectSelectedDesktopIcon: state => state.selectedIcon,
+	},
+	extraReducers: builder => {
+		builder
+			.addCase(unfocus, state => {
+				unfocusIcons(state)
+			})
+			.addCase(changeActiveWindow, state => {
+				unfocusIcons(state)
+			})
 	},
 })
 

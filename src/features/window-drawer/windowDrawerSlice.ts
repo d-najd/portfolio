@@ -4,6 +4,7 @@ import { createAppSlice } from "../../app/createAppSlice"
 import {
 	closeWindow,
 	onProjectsWindowOpened,
+	unfocus,
 	windowIdCounter,
 } from "../window/windowSlice"
 
@@ -169,9 +170,6 @@ export const windowDrawerSlice = createAppSlice({
 				return o
 			})
 		},
-		unfocusWindow: state => {
-			unfocusWindowInternal(state)
-		},
 	}),
 	selectors: {
 		selectWindowDrawerStatus: state => state.status,
@@ -180,6 +178,9 @@ export const windowDrawerSlice = createAppSlice({
 	},
 	extraReducers: builder => {
 		builder
+			.addCase(unfocus, state => {
+				unfocusWindowInternal(state)
+			})
 			.addCase(closeWindow, (state, action) => {
 				if (action.payload === state.activeWindowId) {
 					unfocusWindowInternal(state)
@@ -210,7 +211,6 @@ export const {
 	minimizeWindow,
 	toggleMaximizeWindow,
 	moveWindow,
-	unfocusWindow,
 } = windowDrawerSlice.actions
 
 export const {

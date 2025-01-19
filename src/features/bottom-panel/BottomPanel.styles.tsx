@@ -13,7 +13,7 @@ export const bottomPanelHeight =
 export const Container = styled(Column)`
 	position: absolute;
 	bottom: 0;
-	pointer-events: none;
+	pointer-events: none; // for now pressing the bottom bar is ok
 `
 
 export const BottomBar = styled(Row)`
