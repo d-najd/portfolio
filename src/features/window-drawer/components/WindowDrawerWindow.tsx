@@ -95,37 +95,33 @@ export const WindowDrawerWindow = React.memo(
 		)
 
 		return (
-			<>
-				<WindowContainer
-					key={myWindow.id}
-					onPointerDown={() => {
-						changeActiveWindowAction(myWindow)
+			<WindowContainer
+				key={myWindow.id}
+				onPointerDown={() => {
+					changeActiveWindowAction(myWindow)
+				}}
+				size={getWindowSize(myWindow)}
+				offset={getWindowOffset(myWindow)}
+			>
+				<WindowDrawerTopBar
+					myWindow={myWindow}
+					onDragStart={() => {
+						onDragStart(myWindow)
 					}}
-					size={getWindowSize(myWindow)}
-					offset={getWindowOffset(myWindow)}
-				>
-					<WindowDrawerTopBar
-						myWindow={myWindow}
-						onDragStart={() => {
-							onDragStart(myWindow)
-						}}
-						nonDraggableState={overNonDraggableState}
-						nonDraggableEntered={() =>
-							setOverNonDraggableState(true)
-						}
-						nonDraggableExited={() =>
-							setOverNonDraggableState(false)
-						}
-					/>
-					<GetWindowContentByWindowType
-						windowType={myWindow.windowType}
-						width={getWindowSize(myWindow).width}
-						height={
-							getWindowSize(myWindow).height - WindowTopBarHeight
-						}
-					/>
-				</WindowContainer>
-			</>
+					nonDraggableState={overNonDraggableState}
+					nonDraggableEntered={() => setOverNonDraggableState(true)}
+					nonDraggableExited={() => setOverNonDraggableState(false)}
+				/>
+				<GetWindowContentByWindowType
+					windowType={myWindow.windowType}
+					width={getWindowSize(myWindow).width}
+					height={
+						getWindowSize(myWindow).height -
+						borderSize -
+						WindowTopBarHeight
+					}
+				/>
+			</WindowContainer>
 		)
 	},
 )
