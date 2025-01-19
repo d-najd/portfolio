@@ -1,4 +1,4 @@
-import type { SerializedStyles } from "@emotion/react";
+import type { SerializedStyles } from "@emotion/react"
 import { css } from "@emotion/react"
 
 export enum Alignments {
@@ -31,6 +31,7 @@ export const Alignment = (alignment: Alignments): SerializedStyles => {
 /**
  * Alignment of self
  */
+/* Does not really work, needs to be replaced with position: absolute and direction
 export const AlignmentSelf = (alignment: Alignments): SerializedStyles => {
 	return css`
 		display: flex;
@@ -38,6 +39,7 @@ export const AlignmentSelf = (alignment: Alignments): SerializedStyles => {
 		align-self: ${alignItemsMap[alignment]};
 	`
 }
+ */
 
 const justifyContentMap: Record<Alignments, string> = {
 	[Alignments.Top]: "initial",

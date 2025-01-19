@@ -1,55 +1,14 @@
-import styled from "@emotion/styled"
-import { transparentize } from "polished"
 import type React from "react"
 import { useEffect, useState } from "react"
 import type { Project } from "@/features/windows/projects/projectsSlice"
-import { Alignment, Alignments } from "@/ui/alignment"
-import {
-	containerHeight,
-	containerWidth,
-	getHeight,
-	HoverContent
-} from "@/features/windows/projects/components/ProjectsWindowItemHoverContent"
+import { HoverContent } from "@/features/windows/projects/components/ProjectsWindowItemHoverContent"
+import * as S from "./ProjectWindowItem.styles"
 
-const Container = styled.div`
-	display: flex;
-	background-color: gray;
-	width: ${containerWidth}px;
-	height: ${containerHeight}px;
-`
-
-const ContentContainer = styled.div`
-	position: absolute;
-	width: 100%;
-	height: 100%;
-`
-
-const Video = styled.a`
-	height: 100%;
-	width: 100%;
-`
-
-const HoverContainer = styled.div`
-	position: absolute;
-	${Alignment(Alignments.Bottom)};
-	width: ${containerWidth};
-	height: ${containerHeight}px;
-	text-overflow: clip;
-`
-
-const HoverAppear = styled.div<{ height: number }>`
-	width: ${containerWidth}px;
-	height: ${o => o.height}px;
-	background-color: ${transparentize(0.3, "black")};
-`
-
-interface ProjectWindowContentItemProps {
+interface Props {
 	project: Project
 }
 
-export const ProjectWindowItem = ({
-	project
-}: ProjectWindowContentItemProps) => {
+export const ProjectWindowItem = ({ project }: Props) => {
 	const [animateHover, setAnimateHover] = useState(false)
 	const [hoverProgress, setHoverProgress] = useState(0)
 
@@ -58,26 +17,27 @@ export const ProjectWindowItem = ({
 	// noinspection JSSuspiciousNameCombination
 	return (
 		<>
-			<Container
+			<S.Container
 				onMouseEnter={() => setAnimateHover(true)}
 				onMouseLeave={() => setAnimateHover(false)}
 			>
-				<ContentContainer>
-					<Video />
-				</ContentContainer>
-				<HoverContainer>
-					<HoverAppear height={getHeight(hoverProgress)}>
-						<HoverContent
-							project={project}
-							hoverProgress={hoverProgress}
-						/>
-					</HoverAppear>
-				</HoverContainer>
-			</Container>
+				<S.ContentContainer>
+					<S.Video />
+				</S.ContentContainer>
+				<S.HoverContainer>
+					<HoverContent
+						project={project}
+						hoverProgress={hoverProgress}
+					/>
+				</S.HoverContainer>
+			</S.Container>
 		</>
 	)
 }
 
+/**
+ * Handles animating the hover transition
+ */
 const HandleHoverTransition = (
 	animateHover: boolean,
 	hoverProgress: number,
@@ -86,7 +46,13 @@ const HandleHoverTransition = (
 	useEffect(() => {
 		let timer = 0
 
+		/**
+		 * How many ms should pass before each animation update
+		 */
 		const stepTime = 16
+		/**
+		 * How long should the animation last in ms
+		 */
 		const animationLength = 150
 		if (animateHover) {
 			timer = setTimeout(() => {
