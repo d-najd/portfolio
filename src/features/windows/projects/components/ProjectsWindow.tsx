@@ -4,6 +4,7 @@ import styled from "@emotion/styled"
 import { ProjectWindowItem } from "./ProjectWindowItem"
 import type { Size } from "@/ui/transforms"
 import { Alignment, Alignments } from "@/ui/alignment"
+import React from "react"
 
 interface Props extends Size {
 	/** px */
@@ -12,7 +13,7 @@ interface Props extends Size {
 	height: number
 }
 
-export const ProjectsWindow = ({ width, height }: Props) => {
+export const ProjectsWindow = React.memo(({ width, height }: Props) => {
 	const listProjects = useAppSelector(selectWindowProjectsList)
 
 	return (
@@ -22,7 +23,7 @@ export const ProjectsWindow = ({ width, height }: Props) => {
 			})}
 		</Container>
 	)
-}
+})
 
 const Container = styled.div<Size>`
 	${Alignment(Alignments.HorizontallyCentered)};

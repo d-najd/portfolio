@@ -4,7 +4,6 @@ import {
 	containerWidth
 } from "@/features/windows/projects/components/ProjectsWindowItemHoverContent.styles"
 import { Alignment, Alignments } from "@/ui/alignment"
-import { transparentize } from "polished"
 
 export const Container = styled.div`
 	width: ${containerWidth}px;
@@ -33,10 +32,4 @@ export const HoverContainer = styled.div`
 	width: ${containerWidth};
 	height: ${containerHeight}px;
 	text-overflow: clip;
-`
-
-export const HoverAppear = styled.div<{ height: number }>`
-	width: ${containerWidth}px;
-	height: ${o => o.height}px;
-	background-color: ${transparentize(0.3, "black")};
 `

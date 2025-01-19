@@ -3,8 +3,9 @@ import styled from "@emotion/styled"
 import { BottomPanelWindow } from "./BottomPanelWindow"
 import { useWindows } from "@/features/window/windowSlice"
 import { Alignment, Alignments } from "@/ui/alignment"
+import React from "react"
 
-export const BottomPanelWindows = () => {
+export const BottomPanelWindows = React.memo(() => {
 	const windows = useWindows()
 
 	return (
@@ -19,7 +20,7 @@ export const BottomPanelWindows = () => {
 			})}
 		</Container>
 	)
-}
+})
 
 const Container = styled(Row)`
 	${Alignment(Alignments.CenteredStart)};

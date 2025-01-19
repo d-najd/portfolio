@@ -1,8 +1,7 @@
 import type { MyWindow } from "../window/windowSlice"
 import { useWindows } from "../window/windowSlice"
-import { useAppDispatch } from "../../app/hooks"
-import type React from "react"
-import { useCallback, useEffect, useState } from "react"
+import { useAppDispatch } from "@/app/hooks"
+import React, { useCallback, useEffect, useState } from "react"
 import { moveWindow, WindowState } from "./windowDrawerSlice"
 import { WindowDrawerWindow } from "./components/WindowDrawerWindow"
 
@@ -52,7 +51,7 @@ const defaultWindowState: DragState = {
  * @remarks dragging does not work properly in firefox so it had to be re-implemented, if interactables (buttons) don't
  * work properly check setOverNonDraggableState
  */
-export const WindowDrawer = () => {
+export const WindowDrawer = React.memo(() => {
 	const dispatch = useAppDispatch()
 	const windows = useWindows()
 
@@ -145,7 +144,7 @@ export const WindowDrawer = () => {
 				})}
 		</>
 	)
-}
+})
 
 /**
  * Updates the state for various mouse events

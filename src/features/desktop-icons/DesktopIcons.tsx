@@ -5,7 +5,7 @@ import { DesktopIconTSX } from "./components/DesktopIcon"
 import { useAppSelector } from "@/app/hooks"
 import useScreenSize from "@/hooks/useScreenSize"
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
-import { useState } from "react"
+import React, { useState } from "react"
 import type { Size } from "@/ui/transforms"
 
 /**
@@ -39,7 +39,7 @@ interface Props {
 	screenSize: Size
 }
 
-export const DesktopIcons = () => {
+export const DesktopIcons = React.memo(() => {
 	const desktopIcons = useAppSelector(selectDesktopIcons)
 	const screenSize = useScreenSize()
 
@@ -61,7 +61,7 @@ export const DesktopIcons = () => {
 			})}
 		</Container>
 	)
-}
+})
 
 const Container = styled.div<Props>`
 	position: absolute;
