@@ -193,7 +193,7 @@ export const windowDrawerSlice = createAppSlice({
 			.addCase(onProjectsWindowOpened, state => {
 				state.windows.push({
 					id: windowIdCounter,
-					drawOrder: 0,
+					drawOrder: state.windows.length,
 					windowType: WindowType.Projects,
 					state: WindowState.ShownOrMaximized,
 					width: 950,
@@ -201,6 +201,7 @@ export const windowDrawerSlice = createAppSlice({
 					offsetX: 480,
 					offsetY: 80,
 				})
+				reorderAtTopWindow(state, windowIdCounter)
 				state.activeWindowId = windowIdCounter
 			})
 	},
