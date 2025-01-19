@@ -10,7 +10,7 @@ export const ProjectsWindow = React.memo(() => {
 	const listProjects = useAppSelector(selectWindowProjectsList)
 
 	return (
-		<Container>
+		<Container paddingBottom={17}>
 			{listProjects.map((o, index) => {
 				return <ProjectWindowItem project={o} key={index} />
 			})}
@@ -22,7 +22,7 @@ const Container = styled(WindowContentContainer)`
 	${Alignment(Alignments.HorizontallyCentered)};
 	display: flex;
 	padding-top: 17px;
-	padding-bottom: 17px;
+	// padding-bottom: 17px;
 	box-sizing: border-box;
 	flex-direction: row;
 	flex-wrap: wrap;
