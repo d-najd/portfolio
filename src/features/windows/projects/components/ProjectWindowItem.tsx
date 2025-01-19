@@ -15,22 +15,25 @@ export const ProjectWindowItem = React.memo(({ project }: Props) => {
 
 	// noinspection JSSuspiciousNameCombination
 	return (
-		<>
-			<S.Container
-				onMouseEnter={() => setAnimateHover(true)}
-				onMouseLeave={() => setAnimateHover(false)}
-			>
-				<S.ContentContainer>
-					<S.Video />
-				</S.ContentContainer>
-				<S.HoverContainer>
-					<HoverContent
-						project={project}
-						hoverProgress={hoverProgress}
-					/>
-				</S.HoverContainer>
-			</S.Container>
-		</>
+		<S.Container
+			onPointerEnter={o => {
+				/*
+				console.log(o.target)
+				console.log(o.currentTarget)
+				console.log(o.relatedTarget)
+				console.log("END")
+				 */
+				setAnimateHover(true)
+			}}
+			onPointerLeave={() => setAnimateHover(false)}
+		>
+			<S.ContentContainer>
+				<S.Video />
+			</S.ContentContainer>
+			<S.HoverContainer>
+				<HoverContent project={project} hoverProgress={hoverProgress} />
+			</S.HoverContainer>
+		</S.Container>
 	)
 })
 

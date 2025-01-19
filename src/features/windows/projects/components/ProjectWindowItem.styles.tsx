@@ -13,8 +13,8 @@ export const Container = styled.div`
 
 export const ContentContainer = styled.div`
 	position: absolute;
-	width: 100%;
-	height: 100%;
+	width: ${containerWidth}px;
+	height: ${containerHeight}px;
 `
 
 export const Video = styled.a`
@@ -29,7 +29,7 @@ export const Video = styled.a`
 export const HoverContainer = styled.div`
 	${Alignment(Alignments.Bottom)};
 	position: absolute;
-	width: ${containerWidth};
+	width: ${containerWidth}px;
 	height: ${containerHeight}px;
 	text-overflow: clip;
 `
