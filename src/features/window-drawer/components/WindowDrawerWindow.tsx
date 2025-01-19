@@ -4,8 +4,7 @@ import React, { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
-	selectActiveWindowId,
-	WindowState,
+	selectMaximizedWindowId,
 } from "../windowDrawerSlice"
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
@@ -35,15 +34,12 @@ export const WindowDrawerWindow = React.memo(
 		onDragStart,
 	}: Props) => {
 		const dispatch = useAppDispatch()
-		const activeWindowId = useAppSelector(selectActiveWindowId)
+		const maximizedWindowId = useAppSelector(selectMaximizedWindowId)
 		const screenSize = useScreenSize()
 
 		const getWindowOffset = useCallback(
 			(curWindow: MyWindow): Position => {
-				if (
-					WindowState.ShownOrMaximized !==
-					(curWindow.state & WindowState.ShownOrMaximized)
-				) {
+				if (curWindow.id === maximizedWindowId) {
 					return {
 						x: 0,
 						y: 0,
@@ -61,16 +57,13 @@ export const WindowDrawerWindow = React.memo(
 					y: curWindow.offsetY,
 				}
 			},
-			[dragState, mousePosition],
+			[dragState, mousePosition, maximizedWindowId],
 		)
 
 		const getWindowSize = useCallback(
 			(curWindow: MyWindow): Size => {
 				// On maximize
-				if (
-					WindowState.ShownOrMaximized !==
-					(curWindow.state & WindowState.ShownOrMaximized)
-				) {
+				if (curWindow.id === maximizedWindowId) {
 					// Size due to borders?
 					return {
 						width: screenSize.width - borderSize,
@@ -84,7 +77,7 @@ export const WindowDrawerWindow = React.memo(
 					}
 				}
 			},
-			[screenSize],
+			[screenSize, maximizedWindowId],
 		)
 
 		const changeActiveWindowAction = useCallback(

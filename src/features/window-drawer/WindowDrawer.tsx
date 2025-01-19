@@ -2,7 +2,7 @@ import type { MyWindow } from "../window/windowSlice"
 import { useWindows } from "../window/windowSlice"
 import { useAppDispatch } from "@/app/hooks"
 import React, { useCallback, useEffect, useState } from "react"
-import { moveWindow, WindowState } from "./windowDrawerSlice"
+import { moveWindow } from "./windowDrawerSlice"
 import { WindowDrawerWindow } from "./components/WindowDrawerWindow"
 
 /**
@@ -123,11 +123,7 @@ export const WindowDrawer = React.memo(() => {
 	return (
 		<>
 			{windows
-				.filter(
-					o =>
-						WindowState.Minimized !==
-						(o.state & WindowState.Minimized),
-				)
+				.filter(o => !o.minimized)
 				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(myWindow => {
 					return (
