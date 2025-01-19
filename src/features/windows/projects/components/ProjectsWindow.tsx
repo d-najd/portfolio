@@ -2,22 +2,15 @@ import { useAppSelector } from "@/app/hooks"
 import { selectWindowProjectsList } from "../projectsSlice"
 import styled from "@emotion/styled"
 import { ProjectWindowItem } from "./ProjectWindowItem"
-import type { Size } from "@/ui/transforms"
 import { Alignment, Alignments } from "@/ui/alignment"
 import React from "react"
+import { WindowTopBarHeight } from "@/features/window-drawer/components/WindowDrawerTopBar.styles"
 
-interface Props extends Size {
-	/** px */
-	width: number
-	/** px */
-	height: number
-}
-
-export const ProjectsWindow = React.memo(({ width, height }: Props) => {
+export const ProjectsWindow = React.memo(() => {
 	const listProjects = useAppSelector(selectWindowProjectsList)
 
 	return (
-		<Container width={width} height={height}>
+		<Container>
 			{listProjects.map((o, index) => {
 				return <ProjectWindowItem project={o} key={index} />
 			})}
@@ -25,17 +18,18 @@ export const ProjectsWindow = React.memo(({ width, height }: Props) => {
 	)
 })
 
-const Container = styled.div<Size>`
+const Container = styled.div`
 	${Alignment(Alignments.HorizontallyCentered)};
 	position: absolute;
 	display: flex;
-	width: ${o => o.width}px;
-	height: ${o => o.height}px;
+	width: 100%;
+	height: 100%;
 	padding-top: 17px;
+	padding-bottom: ${WindowTopBarHeight + 17}px;
 	box-sizing: border-box;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: flex-start;
-	overflow: hidden;
+	overflow: scroll;
 	gap: 17px;
 `

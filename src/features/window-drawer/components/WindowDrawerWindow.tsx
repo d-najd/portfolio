@@ -10,7 +10,6 @@ import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
 import { WindowDrawerTopBar } from "./WindowDrawerTopBar"
-import { WindowTopBarHeight } from "./WindowDrawerTopBar.styles"
 import { GetWindowContentByWindowType } from "@/features/windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
 import type { Position, Size } from "@/ui/transforms"
@@ -107,12 +106,6 @@ export const WindowDrawerWindow = React.memo(
 				/>
 				<GetWindowContentByWindowType
 					windowType={myWindow.windowType}
-					width={getWindowSize(myWindow).width}
-					height={
-						getWindowSize(myWindow).height -
-						borderSize -
-						WindowTopBarHeight
-					}
 				/>
 			</WindowContainer>
 		)
@@ -136,4 +129,5 @@ const WindowContainer = styled.div<WindowContainerProps>`
 	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
 	border-bottom: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
 	background-color: ${theme.colors.primaryBackground};
+	overflow: hidden;
 `
