@@ -90,6 +90,7 @@ export const BottomBarIconHolder = styled(Column)`
 	cursor: pointer;
 	padding-left: 4px;
 	padding-right: 4px;
+	user-select: none;
 
 	&:hover {
 		background-color: ${transparentize(0.95, "white")};
@@ -100,6 +101,7 @@ export const BottomBarIcon = styled.img`
 	width: 34px;
 	height: 34px;
 	pointer-events: none;
+	user-select: none;
 `
 
 export const BottomBarIconText = styled.span`
@@ -107,4 +109,5 @@ export const BottomBarIconText = styled.span`
 	font-size: 0.8em;
 	font-weight: 500;
 	user-select: none;
+	pointer-events: none;
 `

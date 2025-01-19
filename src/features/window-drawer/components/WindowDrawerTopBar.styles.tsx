@@ -34,6 +34,7 @@ export const StyledImage = styled.img`
 	margin-left: ${contentHorizontalPadding}px;
 	background-color: red;
 	pointer-events: none;
+	user-select: none;
 `
 
 export const Text = styled.span`
