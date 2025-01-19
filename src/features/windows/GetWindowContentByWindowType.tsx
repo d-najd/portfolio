@@ -20,5 +20,5 @@ export const GetWindowContentByWindowType = React.memo(
 			default:
 				return <>{windowType}</>
 		}
-	}
+	},
 )

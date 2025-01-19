@@ -16,7 +16,7 @@ export class MathExtensions {
 		y1: number,
 		x2: number,
 		y2: number,
-		a: number
+		a: number,
 	) {
 		return this.lerp(x2, y2, this.invlerp(x1, y1, a))
 	}

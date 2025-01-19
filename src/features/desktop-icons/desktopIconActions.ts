@@ -12,7 +12,7 @@ export enum DesktopIconType {
 	Undefined = "Undefined",
 	Projects = "Projects",
 	Github = "Github",
-	LinkedIn = "LinkedIn"
+	LinkedIn = "LinkedIn",
 }
 
 /**
@@ -22,7 +22,7 @@ export enum DesktopIconType {
  */
 export const ExecuteActionByDesktopIconType = (
 	iconType: DesktopIconType,
-	dispatch: AppDispatch
+	dispatch: AppDispatch,
 ) => {
 	switch (iconType) {
 		case DesktopIconType.Projects: {

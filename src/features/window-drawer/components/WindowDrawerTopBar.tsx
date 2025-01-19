@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	minimizeWindow,
 	selectActiveWindowId,
-	toggleMaximizeWindow
+	toggleMaximizeWindow,
 } from "../windowDrawerSlice"
 import type { MyWindow } from "@/features/window/windowSlice"
 import { closeWindow } from "@/features/window/windowSlice"
@@ -34,7 +34,7 @@ export const WindowDrawerTopBar = React.memo(
 		onDragStart,
 		nonDraggableState,
 		nonDraggableEntered,
-		nonDraggableExited
+		nonDraggableExited,
 	}: Props) => {
 		const dispatch = useAppDispatch()
 		const activeWindowId = useAppSelector(selectActiveWindowId)
@@ -51,7 +51,7 @@ export const WindowDrawerTopBar = React.memo(
 					sendDragStarted()
 				}
 			},
-			[sendDragStarted]
+			[sendDragStarted],
 		)
 
 		return (
@@ -90,5 +90,5 @@ export const WindowDrawerTopBar = React.memo(
 				</S.ActionsContainer>
 			</S.Container>
 		)
-	}
+	},
 )

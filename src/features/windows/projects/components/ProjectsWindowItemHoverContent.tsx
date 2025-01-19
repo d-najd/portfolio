@@ -19,7 +19,7 @@ export const HoverContent = React.memo(({ project, hoverProgress }: Props) => {
 	const [height, descriptionHeight] = useHeights(hoverProgress)
 	const bottomBarHeightCalculated = Math.max(
 		S.bottomBarHeight,
-		Math.max(S.bottomBarHeight, 0)
+		Math.max(S.bottomBarHeight, 0),
 	)
 
 	if (hoverProgress === 0) {

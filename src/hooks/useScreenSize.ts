@@ -4,14 +4,14 @@ import type { Size } from "../ui/transforms"
 const useScreenSize = (): Size => {
 	const [screenSize, setScreenSize] = useState<Size>({
 		width: window.innerWidth,
-		height: window.innerHeight
+		height: window.innerHeight,
 	})
 
 	useEffect(() => {
 		const handleResize = () => {
 			setScreenSize({
 				width: window.innerWidth,
-				height: window.innerHeight
+				height: window.innerHeight,
 			})
 		}
 

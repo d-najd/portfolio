@@ -12,7 +12,7 @@ const rootReducer = combineSlices(
 	windowSlice,
 	windowDrawerSlice,
 	desktopIconsSlice,
-	projectsSlice
+	projectsSlice,
 )
 
 // Infer the `RootState` type from the root reducer
@@ -30,7 +30,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
 			return getDefaultMiddleware().concat(quotesApiSlice.middleware)
 		},
 		 */
-		preloadedState
+		preloadedState,
 	})
 	// configure listeners using the provided defaults
 	// optional, but required for `refetchOnFocus`/`refetchOnReconnect` behaviors

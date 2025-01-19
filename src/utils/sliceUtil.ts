@@ -1,1 +1,1 @@
-export type defaultSliceStates = "idle" | "loading" | "failed";
+export type defaultSliceStates = "idle" | "loading" | "failed"

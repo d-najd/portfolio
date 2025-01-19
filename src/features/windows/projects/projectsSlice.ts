@@ -37,7 +37,7 @@ const initialState: ProjectsState = {
 			repo: "https://www.github.com",
 			videoLink: ",",
 			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux, HLSL"
+				"React, Vue, Typescript, Styled Components, Redux, HLSL",
 		},
 		{
 			id: getNextProjectId(),
@@ -45,7 +45,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -53,7 +54,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -61,7 +63,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -69,7 +72,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -77,7 +81,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -85,7 +90,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -93,7 +99,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -101,7 +108,8 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
 		},
 		{
 			id: getNextProjectId(),
@@ -109,10 +117,11 @@ const initialState: ProjectsState = {
 			description: "Description",
 			repo: "https://www.github.com",
 			videoLink: ",",
-			technologiesUsed: "React, Vue, Typescript, Styled Components, Redux"
-		}
+			technologiesUsed:
+				"React, Vue, Typescript, Styled Components, Redux",
+		},
 	],
-	status: "idle"
+	status: "idle",
 }
 
 export const projectsSlice = createAppSlice({
@@ -120,8 +129,8 @@ export const projectsSlice = createAppSlice({
 	initialState,
 	reducers: () => ({}),
 	selectors: {
-		selectWindowProjectsList: state => state.projects
-	}
+		selectWindowProjectsList: state => state.projects,
+	},
 })
 
 export const { selectWindowProjectsList } = projectsSlice.selectors

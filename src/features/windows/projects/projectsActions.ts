@@ -7,7 +7,7 @@ import type { AppDispatch } from "@/app/store"
  */
 export enum ProjectType {
 	Portfolio = "Windows 95 Inspired Portfolio",
-	BugTracker = "Bugtracker"
+	BugTracker = "Bugtracker",
 }
 
 /**
@@ -17,7 +17,7 @@ export enum ProjectType {
  */
 export const GetActionByProjectType = (
 	projectType: ProjectType,
-	dispatch: AppDispatch
+	dispatch: AppDispatch,
 ) => {
 	switch (projectType) {
 		case ProjectType.Portfolio: {

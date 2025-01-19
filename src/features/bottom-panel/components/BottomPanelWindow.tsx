@@ -2,12 +2,12 @@ import type { MyWindow } from "@/features/window/windowSlice"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
-	selectActiveWindowId
+	selectActiveWindowId,
 } from "../../window-drawer/windowDrawerSlice"
 import styled from "@emotion/styled"
 import {
 	WindowsButton,
-	WindowsButtonPressedStyle
+	WindowsButtonPressedStyle,
 } from "@/components/WindowsButton"
 import { css } from "@emotion/react"
 import { Row } from "@/components/Row"
@@ -36,7 +36,7 @@ export const BottomPanelWindow = ({ curWindow }: Props) => {
 
 const pressedButtonStyleOverride = (
 	curWindow: MyWindow,
-	activeWindowId: number
+	activeWindowId: number,
 ) => {
 	if (curWindow.id === activeWindowId) {
 		return WindowsButtonPressedStyle

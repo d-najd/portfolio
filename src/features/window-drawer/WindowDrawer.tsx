@@ -37,7 +37,7 @@ const defaultWindowState: DragState = {
 	windowId: -1,
 	dragging: false,
 	windowXOffset: -1,
-	windowYOffset: -1
+	windowYOffset: -1,
 }
 
 /**
@@ -57,7 +57,7 @@ export const WindowDrawer = React.memo(() => {
 
 	const [mousePosition, setMousePosition] = useState<MousePosition>({
 		x: 0,
-		y: 0
+		y: 0,
 	})
 
 	/**
@@ -78,12 +78,12 @@ export const WindowDrawer = React.memo(() => {
 				windowId: curWindow.id,
 				dragging: true,
 				windowXOffset: mousePosition.x - curWindow.offsetX,
-				windowYOffset: mousePosition.y - curWindow.offsetY
+				windowYOffset: mousePosition.y - curWindow.offsetY,
 			})
 			setMouseDown(true)
 			document.body.style.userSelect = "none"
 		},
-		[mousePosition.x, mousePosition.y]
+		[mousePosition.x, mousePosition.y],
 	)
 
 	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
@@ -112,8 +112,8 @@ export const WindowDrawer = React.memo(() => {
 					moveWindow({
 						id: dragState.windowId,
 						offsetX: offsetX,
-						offsetY: offsetY
-					})
+						offsetY: offsetY,
+					}),
 				)
 				setDragState(defaultWindowState)
 			}
@@ -126,7 +126,7 @@ export const WindowDrawer = React.memo(() => {
 				.filter(
 					o =>
 						WindowState.Minimized !==
-						(o.state & WindowState.Minimized)
+						(o.state & WindowState.Minimized),
 				)
 				.sort((b, o) => o.drawOrder - b.drawOrder)
 				.map(myWindow => {
@@ -154,16 +154,16 @@ export const WindowDrawer = React.memo(() => {
 const MousePositionHandler = (
 	setMouseDown: React.Dispatch<boolean>,
 	setMousePosition: React.Dispatch<MousePosition>,
-	overNonDraggableState: boolean
+	overNonDraggableState: boolean,
 ) => {
 	const handleMouseMove = useCallback(
 		(event: MouseEvent) => {
 			setMousePosition({
 				x: event.clientX,
-				y: event.clientY
+				y: event.clientY,
 			})
 		},
-		[setMousePosition]
+		[setMousePosition],
 	)
 
 	const handleMouseUp = useCallback(() => {
@@ -183,6 +183,6 @@ const MousePositionHandler = (
 		handleMouseUp,
 		overNonDraggableState,
 		setMouseDown,
-		setMousePosition
+		setMousePosition,
 	])
 }

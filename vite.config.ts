@@ -11,17 +11,17 @@ const root = path.resolve(__dirname, "src")
 export default defineConfig({
 	plugins: [react()],
 	server: {
-		open: true
+		open: true,
 	},
 	test: {
 		globals: true,
 		environment: "jsdom",
 		setupFiles: "src/setupTests",
-		mockReset: true
+		mockReset: true,
 	},
 	resolve: {
 		alias: {
-			"@": root
-		} as AliasOptions
-	}
+			"@": root,
+		} as AliasOptions,
+	},
 })

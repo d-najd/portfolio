@@ -14,7 +14,7 @@ export enum Alignments {
 	CenteredStart = "centered-start",
 	CenteredEnd = "centered-end",
 	BottomStart = "bottom-start",
-	BottomEnd = "bottom-end"
+	BottomEnd = "bottom-end",
 }
 
 /**
@@ -54,7 +54,7 @@ const justifyContentMap: Record<Alignments, string> = {
 	[Alignments.CenteredStart]: "flex-start",
 	[Alignments.CenteredEnd]: "flex-end",
 	[Alignments.BottomStart]: "flex-start",
-	[Alignments.BottomEnd]: "flex-end"
+	[Alignments.BottomEnd]: "flex-end",
 }
 
 const alignItemsMap: Record<Alignments, string> = {
@@ -70,5 +70,5 @@ const alignItemsMap: Record<Alignments, string> = {
 	[Alignments.CenteredStart]: "center",
 	[Alignments.CenteredEnd]: "center",
 	[Alignments.BottomStart]: "flex-end",
-	[Alignments.BottomEnd]: "flex-end"
+	[Alignments.BottomEnd]: "flex-end",
 }

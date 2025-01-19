@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import {
 	containerHeight,
-	containerWidth
+	containerWidth,
 } from "@/features/windows/projects/components/ProjectsWindowItemHoverContent.styles"
 import { Alignment, Alignments } from "@/ui/alignment"
 

@@ -22,14 +22,14 @@ export const light: ThemeType = {
 		primaryBorderElevated: "#555555",
 		primaryBorderDepressed: "#FFFFFF",
 		windowTopBarActive: "#00007C",
-		windowTopBarInactive: "#7B7D7B"
-	}
+		windowTopBarInactive: "#7B7D7B",
+	},
 }
 
 // Color overrides
 light.colors.primaryBackgroundActive = lighten(
 	0.15,
-	light.colors.primaryBackground
+	light.colors.primaryBackground,
 )
 
 // noinspection UnnecessaryLocalVariableJS

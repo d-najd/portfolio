@@ -18,7 +18,7 @@ export const getHeight = (hoverProgress: number) => {
 	return MathExtensions.lerp(
 		hoverContainerInitialHeight,
 		containerHeight,
-		hoverProgress
+		hoverProgress,
 	)
 }
 

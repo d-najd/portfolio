@@ -25,7 +25,7 @@ export interface DoubleClickState {
 
 export const defaultDoubleClickState = (): DoubleClickState => ({
 	timeStamp: new Date(),
-	id: -1
+	id: -1,
 })
 
 /**
@@ -44,7 +44,7 @@ export const DesktopIcons = React.memo(() => {
 	const screenSize = useScreenSize()
 
 	const [doubleClickState, setDoubleClickState] = useState<DoubleClickState>(
-		defaultDoubleClickState()
+		defaultDoubleClickState(),
 	)
 
 	return (

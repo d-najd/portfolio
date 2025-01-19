@@ -4,7 +4,7 @@ import { createAppSlice } from "../../app/createAppSlice"
 import {
 	closeWindow,
 	onProjectsWindowOpened,
-	windowIdCounter
+	windowIdCounter,
 } from "../window/windowSlice"
 
 export enum WindowState {
@@ -12,7 +12,7 @@ export enum WindowState {
 	/**
 	 * If false shown, if true maximized
 	 */
-	ShownOrMaximized = 1 << 1
+	ShownOrMaximized = 1 << 1,
 }
 
 /**
@@ -20,7 +20,7 @@ export enum WindowState {
  */
 export enum WindowType {
 	Undefined = "Undefined",
-	Projects = "Projects"
+	Projects = "Projects",
 }
 
 export interface WindowDrawerWindow {
@@ -64,7 +64,7 @@ const initialState: WindowManagerState = {
 			width: 320,
 			height: 320,
 			offsetX: 320,
-			offsetY: 80
+			offsetY: 80,
 		},
 		{
 			id: 1,
@@ -74,7 +74,7 @@ const initialState: WindowManagerState = {
 			width: 320,
 			height: 320,
 			offsetX: 480,
-			offsetY: 80
+			offsetY: 80,
 		},
 		{
 			id: 2,
@@ -84,11 +84,11 @@ const initialState: WindowManagerState = {
 			width: 320,
 			height: 320,
 			offsetX: 80,
-			offsetY: 480
-		}
+			offsetY: 480,
+		},
 	],
 	activeWindowId: 1,
-	status: "idle"
+	status: "idle",
 }
 
 interface MoveWindowState {
@@ -113,6 +113,14 @@ const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
 		return o
 	})
 	curWindow.drawOrder = 0
+}
+
+/**
+ * unfocuses the currently focused window if there is one
+ * @param state
+ */
+const unfocusWindowInternal = (state: WindowManagerState) => {
+	state.activeWindowId = -1
 }
 
 export const windowDrawerSlice = createAppSlice({
@@ -160,22 +168,25 @@ export const windowDrawerSlice = createAppSlice({
 				}
 				return o
 			})
-		}
+		},
+		unfocusWindow: state => {
+			unfocusWindowInternal(state)
+		},
 	}),
 	selectors: {
 		selectWindowDrawerStatus: state => state.status,
 		selectActiveWindowId: state => state.activeWindowId,
-		selectWindowDrawerWindows: state => state.windows
+		selectWindowDrawerWindows: state => state.windows,
 	},
 	extraReducers: builder => {
 		builder
 			.addCase(closeWindow, (state, action) => {
 				if (action.payload === state.activeWindowId) {
-					state.activeWindowId = -1
+					unfocusWindowInternal(state)
 				}
 
 				state.windows = state.windows.filter(
-					o => o.id !== action.payload
+					o => o.id !== action.payload,
 				)
 			})
 			.addCase(onProjectsWindowOpened, state => {
@@ -187,22 +198,23 @@ export const windowDrawerSlice = createAppSlice({
 					width: 950,
 					height: 500,
 					offsetX: 480,
-					offsetY: 80
+					offsetY: 80,
 				})
 				state.activeWindowId = windowIdCounter
 			})
-	}
+	},
 })
 
 export const {
 	changeActiveWindow,
 	minimizeWindow,
 	toggleMaximizeWindow,
-	moveWindow
+	moveWindow,
+	unfocusWindow,
 } = windowDrawerSlice.actions
 
 export const {
 	selectWindowDrawerStatus,
 	selectWindowDrawerWindows,
-	selectActiveWindowId
+	selectActiveWindowId,
 } = windowDrawerSlice.selectors

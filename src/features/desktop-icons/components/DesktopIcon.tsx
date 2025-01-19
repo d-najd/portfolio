@@ -1,7 +1,7 @@
 import type { DesktopIcon } from "../desktopIconsSlice"
 import {
 	onSelectDesktopIcon,
-	selectSelectedDesktopIcon
+	selectSelectedDesktopIcon,
 } from "../desktopIconsSlice"
 import type { DoubleClickState } from "../DesktopIcons"
 import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
@@ -20,7 +20,7 @@ interface Props {
 export const DesktopIconTSX = ({
 	iconData,
 	doubleClickState,
-	setDoubleClickState
+	setDoubleClickState,
 }: Props) => {
 	const dispatch = useAppDispatch()
 	const selectedIcon = useAppSelector(selectSelectedDesktopIcon)
@@ -38,7 +38,7 @@ export const DesktopIconTSX = ({
 			dispatch(onSelectDesktopIcon(iconData.id))
 			setDoubleClickState({
 				timeStamp: new Date(),
-				id: iconData.id
+				id: iconData.id,
 			})
 		}
 	}, [iconData, doubleClickState, setDoubleClickState, dispatch])

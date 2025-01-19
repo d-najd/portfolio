@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
 	selectActiveWindowId,
-	WindowState
+	WindowState,
 } from "../windowDrawerSlice"
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
@@ -32,7 +32,7 @@ export const WindowDrawerWindow = React.memo(
 		mousePosition,
 		overNonDraggableState,
 		setOverNonDraggableState,
-		onDragStart
+		onDragStart,
 	}: Props) => {
 		const dispatch = useAppDispatch()
 		const activeWindowId = useAppSelector(selectActiveWindowId)
@@ -46,22 +46,22 @@ export const WindowDrawerWindow = React.memo(
 				) {
 					return {
 						x: 0,
-						y: 0
+						y: 0,
 					}
 				}
 
 				if (dragState.dragging && curWindow.id === dragState.windowId) {
 					return {
 						x: mousePosition.x - dragState.windowXOffset,
-						y: mousePosition.y - dragState.windowYOffset
+						y: mousePosition.y - dragState.windowYOffset,
 					}
 				}
 				return {
 					x: curWindow.offsetX,
-					y: curWindow.offsetY
+					y: curWindow.offsetY,
 				}
 			},
-			[dragState, mousePosition]
+			[dragState, mousePosition],
 		)
 
 		const getWindowSize = useCallback(
@@ -75,16 +75,16 @@ export const WindowDrawerWindow = React.memo(
 					return {
 						width: screenSize.width - borderSize,
 						height:
-							screenSize.height - bottomPanelHeight - borderSize
+							screenSize.height - bottomPanelHeight - borderSize,
 					}
 				} else {
 					return {
 						width: curWindow.width,
-						height: curWindow.height
+						height: curWindow.height,
 					}
 				}
 			},
-			[screenSize]
+			[screenSize],
 		)
 
 		const changeActiveWindowAction = useCallback(
@@ -93,7 +93,7 @@ export const WindowDrawerWindow = React.memo(
 					dispatch(changeActiveWindow(curWindow.id))
 				}
 			},
-			[activeWindowId, dispatch]
+			[activeWindowId, dispatch],
 		)
 
 		return (
@@ -129,7 +129,7 @@ export const WindowDrawerWindow = React.memo(
 				</WindowContainer>
 			</>
 		)
-	}
+	},
 )
 
 interface WindowContainerProps {

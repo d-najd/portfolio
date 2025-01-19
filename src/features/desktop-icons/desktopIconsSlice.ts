@@ -37,53 +37,53 @@ const initialState: DesktopIconsState = {
 			id: getNextIconId(),
 			name: "My Computer",
 			iconUrl: myComputerIco,
-			iconType: DesktopIconType.Undefined
+			iconType: DesktopIconType.Undefined,
 		},
 		{
 			id: getNextIconId(),
 			name: "Recycle Bin",
 			iconUrl: recycleBinIco,
-			iconType: DesktopIconType.Undefined
+			iconType: DesktopIconType.Undefined,
 		},
 		{
 			id: getNextIconId(),
 			name: "Resume",
 			iconUrl: resumeIco,
-			iconType: DesktopIconType.Undefined
+			iconType: DesktopIconType.Undefined,
 		},
 		{
 			id: getNextIconId(),
 			name: "Projects",
 			iconUrl: projectsIco,
-			iconType: DesktopIconType.Projects
+			iconType: DesktopIconType.Projects,
 		},
 		{
 			id: getNextIconId(),
 			name: "Send Mail",
 			iconUrl: sendMailIco,
-			iconType: DesktopIconType.Undefined
+			iconType: DesktopIconType.Undefined,
 		},
 		{
 			id: getNextIconId(),
 			name: "LinkedIn",
 			iconUrl: linkedInIco,
-			iconType: DesktopIconType.LinkedIn
+			iconType: DesktopIconType.LinkedIn,
 		},
 		{
 			id: getNextIconId(),
 			name: "Github",
 			iconUrl: githubIco,
-			iconType: DesktopIconType.Github
+			iconType: DesktopIconType.Github,
 		},
 		{
 			id: getNextIconId(),
 			name: "MS-DOS Prompt",
 			iconUrl: msDosPromptIco,
-			iconType: DesktopIconType.Undefined
-		}
+			iconType: DesktopIconType.Undefined,
+		},
 	],
 	selectedIcon: -1,
-	status: "idle"
+	status: "idle",
 }
 
 export const desktopIconsSlice = createAppSlice({
@@ -93,15 +93,15 @@ export const desktopIconsSlice = createAppSlice({
 		onSelectDesktopIcon: (state, action: PayloadAction<number>) => {
 			state.selectedIcon = action.payload
 		},
-		onProjectsClicked: state => {}
+		onProjectsClicked: state => {},
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
 		selectDesktopIcon: (state, id: number) =>
 			state.icons.find(o => o.id === id)!,
 		selectDesktopIcons: state => state.icons,
-		selectSelectedDesktopIcon: state => state.selectedIcon
-	}
+		selectSelectedDesktopIcon: state => state.selectedIcon,
+	},
 })
 
 export const { onSelectDesktopIcon, onProjectsClicked } =
@@ -111,5 +111,5 @@ export const {
 	selectDesktopIconsStatus,
 	selectDesktopIcons,
 	selectDesktopIcon,
-	selectSelectedDesktopIcon
+	selectSelectedDesktopIcon,
 } = desktopIconsSlice.selectors

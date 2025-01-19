@@ -40,7 +40,7 @@ export const ProjectWindowItem = React.memo(({ project }: Props) => {
 const HandleHoverTransition = (
 	animateHover: boolean,
 	hoverProgress: number,
-	setHoverProgress: React.Dispatch<number>
+	setHoverProgress: React.Dispatch<number>,
 ) => {
 	useEffect(() => {
 		let timer = 0
@@ -56,13 +56,13 @@ const HandleHoverTransition = (
 		if (animateHover) {
 			timer = setTimeout(() => {
 				setHoverProgress(
-					Math.min(1, hoverProgress + stepTime / animationLength)
+					Math.min(1, hoverProgress + stepTime / animationLength),
 				)
 			}, stepTime)
 		} else {
 			timer = setTimeout(() => {
 				setHoverProgress(
-					Math.max(0, hoverProgress - stepTime / animationLength)
+					Math.max(0, hoverProgress - stepTime / animationLength),
 				)
 			}, stepTime)
 		}
