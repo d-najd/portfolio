@@ -1,7 +1,6 @@
 import type { MyWindow } from "@/features/window/windowSlice"
 import useScreenSize from "@/hooks/useScreenSize"
-import type React from "react"
-import { useCallback } from "react"
+import React, { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
@@ -26,103 +25,112 @@ interface Props {
 	onDragStart: (curWindow: MyWindow) => void
 }
 
-export const WindowDrawerWindow = ({
-	myWindow,
-	dragState,
-	mousePosition,
-	overNonDraggableState,
-	setOverNonDraggableState,
-	onDragStart
-}: Props) => {
-	const dispatch = useAppDispatch()
-	const activeWindowId = useAppSelector(selectActiveWindowId)
-	const screenSize = useScreenSize()
+export const WindowDrawerWindow = React.memo(
+	({
+		myWindow,
+		dragState,
+		mousePosition,
+		overNonDraggableState,
+		setOverNonDraggableState,
+		onDragStart
+	}: Props) => {
+		const dispatch = useAppDispatch()
+		const activeWindowId = useAppSelector(selectActiveWindowId)
+		const screenSize = useScreenSize()
 
-	const getWindowOffset = useCallback(
-		(curWindow: MyWindow): Position => {
-			if (
-				WindowState.ShownOrMaximized !==
-				(curWindow.state & WindowState.ShownOrMaximized)
-			) {
-				return {
-					x: 0,
-					y: 0
+		const getWindowOffset = useCallback(
+			(curWindow: MyWindow): Position => {
+				if (
+					WindowState.ShownOrMaximized !==
+					(curWindow.state & WindowState.ShownOrMaximized)
+				) {
+					return {
+						x: 0,
+						y: 0
+					}
 				}
-			}
 
-			if (dragState.dragging && curWindow.id === dragState.windowId) {
-				return {
-					x: mousePosition.x - dragState.windowXOffset,
-					y: mousePosition.y - dragState.windowYOffset
+				if (dragState.dragging && curWindow.id === dragState.windowId) {
+					return {
+						x: mousePosition.x - dragState.windowXOffset,
+						y: mousePosition.y - dragState.windowYOffset
+					}
 				}
-			}
-			return {
-				x: curWindow.offsetX,
-				y: curWindow.offsetY
-			}
-		},
-		[dragState, mousePosition]
-	)
-
-	const getWindowSize = useCallback(
-		(curWindow: MyWindow): Size => {
-			// On maximize
-			if (
-				WindowState.ShownOrMaximized !==
-				(curWindow.state & WindowState.ShownOrMaximized)
-			) {
-				// Size due to borders?
 				return {
-					width: screenSize.width - borderSize,
-					height: screenSize.height - bottomPanelHeight - borderSize
+					x: curWindow.offsetX,
+					y: curWindow.offsetY
 				}
-			} else {
-				return {
-					width: curWindow.width,
-					height: curWindow.height
+			},
+			[dragState, mousePosition]
+		)
+
+		const getWindowSize = useCallback(
+			(curWindow: MyWindow): Size => {
+				// On maximize
+				if (
+					WindowState.ShownOrMaximized !==
+					(curWindow.state & WindowState.ShownOrMaximized)
+				) {
+					// Size due to borders?
+					return {
+						width: screenSize.width - borderSize,
+						height:
+							screenSize.height - bottomPanelHeight - borderSize
+					}
+				} else {
+					return {
+						width: curWindow.width,
+						height: curWindow.height
+					}
 				}
-			}
-		},
-		[screenSize]
-	)
+			},
+			[screenSize]
+		)
 
-	const changeActiveWindowAction = useCallback(
-		(curWindow: MyWindow) => {
-			if (activeWindowId !== curWindow.id) {
-				dispatch(changeActiveWindow(curWindow.id))
-			}
-		},
-		[activeWindowId, dispatch]
-	)
+		const changeActiveWindowAction = useCallback(
+			(curWindow: MyWindow) => {
+				if (activeWindowId !== curWindow.id) {
+					dispatch(changeActiveWindow(curWindow.id))
+				}
+			},
+			[activeWindowId, dispatch]
+		)
 
-	return (
-		<>
-			<WindowContainer
-				key={myWindow.id}
-				onPointerDown={() => {
-					changeActiveWindowAction(myWindow)
-				}}
-				size={getWindowSize(myWindow)}
-				offset={getWindowOffset(myWindow)}
-			>
-				<WindowDrawerTopBar
-					myWindow={myWindow}
-					onDragStart={() => {
-						onDragStart(myWindow)
+		return (
+			<>
+				<WindowContainer
+					key={myWindow.id}
+					onPointerDown={() => {
+						changeActiveWindowAction(myWindow)
 					}}
-					nonDraggableState={overNonDraggableState}
-					nonDraggableEntered={() => setOverNonDraggableState(true)}
-					nonDraggableExited={() => setOverNonDraggableState(false)}
-				/>
-				<GetWindowContentByWindowType
-					myWindow={myWindow}
-					width={getWindowSize(myWindow).width}
-					height={getWindowSize(myWindow).height - WindowTopBarHeight}
-				/>
-			</WindowContainer>
-		</>
-	)
-}
+					size={getWindowSize(myWindow)}
+					offset={getWindowOffset(myWindow)}
+				>
+					<WindowDrawerTopBar
+						myWindow={myWindow}
+						onDragStart={() => {
+							onDragStart(myWindow)
+						}}
+						nonDraggableState={overNonDraggableState}
+						nonDraggableEntered={() =>
+							setOverNonDraggableState(true)
+						}
+						nonDraggableExited={() =>
+							setOverNonDraggableState(false)
+						}
+					/>
+					<GetWindowContentByWindowType
+						windowType={myWindow.windowType}
+						width={getWindowSize(myWindow).width}
+						height={
+							getWindowSize(myWindow).height - WindowTopBarHeight
+						}
+					/>
+				</WindowContainer>
+			</>
+		)
+	}
+)
 
 interface WindowContainerProps {
 	size: Size

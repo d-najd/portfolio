@@ -1,5 +1,4 @@
-import type React from "react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import type { Project } from "@/features/windows/projects/projectsSlice"
 import { HoverContent } from "@/features/windows/projects/components/ProjectsWindowItemHoverContent"
 import * as S from "./ProjectWindowItem.styles"
@@ -8,7 +7,7 @@ interface Props {
 	project: Project
 }
 
-export const ProjectWindowItem = ({ project }: Props) => {
+export const ProjectWindowItem = React.memo(({ project }: Props) => {
 	const [animateHover, setAnimateHover] = useState(false)
 	const [hoverProgress, setHoverProgress] = useState(0)
 
@@ -33,7 +32,7 @@ export const ProjectWindowItem = ({ project }: Props) => {
 			</S.Container>
 		</>
 	)
-}
+})
 
 /**
  * Handles animating the hover transition
