@@ -88,8 +88,8 @@ export const BottomBarIconHolder = styled(Column)`
 	height: 100%;
 	gap: 6px;
 	cursor: pointer;
-	padding-left: 6px;
-	padding-right: 6px;
+	padding-left: 4px;
+	padding-right: 4px;
 
 	&:hover {
 		background-color: ${transparentize(0.95, "white")};
