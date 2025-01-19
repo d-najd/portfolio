@@ -86,8 +86,14 @@ export const BottomBarIconHolder = styled(Column)`
 	${Alignment(Alignments.Centered)}
 	width: 42px;
 	height: 100%;
-	margin-right: 4px;
 	gap: 6px;
+	cursor: pointer;
+	padding-left: 6px;
+	padding-right: 6px;
+
+	&:hover {
+		background-color: ${transparentize(0.95, "white")};
+	}
 `
 
 export const BottomBarIcon = styled.img`

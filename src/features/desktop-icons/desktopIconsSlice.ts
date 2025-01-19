@@ -1,6 +1,5 @@
-import type { defaultSliceStates } from "../../utils/sliceUtil"
-import { createAppSlice } from "../../app/createAppSlice"
-
+import type { defaultSliceStates } from "@/utils/sliceUtil"
+import { createAppSlice } from "@/app/createAppSlice"
 import myComputerIco from "../../resources/windows_95_icons/Computers/My Computer.ico"
 import recycleBinIco from "../../resources/windows_95_icons/Recycle Bins/Empty Recycle Bin.ico"
 import resumeIco from "../../resources/windows_95_icons/Notepads & Writing/Writing on sheet.ico"
