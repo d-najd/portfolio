@@ -5,6 +5,8 @@ interface Props {
 	paddingBottom?: number
 }
 
+// This code is cursed for the love of god don't try to change it
+// hours wasted: 3h
 export const WindowContentContainer = styled.div<Props>`
 	position: absolute;
 	width: 100%;
