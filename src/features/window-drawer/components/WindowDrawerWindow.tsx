@@ -39,16 +39,9 @@ export const WindowDrawerWindow = React.memo(
 		const maximizedWindowId = useAppSelector(selectMaximizedWindowId)
 		const screenSize = useScreenSize()
 
-		const [resizeEnabled, setResizeEnabled] = useState<Enable>({
-			top: maximizedWindowId === -1,
-			right: maximizedWindowId === -1,
-			bottom: maximizedWindowId === -1,
-			left: maximizedWindowId === -1,
-			topRight: maximizedWindowId === -1,
-			bottomRight: maximizedWindowId === -1,
-			bottomLeft: maximizedWindowId === -1,
-			topLeft: maximizedWindowId === -1,
-		})
+		const [resizeEnabled, setResizeEnabled] = useState<Enable>(
+			asResizeEnable(maximizedWindowId !== myWindow.id),
+		)
 
 		const getWindowOffset = useCallback(
 			(curWindow: MyWindow): Position => {
@@ -102,17 +95,8 @@ export const WindowDrawerWindow = React.memo(
 
 		// Set resize enabled
 		useEffect(() => {
-			setResizeEnabled({
-				top: maximizedWindowId === -1,
-				right: maximizedWindowId === -1,
-				bottom: maximizedWindowId === -1,
-				left: maximizedWindowId === -1,
-				topRight: maximizedWindowId === -1,
-				bottomRight: maximizedWindowId === -1,
-				bottomLeft: maximizedWindowId === -1,
-				topLeft: maximizedWindowId === -1,
-			})
-		}, [maximizedWindowId])
+			setResizeEnabled(asResizeEnable(maximizedWindowId !== myWindow.id))
+		}, [maximizedWindowId, myWindow.id])
 
 		return (
 			<Resizable
@@ -204,16 +188,27 @@ export const WindowDrawerWindow = React.memo(
 	},
 )
 
-interface WindowContainerProps {
-	size: Size
-	offset: Position
-}
+const asResizeEnable = (enabled: boolean): Enable => ({
+	top: enabled,
+	right: enabled,
+	bottom: enabled,
+	left: enabled,
+	topRight: enabled,
+	bottomRight: enabled,
+	bottomLeft: enabled,
+	topLeft: enabled,
+})
 
 const resizableContainerStyle = (offset: Position): React.CSSProperties => ({
 	position: "absolute",
 	marginLeft: `${offset.x}px`,
 	marginTop: `${offset.y}px`,
 })
+
+interface WindowContainerProps {
+	size: Size
+	offset: Position
+}
 
 // Resizing using grab on the borders feels better, thats why this is wrapped
 const borderSize = 3
