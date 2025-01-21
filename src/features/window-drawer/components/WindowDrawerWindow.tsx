@@ -1,6 +1,6 @@
 import type { MyWindow } from "@/features/window/windowSlice"
 import useScreenSize from "@/hooks/useScreenSize"
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
@@ -14,6 +14,7 @@ import { WindowDrawerTopBar } from "./WindowDrawerTopBar"
 import { GetWindowContentByWindowType } from "@/features/windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
 import type { Position, Size } from "@/ui/transforms"
+import type { Enable } from "re-resizable"
 import { Resizable } from "re-resizable"
 
 interface Props {
@@ -37,6 +38,17 @@ export const WindowDrawerWindow = React.memo(
 		const dispatch = useAppDispatch()
 		const maximizedWindowId = useAppSelector(selectMaximizedWindowId)
 		const screenSize = useScreenSize()
+
+		const [resizeEnabled, setResizeEnabled] = useState<Enable>({
+			top: maximizedWindowId === -1,
+			right: maximizedWindowId === -1,
+			bottom: maximizedWindowId === -1,
+			left: maximizedWindowId === -1,
+			topRight: maximizedWindowId === -1,
+			bottomRight: maximizedWindowId === -1,
+			bottomLeft: maximizedWindowId === -1,
+			topLeft: maximizedWindowId === -1,
+		})
 
 		const getWindowOffset = useCallback(
 			(curWindow: MyWindow): Position => {
@@ -88,10 +100,25 @@ export const WindowDrawerWindow = React.memo(
 			[dispatch],
 		)
 
+		// Set resize enabled
+		useEffect(() => {
+			setResizeEnabled({
+				top: maximizedWindowId === -1,
+				right: maximizedWindowId === -1,
+				bottom: maximizedWindowId === -1,
+				left: maximizedWindowId === -1,
+				topRight: maximizedWindowId === -1,
+				bottomRight: maximizedWindowId === -1,
+				bottomLeft: maximizedWindowId === -1,
+				topLeft: maximizedWindowId === -1,
+			})
+		}, [maximizedWindowId])
+
 		return (
 			<Resizable
 				size={getWindowSize(myWindow)}
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
+				enable={resizeEnabled}
 				onResize={(event, direction, elementRef, delta) => {
 					// If we let the state update it will feel clunky, so updating positions here
 					const windowOffset = getWindowOffset(myWindow)
