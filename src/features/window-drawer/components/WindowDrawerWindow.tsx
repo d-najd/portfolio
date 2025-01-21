@@ -112,15 +112,17 @@ export const WindowDrawerWindow = React.memo(
 					let newX = 0
 					let newY = 0
 
-					if (direction === "left" || direction === "topLeft") {
+					if (
+						direction === "left" ||
+						direction === "top" ||
+						direction === "topLeft"
+					) {
 						newX = windowOffset.x - delta.width
 						newY = windowOffset.y - delta.height
 					} else {
 						newX = windowOffset.x
 						newY = windowOffset.y
 					}
-
-					console.log(delta)
 
 					dispatch(
 						onWindowResize({
