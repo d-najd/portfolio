@@ -94,15 +94,22 @@ export const WindowDrawerWindow = React.memo(
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
 				onResize={(event, direction, elementRef, delta) => {
 					// If we let the state update it will feel clunky, so updating positions here
+					const windowOffset = getWindowOffset(myWindow)
+
 					if (
+						direction === "bottomLeft" ||
 						direction === "left" ||
-						direction === "top" ||
 						direction === "topLeft"
 					) {
-						const windowOffset = getWindowOffset(myWindow)
 						elementRef.style.marginLeft =
 							windowOffset.x - delta.width + "px"
+					}
 
+					if (
+						direction === "topLeft" ||
+						direction === "top" ||
+						direction === "topRight"
+					) {
 						elementRef.style.marginTop =
 							windowOffset.y - delta.height + "px"
 					}
@@ -110,19 +117,23 @@ export const WindowDrawerWindow = React.memo(
 				onResizeStop={(event, direction, elementRef, delta) => {
 					const windowOffset = getWindowOffset(myWindow)
 
-					let newX = 0
-					let newY = 0
+					let newX = windowOffset.x
+					let newY = windowOffset.y
 
 					if (
+						direction === "bottomLeft" ||
 						direction === "left" ||
-						direction === "top" ||
 						direction === "topLeft"
 					) {
-						newX = windowOffset.x - delta.width
-						newY = windowOffset.y - delta.height
-					} else {
-						newX = windowOffset.x
-						newY = windowOffset.y
+						newX -= delta.width
+					}
+
+					if (
+						direction === "topLeft" ||
+						direction === "top" ||
+						direction === "topRight"
+					) {
+						newY -= delta.height
 					}
 
 					dispatch(
