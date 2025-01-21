@@ -49,8 +49,8 @@ export const WindowDrawerWindow = React.memo(
 
 				if (dragState.dragging && curWindow.id === dragState.windowId) {
 					return {
-						x: mousePosition.x + dragState.windowXOffset,
-						y: mousePosition.y + dragState.windowYOffset,
+						x: mousePosition.x - dragState.windowXOffset,
+						y: mousePosition.y - dragState.windowYOffset,
 					}
 				}
 				return {
@@ -93,6 +93,7 @@ export const WindowDrawerWindow = React.memo(
 				size={getWindowSize(myWindow)}
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
 				onResize={(event, direction, elementRef, delta) => {
+					// If we let the state update it will feel clunky, so updating positions here
 					if (
 						direction === "left" ||
 						direction === "top" ||
@@ -176,15 +177,12 @@ const resizableContainerStyle = (offset: Position): React.CSSProperties => ({
 	marginTop: `${offset.y}px`,
 })
 
+// Resizing using grab on the borders feels better, thats why this is wrapped
 const borderSize = 3
 const WindowContainer = styled.div<WindowContainerProps>`
 	position: absolute;
-	// width: ${o => o.size.width}px;
-	// height: ${o => o.size.height}px;
 	width: 100%;
 	height: 100%;
-	// margin-left: ${o => o.offset.x}px;
-	// margin-top: ${o => o.offset.y}px;
 	border-top: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
 	border-left: ${borderSize}px outset ${theme.colors.primaryBorderDepressed};
 	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};

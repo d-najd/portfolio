@@ -83,7 +83,7 @@ export const WindowDrawer = React.memo(() => {
 			setMouseDown(true)
 			document.body.style.userSelect = "none"
 		},
-		[mousePosition.x, mousePosition.y],
+		[mousePosition],
 	)
 
 	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
