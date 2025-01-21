@@ -7,6 +7,8 @@ import {
 	unfocus,
 	windowIdCounter,
 } from "../window/windowSlice"
+import type { Position } from "@/ui/transforms"
+import type { Size } from "re-resizable"
 
 /**
  * @see {GetWindowContentByWindowType}
@@ -92,6 +94,14 @@ interface MoveWindowState {
 	offsetY: number
 }
 
+interface ResizeProps extends Size, Position {
+	id: number
+	width: number
+	height: number
+	x: number
+	y: number
+}
+
 /**
  * Puts the window with given id at the top of the ordering meaning it will get
  * drawn on top of other windows
@@ -169,6 +179,19 @@ export const windowDrawerSlice = createAppSlice({
 				return o
 			})
 		},
+		onWindowResize: (state, action: PayloadAction<ResizeProps>) => {
+			const window = state.windows.find(o => o.id === action.payload.id)
+
+			if (window === undefined) {
+				console.log("Invalid window id", action.payload)
+				return
+			}
+
+			window.width = action.payload.width
+			window.height = action.payload.height
+			window.offsetX = action.payload.x
+			window.offsetY = action.payload.y
+		},
 	}),
 	selectors: {
 		selectWindowDrawerStatus: state => state.status,
@@ -212,6 +235,7 @@ export const {
 	minimizeWindow,
 	toggleMaximizeWindow,
 	moveWindow,
+	onWindowResize,
 } = windowDrawerSlice.actions
 
 export const {

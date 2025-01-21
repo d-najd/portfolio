@@ -1,9 +1,10 @@
 import type { MyWindow } from "@/features/window/windowSlice"
 import useScreenSize from "@/hooks/useScreenSize"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
+	onWindowResize,
 	selectMaximizedWindowId,
 } from "../windowDrawerSlice"
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
@@ -36,11 +37,6 @@ export const WindowDrawerWindow = React.memo(
 		const dispatch = useAppDispatch()
 		const maximizedWindowId = useAppSelector(selectMaximizedWindowId)
 		const screenSize = useScreenSize()
-
-		const [tempResizeOffset, setTempResizeOffset] = useState<Position>({
-			x: 0,
-			y: 0,
-		})
 
 		const getWindowOffset = useCallback(
 			(curWindow: MyWindow): Position => {
@@ -92,12 +88,8 @@ export const WindowDrawerWindow = React.memo(
 			[dispatch],
 		)
 
-		let refResize = useRef<Resizable | null>(null)
-
-		// (event: MouseEvent | TouchEvent, direction: Direction, elementRef: HTMLElement, delta: NumberSize)
 		return (
 			<Resizable
-				ref={refResize}
 				size={getWindowSize(myWindow)}
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
 				onResize={(event, direction, elementRef, delta) => {
@@ -113,6 +105,32 @@ export const WindowDrawerWindow = React.memo(
 						elementRef.style.marginTop =
 							windowOffset.y - delta.height + "px"
 					}
+				}}
+				onResizeStop={(event, direction, elementRef, delta) => {
+					const windowOffset = getWindowOffset(myWindow)
+
+					let newX = 0
+					let newY = 0
+
+					if (direction === "left" || direction === "topLeft") {
+						newX = windowOffset.x - delta.width
+						newY = windowOffset.y - delta.height
+					} else {
+						newX = windowOffset.x
+						newY = windowOffset.y
+					}
+
+					console.log(delta)
+
+					dispatch(
+						onWindowResize({
+							id: myWindow.id,
+							width: myWindow.width + delta.width,
+							height: myWindow.height + delta.height,
+							x: newX,
+							y: newY,
+						}),
+					)
 				}}
 			>
 				<WindowContainer
