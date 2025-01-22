@@ -15,7 +15,7 @@
     "lint:fix": "eslint --fix .",
     "type-check": "tsc --noEmit",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
