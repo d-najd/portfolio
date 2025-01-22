@@ -36,9 +36,48 @@ export interface WindowDrawerWindow {
 	minimized: boolean
 	width: number
 	height: number
+	minWidth: number
+	minHeight: number
 	offsetY: number
 	offsetX: number
 }
+
+type WindowFactoryParams = {
+	id: number
+	drawOrder: number
+	width: number
+	height: number
+	offsetX: number
+	offsetY: number
+	windowType?: WindowType
+	minimized?: boolean
+	minWidth?: number
+	minHeight?: number
+}
+
+let windowFactory = ({
+	id,
+	drawOrder,
+	width,
+	height,
+	offsetX,
+	offsetY,
+	windowType = WindowType.Undefined,
+	minimized = false,
+	minWidth = 300,
+	minHeight = 100,
+}: WindowFactoryParams): WindowDrawerWindow => ({
+	id: id,
+	drawOrder: drawOrder,
+	windowType: windowType,
+	minimized: minimized,
+	width: width,
+	height: height,
+	minWidth: minWidth,
+	minHeight: minHeight,
+	offsetX: offsetX,
+	offsetY: offsetY,
+})
 
 interface WindowManagerState {
 	windows: WindowDrawerWindow[]
@@ -52,36 +91,30 @@ interface WindowManagerState {
 
 const initialState: WindowManagerState = {
 	windows: [
-		{
+		windowFactory({
 			id: 0,
 			drawOrder: 1,
-			windowType: WindowType.Undefined,
-			minimized: false,
 			width: 320,
 			height: 320,
 			offsetX: 320,
 			offsetY: 80,
-		},
-		{
+		}),
+		windowFactory({
 			id: 1,
 			drawOrder: 0,
-			windowType: WindowType.Undefined,
-			minimized: false,
 			width: 320,
 			height: 320,
 			offsetX: 480,
 			offsetY: 80,
-		},
-		{
+		}),
+		windowFactory({
 			id: 2,
 			drawOrder: 2,
-			windowType: WindowType.Undefined,
-			minimized: false,
 			width: 320,
 			height: 320,
 			offsetX: 80,
 			offsetY: 480,
-		},
+		}),
 	],
 	activeWindowId: 1,
 	maximizedWindowId: -1,
@@ -214,16 +247,18 @@ export const windowDrawerSlice = createAppSlice({
 				)
 			})
 			.addCase(onProjectsWindowOpened, state => {
-				state.windows.push({
-					id: windowIdCounter,
-					drawOrder: state.windows.length,
-					windowType: WindowType.Projects,
-					minimized: false,
-					width: 950,
-					height: 500,
-					offsetX: 480,
-					offsetY: 80,
-				})
+				state.windows.push(
+					windowFactory({
+						id: windowIdCounter,
+						drawOrder: state.windows.length,
+						windowType: WindowType.Projects,
+						minimized: false,
+						width: 950,
+						height: 500,
+						offsetX: 480,
+						offsetY: 80,
+					}),
+				)
 				reorderAtTopWindow(state, windowIdCounter)
 				state.activeWindowId = windowIdCounter
 			})
