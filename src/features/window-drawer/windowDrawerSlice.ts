@@ -257,6 +257,8 @@ export const windowDrawerSlice = createAppSlice({
 						height: 500,
 						offsetX: 480,
 						offsetY: 80,
+						minWidth: 480,
+						minHeight: 340,
 					}),
 				)
 				reorderAtTopWindow(state, windowIdCounter)

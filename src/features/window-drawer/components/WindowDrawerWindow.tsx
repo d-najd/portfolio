@@ -101,6 +101,8 @@ export const WindowDrawerWindow = React.memo(
 		return (
 			<Resizable
 				size={getWindowSize(myWindow)}
+				minWidth={myWindow.minWidth}
+				minHeight={myWindow.minHeight}
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
 				enable={resizeEnabled}
 				onResize={(event, direction, elementRef, delta) => {
