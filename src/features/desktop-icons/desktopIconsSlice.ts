@@ -48,7 +48,7 @@ const initialState: DesktopIconsState = {
 		},
 		{
 			id: getNextIconId(),
-			name: "Resume",
+			name: "Résumé",
 			iconUrl: resumeIco,
 			iconType: DesktopIconType.Undefined,
 		},
