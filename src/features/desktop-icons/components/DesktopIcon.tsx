@@ -51,7 +51,7 @@ export const DesktopIconTSX = ({
 				iconData={iconData}
 			/>
 			<S.Text selectedIcon={selectedIcon} iconData={iconData}>
-				{iconData.name}
+				{iconData.iconType}
 			</S.Text>
 		</S.Container>
 	)

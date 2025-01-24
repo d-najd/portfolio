@@ -68,6 +68,11 @@ export const windowSlice = createAppSlice({
 				name: "Portfolio",
 			})
 		},
+		onGithubWindowOpened: state => {
+			state.windows.push({
+				id: 
+			})
+		}
 		/**
 		 * Called whenever the wallpaper or something else is pressed that 
 		 * should unfocus everything from active windows to icons.

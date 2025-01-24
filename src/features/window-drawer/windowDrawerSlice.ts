@@ -16,6 +16,7 @@ import type { Size } from "re-resizable"
 export enum WindowType {
 	Undefined = "Undefined",
 	Projects = "Projects",
+	Github = "Github",
 }
 
 export interface WindowDrawerWindow {

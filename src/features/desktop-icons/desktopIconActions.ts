@@ -10,6 +10,7 @@ export enum DesktopIconType {
 	 * Does nothing if clicked
 	 */
 	Undefined = "Undefined",
+	MyComputer = "My Computer",
 	Projects = "Projects",
 	Github = "Github",
 	LinkedIn = "LinkedIn",
@@ -30,7 +31,8 @@ export const ExecuteActionByDesktopIconType = (
 			break
 		}
 		case DesktopIconType.Github: {
-			openAndFocusTab("https://www.github.com/d-najd")
+			dispatch()
+			// openAndFocusTab("https://www.github.com/d-najd")
 			break
 		}
 		case DesktopIconType.LinkedIn: {
