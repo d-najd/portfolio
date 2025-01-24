@@ -1,4 +1,4 @@
-import { ProjectsWindow } from "./projects/components/ProjectsWindow"
+import { ProjectsWindow } from "./projects/ProjectsWindow"
 import type { ReactNode } from "react"
 import React from "react"
 import { WindowType } from "@/features/window-drawer/windowDrawerSlice"
