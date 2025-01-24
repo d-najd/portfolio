@@ -15,9 +15,6 @@ import * as S from "./WindowDrawerTopBar.styles"
 export interface Props {
 	myWindow: MyWindow
 	onDragStart: () => void
-	nonDraggableState: boolean
-	nonDraggableEntered: () => void
-	nonDraggableExited: () => void
 }
 
 /**
@@ -29,25 +26,20 @@ export interface Props {
  * @param nonDraggableExited
  */
 export const WindowDrawerTopBar = React.memo(
-	({
-		myWindow,
-		onDragStart,
-		nonDraggableState,
-		nonDraggableEntered,
-		nonDraggableExited,
-	}: Props) => {
+	({ myWindow, onDragStart }: Props) => {
 		const dispatch = useAppDispatch()
 		const activeWindowId = useAppSelector(selectActiveWindowId)
 
 		const sendDragStarted = useCallback(() => {
-			if (!nonDraggableState) {
-				onDragStart()
-			}
-		}, [nonDraggableState, onDragStart])
+			onDragStart()
+		}, [onDragStart])
 
 		const handleDrag = useCallback(
 			(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-				if (e.button === 0) {
+				console.log(e.relatedTarget)
+				console.log(e.target)
+				console.log(e.currentTarget)
+				if (e.button === 0 && e.target === e.currentTarget) {
 					sendDragStarted()
 				}
 			},
@@ -57,7 +49,6 @@ export const WindowDrawerTopBar = React.memo(
 		return (
 			<S.Container
 				onPointerDown={handleDrag}
-				onPointerEnter={nonDraggableExited}
 				activeWindowId={activeWindowId}
 				curWindowId={myWindow.id}
 			>
@@ -65,25 +56,21 @@ export const WindowDrawerTopBar = React.memo(
 				<S.Text>{myWindow.name}</S.Text>
 				<S.ActionsContainer>
 					<S.TopBarButton
-						onPointerEnter={nonDraggableEntered}
-						onPointerLeave={nonDraggableExited}
-						onClick={() => dispatch(minimizeWindow(myWindow.id))}
+						onPointerUp={() =>
+							dispatch(minimizeWindow(myWindow.id))
+						}
 					>
 						<S.Icon src={minimizeIcon} />
 					</S.TopBarButton>
 					<S.TopBarButton
-						onPointerEnter={nonDraggableEntered}
-						onPointerLeave={nonDraggableExited}
-						onClick={() =>
+						onPointerUp={() =>
 							dispatch(toggleMaximizeWindow(myWindow.id))
 						}
 					>
 						<S.Icon src={maximizeIcon} />
 					</S.TopBarButton>
 					<S.TopBarButton
-						onPointerEnter={nonDraggableEntered}
-						onPointerLeave={nonDraggableExited}
-						onClick={() => dispatch(closeWindow(myWindow.id))}
+						onPointerUp={() => dispatch(closeWindow(myWindow.id))}
 					>
 						<S.Icon src={closeIcon} />
 					</S.TopBarButton>

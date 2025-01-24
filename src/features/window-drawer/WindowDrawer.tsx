@@ -67,11 +67,6 @@ export const WindowDrawer = React.memo(() => {
 
 	const [dragState, setDragState] = useState<DragState>(defaultWindowState)
 
-	/**
-	 * Non-draggable are components like buttons, use the setter if the same behaviour breaks.
-	 */
-	const [overNonDraggableState, setOverNonDraggableState] = useState(false)
-
 	const handleDragStart = useCallback(
 		(curWindow: MyWindow) => {
 			setDragState({
@@ -86,7 +81,7 @@ export const WindowDrawer = React.memo(() => {
 		[mousePosition],
 	)
 
-	MousePositionHandler(setMouseDown, setMousePosition, overNonDraggableState)
+	MousePositionHandler(setMouseDown, setMousePosition)
 
 	useEffect(() => {
 		/**
@@ -131,8 +126,6 @@ export const WindowDrawer = React.memo(() => {
 							myWindow={myWindow}
 							dragState={dragState}
 							mousePosition={mousePosition}
-							overNonDraggableState={overNonDraggableState}
-							setOverNonDraggableState={setOverNonDraggableState}
 							onDragStart={handleDragStart}
 							key={myWindow.id}
 						/>
@@ -150,7 +143,6 @@ export const WindowDrawer = React.memo(() => {
 const MousePositionHandler = (
 	setMouseDown: React.Dispatch<boolean>,
 	setMousePosition: React.Dispatch<MousePosition>,
-	overNonDraggableState: boolean,
 ) => {
 	const handleMouseMove = useCallback(
 		(event: MouseEvent) => {
@@ -174,11 +166,5 @@ const MousePositionHandler = (
 			window.removeEventListener("pointerup", handleMouseUp)
 			window.removeEventListener("pointermove", handleMouseMove)
 		}
-	}, [
-		handleMouseMove,
-		handleMouseUp,
-		overNonDraggableState,
-		setMouseDown,
-		setMousePosition,
-	])
+	}, [handleMouseMove, handleMouseUp, setMouseDown, setMousePosition])
 }

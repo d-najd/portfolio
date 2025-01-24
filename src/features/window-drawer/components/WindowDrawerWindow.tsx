@@ -21,20 +21,11 @@ interface Props {
 	myWindow: MyWindow
 	dragState: DragState
 	mousePosition: MousePosition
-	overNonDraggableState: boolean
-	setOverNonDraggableState: React.Dispatch<boolean>
 	onDragStart: (curWindow: MyWindow) => void
 }
 
 export const WindowDrawerWindow = React.memo(
-	({
-		myWindow,
-		dragState,
-		mousePosition,
-		overNonDraggableState,
-		setOverNonDraggableState,
-		onDragStart,
-	}: Props) => {
+	({ myWindow, dragState, mousePosition, onDragStart }: Props) => {
 		const dispatch = useAppDispatch()
 		const maximizedWindowId = useAppSelector(selectMaximizedWindowId)
 		const screenSize = useScreenSize()
@@ -173,13 +164,6 @@ export const WindowDrawerWindow = React.memo(
 						onDragStart={() => {
 							onDragStart(myWindow)
 						}}
-						nonDraggableState={overNonDraggableState}
-						nonDraggableEntered={() =>
-							setOverNonDraggableState(true)
-						}
-						nonDraggableExited={() =>
-							setOverNonDraggableState(false)
-						}
 					/>
 					<GetWindowContentByWindowType
 						windowType={myWindow.windowType}
