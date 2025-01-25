@@ -19,7 +19,7 @@ export const GetWindowContentByWindowType = React.memo(
 			case WindowType.Projects:
 				return <ProjectsWindow />
 			default:
-				return <GithubWindow></GithubWindow>
+				return <>{windowType}</>
 			// return <>{windowType}</>
 		}
 	},
