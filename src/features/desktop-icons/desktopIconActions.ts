@@ -1,5 +1,8 @@
 import { openAndFocusTab } from "../../utils/openAndFocusTab"
-import { onProjectsWindowOpened } from "../window/windowSlice"
+import {
+	onGithubWindowOpened,
+	onProjectsWindowOpened,
+} from "../window/windowSlice"
 import type { AppDispatch } from "../../app/store"
 
 /**
@@ -31,8 +34,7 @@ export const ExecuteActionByDesktopIconType = (
 			break
 		}
 		case DesktopIconType.Github: {
-			dispatch()
-			// openAndFocusTab("https://www.github.com/d-najd")
+			dispatch(onGithubWindowOpened())
 			break
 		}
 		case DesktopIconType.LinkedIn: {

@@ -1,5 +1,4 @@
 import styled from "@emotion/styled"
-import { Alignment, Alignments } from "@/ui/alignment"
 import React from "react"
 import { WindowContentContainer } from "@/components/WindowContentContainer"
 import useExternalHtml from "@/hooks/useExternalHtml"
@@ -14,16 +13,7 @@ export const GithubWindow = React.memo(() => {
 	)
 })
 
-const Container = styled(WindowContentContainer)`
-	${Alignment(Alignments.HorizontallyCentered)};
-	display: flex;
-	// padding-bottom: 17px;
-	box-sizing: border-box;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	gap: 17px;
-`
+const Container = styled(WindowContentContainer)``
 
 const Content = styled.iframe`
 	width: 100%;

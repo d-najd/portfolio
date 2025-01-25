@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "@/app/createAppSlice"
 import {
 	closeWindow,
+	onGithubWindowOpened,
 	onProjectsWindowOpened,
 	unfocus,
 	windowIdCounter,
@@ -253,6 +254,24 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.Projects,
+						minimized: false,
+						width: 950,
+						height: 500,
+						offsetX: 480,
+						offsetY: 80,
+						minWidth: 480,
+						minHeight: 340,
+					}),
+				)
+				reorderAtTopWindow(state, windowIdCounter)
+				state.activeWindowId = windowIdCounter
+			})
+			.addCase(onGithubWindowOpened, state => {
+				state.windows.push(
+					windowFactory({
+						id: windowIdCounter,
+						drawOrder: state.windows.length,
+						windowType: WindowType.Github,
 						minimized: false,
 						width: 950,
 						height: 500,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+const proxyUrl = "https://corsproxy.io/?url="
 
 /**
  * Websites like GitHub prohibit the use of iframes for viewing their content,

@@ -1,7 +1,10 @@
 import type { defaultSliceStates } from "@/utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
-import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
+import {
+	selectWindowDrawerWindows,
+	WindowType,
+} from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "@/app/createAppSlice"
 import { useAppSelector } from "@/app/hooks"
 
@@ -65,19 +68,20 @@ export const windowSlice = createAppSlice({
 		onProjectsWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: "Portfolio",
+				name: WindowType.Projects,
 			})
 		},
 		onGithubWindowOpened: state => {
 			state.windows.push({
-				id: 
+				id: getNextWindowId(),
+				name: WindowType.Github,
 			})
-		}
+		},
 		/**
-		 * Called whenever the wallpaper or something else is pressed that 
+		 * Called whenever the wallpaper or something else is pressed that
 		 * should unfocus everything from active windows to icons.
 		 */
-		unfocus: state => {}
+		unfocus: state => {},
 	}),
 	selectors: {
 		selectWindowsStatus: state => state.status,
@@ -142,6 +146,11 @@ const combineWindows = (
 	}
 }
 
-export const { closeWindow, onProjectsWindowOpened, unfocus } = windowSlice.actions
+export const {
+	closeWindow,
+	onProjectsWindowOpened,
+	onGithubWindowOpened,
+	unfocus,
+} = windowSlice.actions
 
 export const { selectBaseWindows } = windowSlice.selectors
