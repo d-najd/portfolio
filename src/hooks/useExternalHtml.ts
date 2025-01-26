@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
+
+const cache: Record<string, any> = {}
 
 const useExternalHtml = (url: URL) => {
-	const cache = useRef<Record<string, any>>({})
+	// const cache = useRef<Record<string, any>>({})
 	const [data, setData] = useState<string>("")
 
 	const href = url.href
@@ -12,16 +14,16 @@ const useExternalHtml = (url: URL) => {
 		const fetchUrl = `${proxyUrl}${href}`
 
 		const fetchData = async () => {
-			if (cache.current[href]) {
+			if (cache[href]) {
 				console.log("RETURNING")
-				const data = cache.current[href]
+				const data = cache[href]
 				setData(data)
 			} else {
 				console.log("REFETCHING ")
-				console.log(cache.current)
+				console.log(cache)
 				const response = await fetch(fetchUrl)
 				const data = parseData(await response.text(), origin)
-				cache.current[href] = data
+				cache[href] = data
 				setData(data)
 			}
 		}
