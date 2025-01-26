@@ -15,7 +15,6 @@ import { changeActiveWindow } from "@/features/window-drawer/windowDrawerSlice"
 
 export interface DesktopIcon {
 	id: number
-	name: string
 	iconUrl: string
 	iconType: DesktopIconType
 }
@@ -36,51 +35,43 @@ const initialState: DesktopIconsState = {
 	icons: [
 		{
 			id: getNextIconId(),
-			name: "My Computer",
 			iconUrl: myComputerIco,
-			iconType: DesktopIconType.Undefined,
+			iconType: DesktopIconType.MyComputer,
 		},
 		{
 			id: getNextIconId(),
-			name: "Recycle Bin",
 			iconUrl: recycleBinIco,
-			iconType: DesktopIconType.Undefined,
+			iconType: DesktopIconType.RecycleBin,
 		},
 		{
 			id: getNextIconId(),
-			name: "Résumé",
 			iconUrl: resumeIco,
-			iconType: DesktopIconType.Undefined,
+			iconType: DesktopIconType.Resume,
 		},
 		{
 			id: getNextIconId(),
-			name: "Projects",
 			iconUrl: projectsIco,
 			iconType: DesktopIconType.Projects,
 		},
 		{
 			id: getNextIconId(),
-			name: "Send Mail",
 			iconUrl: sendMailIco,
-			iconType: DesktopIconType.Undefined,
+			iconType: DesktopIconType.SendMail,
 		},
 		{
 			id: getNextIconId(),
-			name: "LinkedIn",
 			iconUrl: linkedInIco,
 			iconType: DesktopIconType.LinkedIn,
 		},
 		{
 			id: getNextIconId(),
-			name: "Github",
 			iconUrl: githubIco,
 			iconType: DesktopIconType.Github,
 		},
 		{
 			id: getNextIconId(),
-			name: "MS-DOS Prompt",
 			iconUrl: msDosPromptIco,
-			iconType: DesktopIconType.Undefined,
+			iconType: DesktopIconType.Terminal,
 		},
 	],
 	selectedIcon: -1,

@@ -1,6 +1,6 @@
-import { openAndFocusTab } from "../../utils/openAndFocusTab"
-import { onProjectsWindowOpened } from "../window/windowSlice"
-import type { AppDispatch } from "../../app/store"
+import { openAndFocusTab } from "@/utils/openAndFocusTab"
+import { onProjectsWindowOpened } from "@/features/window/windowSlice"
+import type { AppDispatch } from "@/app/store"
 
 /**
  * Contains list of all the possible actions that can be executed for all icons
@@ -11,9 +11,13 @@ export enum DesktopIconType {
 	 */
 	Undefined = "Undefined",
 	MyComputer = "My Computer",
+	RecycleBin = "Recycle Bin",
+	Resume = "Résumé",
 	Projects = "Projects",
-	Github = "Github",
+	SendMail = "Send Mail",
 	LinkedIn = "LinkedIn",
+	Github = "Github",
+	Terminal = "MS-DOS Prompt",
 }
 
 /**
