@@ -38,9 +38,9 @@ export const StyledImage = styled.img`
 `
 
 export const Text = styled.span`
-	padding-left: 3px;
+	padding-left: 4px;
 	color: ${theme.colors.primaryTextInverted};
-	font-weight: 500;
+	font-weight: bolder;
 	user-select: none;
 `
 
