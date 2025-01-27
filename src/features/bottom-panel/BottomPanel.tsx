@@ -27,6 +27,7 @@ export const BottomPanel = React.memo(() => {
 						<S.WindowsImageText>Start</S.WindowsImageText>
 					</Row>
 				</S.StartButton>
+				<S.Separator />
 				<BottomPanelWindows />
 			</S.BottomBar>
 		</S.Container>

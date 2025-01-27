@@ -4,6 +4,7 @@ import { Row } from "@/components/Row"
 import theme from "@/theme/theme"
 import { WindowsButton } from "@/components/WindowsButton"
 import { Alignment, Alignments } from "@/ui/alignment"
+import { ContentSeparator } from "@/components/ContentSeparator"
 
 const bottomPanelHeightTopLine = 2
 const bottomPanelHeightContainer = 33
@@ -21,6 +22,11 @@ export const BottomBar = styled(Row)`
 	width: 100vw;
 	height: ${bottomPanelHeightContainer}px;
 	background-color: ${theme.colors.primaryBackground};
+`
+
+export const Separator = styled(ContentSeparator)`
+	height: 21px;
+	margin-left: 4px;
 `
 
 export const BottomBarTopLine = styled.div`

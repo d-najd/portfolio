@@ -24,6 +24,6 @@ export const BottomPanelWindows = React.memo(() => {
 
 const Container = styled(Row)`
 	${Alignment(Alignments.CenteredStart)};
-	padding-left: 8px;
+	padding-left: 4px;
 	gap: 4px;
 `
