@@ -1,12 +1,10 @@
 import type { defaultSliceStates } from "@/utils/sliceUtil"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
-import {
-	selectWindowDrawerWindows,
-	WindowType,
-} from "../window-drawer/windowDrawerSlice"
+import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "@/app/createAppSlice"
 import { useAppSelector } from "@/app/hooks"
+import { WindowType } from "@/features/shared/windowType"
 
 interface BaseWindow {
 	/**
@@ -15,7 +13,8 @@ interface BaseWindow {
 	 */
 	id: number
 	/**
-	 * Name of the window
+	 * Name of the window,
+	 * @remarks this is not the same as window type since this name can change
 	 */
 	name: string
 }
@@ -69,6 +68,12 @@ export const windowSlice = createAppSlice({
 			state.windows.push({
 				id: getNextWindowId(),
 				name: WindowType.Projects,
+			})
+		},
+		onSendMailWindowOpened: state => {
+			state.windows.push({
+				id: getNextWindowId(),
+				name: WindowType.SendMail,
 			})
 		},
 		onGithubWindowOpened: state => {
@@ -149,6 +154,7 @@ const combineWindows = (
 export const {
 	closeWindow,
 	onProjectsWindowOpened,
+	onSendMailWindowOpened,
 	onGithubWindowOpened,
 	unfocus,
 } = windowSlice.actions

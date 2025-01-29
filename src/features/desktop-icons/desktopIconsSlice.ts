@@ -9,14 +9,14 @@ import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { DesktopIconType } from "./desktopIconActions"
 import { unfocus } from "@/features/window/windowSlice"
 import { changeActiveWindow } from "@/features/window-drawer/windowDrawerSlice"
+import { WindowType } from "@/features/shared/windowType"
 
 export interface DesktopIcon {
 	id: number
 	iconUrl: string
-	iconType: DesktopIconType
+	iconType: WindowType
 }
 
 interface DesktopIconsState {
@@ -36,42 +36,42 @@ const initialState: DesktopIconsState = {
 		{
 			id: getNextIconId(),
 			iconUrl: myComputerIco,
-			iconType: DesktopIconType.MyComputer,
+			iconType: WindowType.MyComputer,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: recycleBinIco,
-			iconType: DesktopIconType.RecycleBin,
+			iconType: WindowType.RecycleBin,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: resumeIco,
-			iconType: DesktopIconType.Resume,
+			iconType: WindowType.Resume,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: projectsIco,
-			iconType: DesktopIconType.Projects,
+			iconType: WindowType.Projects,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: sendMailIco,
-			iconType: DesktopIconType.SendMail,
+			iconType: WindowType.SendMail,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: linkedInIco,
-			iconType: DesktopIconType.LinkedIn,
+			iconType: WindowType.LinkedIn,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: githubIco,
-			iconType: DesktopIconType.Github,
+			iconType: WindowType.Github,
 		},
 		{
 			id: getNextIconId(),
 			iconUrl: msDosPromptIco,
-			iconType: DesktopIconType.Terminal,
+			iconType: WindowType.Terminal,
 		},
 	],
 	selectedIcon: -1,

@@ -4,16 +4,26 @@ import { BottomPanel } from "./features/bottom-panel/BottomPanel"
 import styled from "@emotion/styled"
 import { WindowDrawer } from "./features/window-drawer/WindowDrawer"
 import { DesktopIcons } from "./features/desktop-icons/DesktopIcons"
-import { onProjectsWindowOpened, unfocus } from "./features/window/windowSlice"
+import {
+	onProjectsWindowOpened,
+	onSendMailWindowOpened,
+	unfocus,
+} from "./features/window/windowSlice"
 import { useAppDispatch } from "@/app/hooks"
 
-let openProjectsWindow = false
+let openProjectsWindow = true
+let openSendMailWindow = false
 
 const App = () => {
 	const dispatch = useAppDispatch()
 	if (!openProjectsWindow) {
 		openProjectsWindow = true
 		dispatch(onProjectsWindowOpened())
+	}
+
+	if (!openSendMailWindow) {
+		openSendMailWindow = true
+		dispatch(onSendMailWindowOpened())
 	}
 
 	return (

@@ -1,7 +1,8 @@
 import { ProjectsWindow } from "./projects/ProjectsWindow"
 import type { ReactNode } from "react"
 import React from "react"
-import { WindowType } from "@/features/window-drawer/windowDrawerSlice"
+import { WindowType } from "@/features/shared/windowType"
+import { SendMailWindow } from "@/features/windows/send-mail/SendMailWindow"
 
 interface Props {
 	windowType: WindowType
@@ -13,15 +14,12 @@ interface Props {
 export const GetWindowContentByWindowType = React.memo(
 	({ windowType }: Props): ReactNode => {
 		switch (windowType) {
-			/*
-			case WindowType.Github:
-				return <GithubWindow />
-			 */
+			case WindowType.SendMail:
+				return <SendMailWindow />
 			case WindowType.Projects:
 				return <ProjectsWindow />
 			default:
 				return <>{windowType}</>
-			// return <>{windowType}</>
 		}
 	},
 )

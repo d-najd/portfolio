@@ -5,20 +5,13 @@ import {
 	closeWindow,
 	onGithubWindowOpened,
 	onProjectsWindowOpened,
+	onSendMailWindowOpened,
 	unfocus,
 	windowIdCounter,
 } from "../window/windowSlice"
 import type { Position } from "@/ui/transforms"
 import type { Size } from "re-resizable"
-
-/**
- * @see {GetWindowContentByWindowType}
- */
-export enum WindowType {
-	Undefined = "Undefined",
-	Projects = "Projects",
-	Github = "Github",
-}
+import { WindowType } from "@/features/shared/windowType"
 
 export interface WindowDrawerWindow {
 	id: number
@@ -47,10 +40,10 @@ export interface WindowDrawerWindow {
 type WindowFactoryParams = {
 	id: number
 	drawOrder: number
-	width: number
-	height: number
-	offsetX: number
-	offsetY: number
+	width?: number
+	height?: number
+	offsetX?: number
+	offsetY?: number
 	windowType?: WindowType
 	minimized?: boolean
 	minWidth?: number
@@ -60,14 +53,14 @@ type WindowFactoryParams = {
 let windowFactory = ({
 	id,
 	drawOrder,
-	width,
-	height,
-	offsetX,
-	offsetY,
+	width = 950,
+	height = 550,
+	offsetX = 480,
+	offsetY = 80,
 	windowType = WindowType.Undefined,
 	minimized = false,
 	minWidth = 300,
-	minHeight = 100,
+	minHeight = 200,
 }: WindowFactoryParams): WindowDrawerWindow => ({
 	id: id,
 	drawOrder: drawOrder,
@@ -254,11 +247,6 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.Projects,
-						minimized: false,
-						width: 950,
-						height: 500,
-						offsetX: 480,
-						offsetY: 80,
 						minWidth: 480,
 						minHeight: 340,
 					}),
@@ -272,11 +260,19 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.Github,
-						minimized: false,
-						width: 950,
-						height: 500,
-						offsetX: 480,
-						offsetY: 80,
+						minWidth: 480,
+						minHeight: 340,
+					}),
+				)
+				reorderAtTopWindow(state, windowIdCounter)
+				state.activeWindowId = windowIdCounter
+			})
+			.addCase(onSendMailWindowOpened, state => {
+				state.windows.push(
+					windowFactory({
+						id: windowIdCounter,
+						drawOrder: state.windows.length,
+						windowType: WindowType.SendMail,
 						minWidth: 480,
 						minHeight: 340,
 					}),

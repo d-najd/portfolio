@@ -1,24 +1,10 @@
 import { openAndFocusTab } from "@/utils/openAndFocusTab"
-import { onProjectsWindowOpened } from "@/features/window/windowSlice"
+import {
+	onProjectsWindowOpened,
+	onSendMailWindowOpened,
+} from "@/features/window/windowSlice"
 import type { AppDispatch } from "@/app/store"
-
-/**
- * Contains list of all the possible actions that can be executed for all icons
- */
-export enum DesktopIconType {
-	/**
-	 * Does nothing if clicked
-	 */
-	Undefined = "Undefined",
-	MyComputer = "My Computer",
-	RecycleBin = "Recycle Bin",
-	Resume = "Résumé",
-	Projects = "Projects",
-	SendMail = "Send Mail",
-	LinkedIn = "LinkedIn",
-	Github = "Github",
-	Terminal = "MS-DOS Prompt",
-}
+import { WindowType } from "@/features/shared/windowType"
 
 /**
  * Returns action based on the desktop icon clicked
@@ -26,20 +12,24 @@ export enum DesktopIconType {
  * @param dispatch for executing actions which require app dispatch
  */
 export const ExecuteActionByDesktopIconType = (
-	iconType: DesktopIconType,
+	iconType: WindowType,
 	dispatch: AppDispatch,
 ) => {
 	switch (iconType) {
-		case DesktopIconType.Projects: {
+		case WindowType.Projects: {
 			dispatch(onProjectsWindowOpened())
 			break
 		}
-		case DesktopIconType.Github: {
+		case WindowType.SendMail: {
+			dispatch(onSendMailWindowOpened())
+			break
+		}
+		case WindowType.Github: {
 			openAndFocusTab("https://github.com/d-najd")
 			// dispatch(onGithubWindowOpened())
 			break
 		}
-		case DesktopIconType.LinkedIn: {
+		case WindowType.LinkedIn: {
 			openAndFocusTab("https://www.linkedin.com/in/dimitar-najdovski/")
 			break
 		}
