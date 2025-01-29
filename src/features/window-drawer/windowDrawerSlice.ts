@@ -273,8 +273,8 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.SendMail,
-						minWidth: 50,
-						minHeight: 340,
+						minWidth: 275,
+						minHeight: 150,
 						width: 400,
 					}),
 				)
