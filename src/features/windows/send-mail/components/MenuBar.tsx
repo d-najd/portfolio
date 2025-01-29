@@ -20,7 +20,7 @@ export const MenuBar = () => {
 		{ text: "Insert", underlinedIndex: 0 },
 		{ text: "Format", underlinedIndex: 1 },
 		{ text: "Tools", underlinedIndex: 0 },
-		{ text: "Messages", underlinedIndex: 0 },
+		{ text: "Compose", underlinedIndex: 0 },
 		{ text: "Help", underlinedIndex: 0 },
 	]
 
