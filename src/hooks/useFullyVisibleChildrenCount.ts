@@ -29,7 +29,7 @@ export const useFullyVisibleChildrenCount = (
 				const child = children[i]
 
 				if (
-					child.getBoundingClientRect().right >=
+					child.getBoundingClientRect().right >
 					parent.getBoundingClientRect().right
 				) {
 					setVisibleChildren(i - 1)
