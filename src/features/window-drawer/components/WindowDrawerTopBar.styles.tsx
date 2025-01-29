@@ -42,6 +42,7 @@ export const Text = styled.span`
 	color: ${theme.colors.primaryTextInverted};
 	font-weight: bolder;
 	user-select: none;
+	pointer-events: none;
 `
 
 export const ActionsContainer = styled(Row)`

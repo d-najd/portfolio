@@ -36,9 +36,9 @@ export const WindowDrawerTopBar = React.memo(
 
 		const handleDrag = useCallback(
 			(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-				console.log(e.relatedTarget)
-				console.log(e.target)
-				console.log(e.currentTarget)
+				// console.log(e.relatedTarget)
+				// console.log(e.target)
+				// console.log(e.currentTarget)
 				if (e.button === 0 && e.target === e.currentTarget) {
 					sendDragStarted()
 				}
