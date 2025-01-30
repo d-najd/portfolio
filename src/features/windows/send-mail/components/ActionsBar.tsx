@@ -39,7 +39,7 @@ export const ActionsBar = () => {
 					<S.Icon height={24} src={checkNamesIcon} />
 				</S.Button>
 				<S.Button>
-					<S.Icon height={23} src={selectRecipientsIcon} />
+					<S.Icon height={22} src={selectRecipientsIcon} />
 				</S.Button>
 				<SendMailDivider />
 				<S.Button>
