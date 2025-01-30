@@ -43,6 +43,6 @@ export const Text = styled.span<IconProps>`
 		o.selectedIcon === o.iconData.id ? "blue" : "transparent"};
 	border: ${o =>
 		o.selectedIcon === o.iconData.id
-			? "rgba(255, 255, 255, 0.7) dotted 2px"
+			? "rgba(255, 255, 0, 1) dotted 2px"
 			: "none"};
 `

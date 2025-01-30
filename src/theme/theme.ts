@@ -10,6 +10,7 @@ export interface ThemeType {
 		primaryBorderDepressed: string
 		windowTopBarActive: string
 		windowTopBarInactive: string
+		borderColor: string
 	}
 }
 
@@ -23,6 +24,7 @@ export const light: ThemeType = {
 		primaryBorderDepressed: "#FFFFFF",
 		windowTopBarActive: "#00007C",
 		windowTopBarInactive: "#7B7D7B",
+		borderColor: "gray",
 	},
 }
 
