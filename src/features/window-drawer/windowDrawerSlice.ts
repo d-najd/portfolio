@@ -273,9 +273,10 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.SendMail,
+						offsetX: 25,
 						minWidth: 275,
 						minHeight: 150,
-						width: 400,
+						width: 600,
 					}),
 				)
 				reorderAtTopWindow(state, windowIdCounter)
