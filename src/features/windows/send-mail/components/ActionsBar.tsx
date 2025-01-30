@@ -68,7 +68,7 @@ export const ActionsBar = () => {
 				<Button>
 					<Icon
 						css={css`
-							padding-top: 3px;
+							margin-top: 3px;
 						`}
 						height={17}
 						src={encryptMessageIcon}
