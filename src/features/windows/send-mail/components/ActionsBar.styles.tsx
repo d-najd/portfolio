@@ -53,7 +53,7 @@ export const Icon = styled.img<IconProps>`
 `
 
 export const SendText = styled.span`
+	font-size: 1.25em;
 	margin-top: 2px;
-	margin-left: 4px;
-	font-weight: bolder;
+	margin-left: 6px;
 `

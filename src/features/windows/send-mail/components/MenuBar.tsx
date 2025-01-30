@@ -37,16 +37,16 @@ export const MenuBar = () => {
 const Container = styled(Row)`
 	flex-direction: row;
 	flex-wrap: wrap;
-	padding: 1px 4px;
+	padding: 1px 0;
 	width: 100%;
 `
 
 const Item = styled.button`
-	padding: 8px 4px;
+	padding: 2px 7px;
 	background-color: transparent;
 	border-color: transparent;
-	font-size: 1em;
 	pointer-events: all;
+	font-size: 1em;
 
 	&:active {
 		background-color: ${theme.colors.windowTopBarActive};
