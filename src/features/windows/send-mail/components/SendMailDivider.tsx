@@ -3,28 +3,27 @@ import theme from "@/theme/theme"
 
 export const SendMailDivider = () => {
 	return (
-		<>
+		<Container>
 			<Left />
 			<Right />
-		</>
+		</Container>
 	)
 }
 
-const Left = styled.div`
-	height: 100%;
-	margin-top: 1px;
-	border-right: solid ${theme.colors.borderColor} 2px;
+const Container = styled.div`
+	display: flex;
+	margin-bottom: 2px;
+	margin-top: 2px;
+	min-height: 100%;
+`
 
-	&:before {
-		content: "\\200B"; // zero width char
-	}
+const Left = styled.div`
+	display: flex;
+	height: 100%;
+	border-right: solid ${theme.colors.borderColor} 2px;
 `
 const Right = styled.div`
+	display: flex;
 	height: 100%;
-	margin-top: 1px;
 	border-right: solid white 2px;
-
-	&:before {
-		content: "\\200B"; // zero width char
-	}
 `
