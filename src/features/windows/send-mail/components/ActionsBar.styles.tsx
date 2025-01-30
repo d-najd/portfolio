@@ -47,13 +47,13 @@ interface IconProps {
 }
 
 export const Icon = styled.img<IconProps>`
+	height: ${o => o.height}px;
 	padding: 2px 0;
 	image-rendering: pixelated;
-	height: ${o => o.height}px;
 `
 
 export const SendText = styled.span`
-	font-weight: bolder;
 	margin-top: 2px;
 	margin-left: 4px;
+	font-weight: bolder;
 `
