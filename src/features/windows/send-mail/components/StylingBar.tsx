@@ -52,15 +52,15 @@ export const StylingBar = () => {
 
 const Container = styled(Row)`
 	${Alignment(Alignments.CenteredStart)};
-	gap: 13px;
+	gap: 15px;
 	padding-left: 12px;
 	padding-top: 4px;
 	padding-bottom: 4px;
-	height: 22px;
+	height: 24px;
 	margin-top: 4px;
 	overflow: hidden;
 `
 
 const Icon = styled.img`
-	height: 22px;
+	height: 24px;
 `
