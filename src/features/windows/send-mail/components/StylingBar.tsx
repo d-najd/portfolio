@@ -52,11 +52,11 @@ export const StylingBar = () => {
 const Container = styled(Row)`
 	gap: 15px;
 	padding-left: 12px;
-	height: 24px;
+	height: 23px;
 	margin-top: 8px;
 	overflow: hidden;
 `
 
 const Icon = styled.img`
-	height: 24px;
+	height: 23px;
 `
