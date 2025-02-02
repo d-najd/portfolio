@@ -17,7 +17,6 @@ import alignRightIcon from "@/resources/icons/send-mail/styling-menu/align-right
 import insertHorizontalLineIcon from "@/resources/icons/send-mail/styling-menu/insert-horizontal-line.png"
 import insertHyperlinkIcon from "@/resources/icons/send-mail/styling-menu/insert-hyperlink.png"
 import insertPictureIcon from "@/resources/icons/send-mail/styling-menu/insert-picture.png"
-import { Alignment, Alignments } from "@/ui/alignment"
 import { SendMailDivider } from "@/features/windows/send-mail/components/SendMailDivider"
 
 export const StylingBar = () => {
@@ -51,13 +50,10 @@ export const StylingBar = () => {
 }
 
 const Container = styled(Row)`
-	${Alignment(Alignments.CenteredStart)};
 	gap: 15px;
 	padding-left: 12px;
-	padding-top: 4px;
-	padding-bottom: 4px;
 	height: 24px;
-	margin-top: 4px;
+	margin-top: 8px;
 	overflow: hidden;
 `
 

@@ -12,8 +12,6 @@ export const SendMailDivider = () => {
 
 const Container = styled.div`
 	display: flex;
-	margin-bottom: 2px;
-	margin-top: 2px;
 	min-height: 100%;
 `
 

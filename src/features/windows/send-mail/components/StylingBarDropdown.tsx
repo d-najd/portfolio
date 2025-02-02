@@ -31,6 +31,7 @@ const Container = styled(Row)`
 	height: 100%;
 	border-style: inset;
 	border-width: 2px;
+	box-sizing: border-box;
 	border-left-color: ${theme.colors.disabled};
 	border-top-color: ${theme.colors.disabled};
 	border-bottom-color: ${theme.colors.primaryBorderDepressed};
