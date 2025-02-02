@@ -52,18 +52,18 @@ export const ActionsBar = () => {
 				<S.Button>
 					<S.Icon
 						css={css`
-							margin-bottom: 5px;
+							margin-bottom: 4px;
 						`}
-						height={20}
+						height={18}
 						src={digitallySignMessageIcon}
 					/>
 				</S.Button>
 				<S.Button>
 					<S.Icon
 						css={css`
-							margin-top: 5px;
+							margin-top: 4px;
 						`}
-						height={20}
+						height={19}
 						src={encryptMessageIcon}
 					/>
 				</S.Button>
