@@ -25,7 +25,7 @@ export const Container = styled(Row)<ContainerProps>`
 	background-color: ${o =>
 		o.curWindowId === o.activeWindowId
 			? theme.colors.windowTopBarActive
-			: theme.colors.windowTopBarInactive};
+			: theme.colors.disabled};
 `
 
 export const StyledImage = styled.img`

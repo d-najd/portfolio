@@ -9,7 +9,7 @@ export interface ThemeType {
 		primaryBorderElevated: string
 		primaryBorderDepressed: string
 		windowTopBarActive: string
-		windowTopBarInactive: string
+		disabled: string
 		borderColor: string
 	}
 }
@@ -23,7 +23,7 @@ export const light: ThemeType = {
 		primaryBorderElevated: "#555555",
 		primaryBorderDepressed: "#FFFFFF",
 		windowTopBarActive: "#00007C",
-		windowTopBarInactive: "#7B7D7B",
+		disabled: "#7B7D7B",
 		borderColor: "gray",
 	},
 }

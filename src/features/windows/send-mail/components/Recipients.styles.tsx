@@ -20,7 +20,7 @@ export const LeftContainer = styled(Column)`
 	padding: ${paddingTop}px 7px ${paddingBottom}px 7px;
 	gap: ${rowGap}px;
 	text-align: right;
-	background-color: ${theme.colors.windowTopBarInactive};
+	background-color: ${theme.colors.disabled};
 	color: white;
 `
 

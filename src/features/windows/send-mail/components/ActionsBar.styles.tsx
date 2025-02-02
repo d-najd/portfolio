@@ -1,11 +1,6 @@
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
 import { Row } from "@/components/Row"
-import { Alignment, Alignments } from "@/ui/alignment"
-import {
-	WindowsButtonIdleStyle,
-	WindowsButtonPressedStyle,
-} from "@/components/WindowsButton"
 
 export const Container = styled.div`
 	width: 100%;
@@ -21,25 +16,6 @@ export const ContainerInner = styled(Row)`
 	border-width: 2px;
 	border-color: white white ${theme.colors.borderColor} white;
 	border-style: solid;
-`
-
-interface ButtonProps {
-	disabled?: boolean
-}
-
-export const Button = styled.button<ButtonProps>`
-	${Alignment(Alignments.VerticallyCentered)};
-	background-color: transparent;
-	border-color: transparent;
-	pointer-events: ${o => (o.disabled === true ? "none" : "inherit")};
-
-	&:hover {
-		${WindowsButtonIdleStyle}
-	}
-
-	&:active {
-		${WindowsButtonPressedStyle}
-	}
 `
 
 interface IconProps {
