@@ -89,6 +89,6 @@ export const RightContainer = styled.div`
 
 export const EdgeIcon = styled.img`
 	width: min-content;
-	height: 28px;
+	height: 26px;
 	image-rendering: pixelated;
 `

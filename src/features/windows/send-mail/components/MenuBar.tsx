@@ -46,7 +46,7 @@ const Item = styled.button`
 	background-color: transparent;
 	border-color: transparent;
 	pointer-events: all;
-	font-size: 1em;
+	font-size: 0.925em;
 
 	&:active {
 		background-color: ${theme.colors.windowTopBarActive};

@@ -18,52 +18,52 @@ export const ActionsBar = () => {
 		<S.Container>
 			<S.ContainerInner>
 				<S.Button>
-					<S.Icon height={20} src={sendMailIcon} />
+					<S.Icon height={16} src={sendMailIcon} />
 					<S.SendText>Send</S.SendText>
 				</S.Button>
 				<SendMailDivider />
 				<S.Button disabled={true}>
-					<S.Icon height={15} src={undoIcon} />
+					<S.Icon height={12} src={undoIcon} />
 				</S.Button>
 				<S.Button disabled={true}>
-					<S.Icon height={25} src={cutIcon} />
+					<S.Icon height={20} src={cutIcon} />
 				</S.Button>
 				<S.Button disabled={true}>
-					<S.Icon height={24} src={copyIcon} />
+					<S.Icon height={19} src={copyIcon} />
 				</S.Button>
 				<S.Button disabled={true}>
-					<S.Icon height={24} src={pasteIcon} />
+					<S.Icon height={19} src={pasteIcon} />
 				</S.Button>
 				<SendMailDivider />
 				<S.Button>
-					<S.Icon height={24} src={checkNamesIcon} />
+					<S.Icon height={19} src={checkNamesIcon} />
 				</S.Button>
 				<S.Button>
-					<S.Icon height={22} src={selectRecipientsIcon} />
+					<S.Icon height={18} src={selectRecipientsIcon} />
 				</S.Button>
 				<SendMailDivider />
 				<S.Button>
-					<S.Icon height={25} src={insertFileIcon} />
+					<S.Icon height={20} src={insertFileIcon} />
 				</S.Button>
 				<S.Button disabled={true}>
-					<S.Icon height={25} src={insertSignatureIcon} />
+					<S.Icon height={20} src={insertSignatureIcon} />
 				</S.Button>
 				<SendMailDivider />
 				<S.Button>
 					<S.Icon
 						css={css`
-							margin-bottom: 4px;
+							margin-bottom: 5px;
 						`}
-						height={21}
+						height={20}
 						src={digitallySignMessageIcon}
 					/>
 				</S.Button>
 				<S.Button>
 					<S.Icon
 						css={css`
-							margin-top: 4px;
+							margin-top: 5px;
 						`}
-						height={21}
+						height={20}
 						src={encryptMessageIcon}
 					/>
 				</S.Button>
