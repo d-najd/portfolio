@@ -26,7 +26,9 @@ export const Recipients = () => {
 					<S.RecipientIcon src={recipientIcon} />
 					<S.MiddleContainerText>{mailText}</S.MiddleContainerText>
 				</S.MiddleSubContainer>
-				<S.SubjectText></S.SubjectText>
+				<S.SubjectText
+					placeholder={"< click here to enter the subject >"}
+				></S.SubjectText>
 			</S.MiddleContainer>
 			<S.RightContainer>
 				<S.EdgeIcon src={edgeIcon}></S.EdgeIcon>

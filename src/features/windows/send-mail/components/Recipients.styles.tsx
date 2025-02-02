@@ -60,12 +60,22 @@ export const SubjectText = styled.input`
 	border: none;
 	font-size: 0.9em;
 
+	&:focus::placeholder {
+		color: transparent;
+	}
+
 	&:active {
-		border: solid 1px ${theme.colors.windowTopBarInactive};
+		border-bottom: 1px outset ${theme.colors.primaryBorderDepressed};
+		border-right: 1px outset ${theme.colors.primaryBorderDepressed};
+		border-top: 2px inset ${theme.colors.primaryBorderDepressed};
+		border-left: 2px inset ${theme.colors.primaryBorderDepressed};
 	}
 
 	&:focus {
-		border: solid 1px ${theme.colors.windowTopBarInactive};
+		border-bottom: 1px outset ${theme.colors.primaryBorderDepressed};
+		border-right: 1px outset ${theme.colors.primaryBorderDepressed};
+		border-top: 2px inset ${theme.colors.primaryBorderDepressed};
+		border-left: 2px inset ${theme.colors.primaryBorderDepressed};
 	}
 `
 
