@@ -3,6 +3,7 @@ import theme from "@/theme/theme"
 import { Row } from "@/components/Row"
 
 export const Container = styled.div`
+	overflow: hidden;
 	box-sizing: border-box;
 	width: 100%;
 	border-width: 2px;
@@ -11,6 +12,7 @@ export const Container = styled.div`
 	border-style: solid;
 `
 export const ContainerInner = styled(Row)`
+	overflow: hidden;
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
