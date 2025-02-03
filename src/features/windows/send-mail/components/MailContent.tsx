@@ -1,11 +1,24 @@
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
+import type React from "react"
 
-export const MailContent = () => {
-	return <Container />
+interface Props {
+	body: string
+	setBody: React.Dispatch<string>
 }
 
-const Container = styled.textarea`
+export const MailContent = ({ body, setBody }: Props) => {
+	return (
+		<Content
+			value={body}
+			onChange={o => {
+				setBody(o.target.value)
+			}}
+		/>
+	)
+}
+
+const Content = styled.textarea`
 	padding: 8px;
 	box-sizing: border-box;
 	width: 100%;

@@ -1,7 +1,6 @@
 import styled from "@emotion/styled"
 import { Row } from "@/components/Row"
 import { StylingBarDropdown } from "@/features/windows/send-mail/components/StylingBarDropdown"
-import React from "react"
 import styleTagIcon from "@/resources/icons/send-mail/styling-menu/style-tag.png"
 import boldIcon from "@/resources/icons/send-mail/styling-menu/bold.png"
 import italicIcon from "@/resources/icons/send-mail/styling-menu/italic.png"

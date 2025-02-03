@@ -13,11 +13,15 @@ import { css } from "@emotion/react"
 import * as S from "./ActionsBar.styles"
 import { Button } from "@/features/windows/send-mail/components/Button"
 
-export const ActionsBar = () => {
+interface Props {
+	onSendClicked: () => void
+}
+
+export const ActionsBar = ({ onSendClicked }: Props) => {
 	return (
 		<S.Container>
 			<S.ContainerInner>
-				<Button>
+				<Button onClick={onSendClicked}>
 					<S.Icon height={18} src={sendMailIcon} />
 					<S.SendText>Send</S.SendText>
 				</Button>
