@@ -10,10 +10,10 @@ const rowGap = 8
 const fieldHeight = 18
 
 export const Container = styled.div`
-	display: flex;
-	box-sizing: border-box;
 	width: 100%;
 	margin-top: 6px;
+	display: flex;
+	box-sizing: border-box;
 	border: solid black 2px;
 `
 
@@ -81,15 +81,14 @@ export const SubjectText = styled.input`
 `
 
 export const RightContainer = styled.div`
+	${Alignment(Alignments.TopEnd)}
 	width: 50px;
 	padding: 8px;
 	box-sizing: border-box;
 	background-color: white;
-	${Alignment(Alignments.TopEnd)}
 `
 
 export const EdgeIcon = styled.img`
-	width: min-content;
 	height: 26px;
 	image-rendering: pixelated;
 `

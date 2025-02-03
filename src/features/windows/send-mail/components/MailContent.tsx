@@ -10,17 +10,13 @@ export const MailContent = () => {
 }
 
 const Container = styled.div`
-	box-sizing: border-box;
 	width: 100%;
 	flex-grow: 1;
 	margin-top: 8px;
+	margin-bottom: 26px;
+	box-sizing: border-box;
 	border: inset 2px black;
 	background-color: white;
-	margin-bottom: 26px;
-	// margin-right: 12px;
-	// padding-right: 12px;
-	//width: 100%;
-	//height: 100%;
 `
 const TextContentContainer = styled.span`
 	width: 100%;

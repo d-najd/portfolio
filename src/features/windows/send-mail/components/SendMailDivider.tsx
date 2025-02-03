@@ -16,12 +16,10 @@ const Container = styled.div`
 `
 
 const Left = styled.div`
-	display: flex;
 	height: 100%;
 	border-right: solid ${theme.colors.borderColor} 2px;
 `
 const Right = styled.div`
-	display: flex;
 	height: 100%;
 	border-right: solid white 2px;
 `

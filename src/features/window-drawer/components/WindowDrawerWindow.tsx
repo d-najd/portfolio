@@ -225,5 +225,5 @@ const WindowContainer = styled.div<WindowContainerProps>`
 
 const ContentWrapper = styled.div`
 	width: 100%;
-	height: calc(100% - ${WindowTopBarHeight}px);
+	height: calc(100% - ${WindowTopBarHeight + borderSize}px);
 `
