@@ -11,6 +11,7 @@ export const MailContent = () => {
 }
 
 const Container = styled(Column)`
+	position: relative;
 	margin-right: 12px;
 	padding-right: 12px;
 	width: 100%;
