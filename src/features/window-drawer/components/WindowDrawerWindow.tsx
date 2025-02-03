@@ -224,6 +224,7 @@ const WindowContainer = styled.div<WindowContainerProps>`
 `
 
 const ContentWrapper = styled.div`
+	position: relative;
 	width: 100%;
 	height: calc(100% - ${WindowTopBarHeight}px);
 `

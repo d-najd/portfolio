@@ -20,9 +20,9 @@ export const SendMailWindow = React.memo(() => {
 
 const Container = styled.div`
 	display: flex;
-	flex-direction: column; /* Stack children vertically */
-
 	position: relative;
+	flex-direction: column;
+
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;

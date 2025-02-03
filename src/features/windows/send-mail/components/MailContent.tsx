@@ -1,6 +1,5 @@
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
-import { Column } from "@/components/Column"
 
 export const MailContent = () => {
 	return (
@@ -10,12 +9,15 @@ export const MailContent = () => {
 	)
 }
 
-const Container = styled(Column)`
-	position: relative;
-	margin-right: 12px;
-	padding-right: 12px;
+const Container = styled.div`
+	flex-grow: 1;
 	width: 100%;
-	height: 100%;
+	background-color: white;
+	margin-bottom: 12px;
+	// margin-right: 12px;
+	// padding-right: 12px;
+	//width: 100%;
+	//height: 100%;
 `
 const TextContentContainer = styled.span`
 	width: 100%;
