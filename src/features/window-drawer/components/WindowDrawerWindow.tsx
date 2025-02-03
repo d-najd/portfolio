@@ -10,12 +10,13 @@ import {
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
-import { WindowDrawerTopBar } from "./WindowDrawerTopBar"
 import { GetWindowContentByWindowType } from "@/features/windows/GetWindowContentByWindowType"
 import type { DragState, MousePosition } from "../WindowDrawer"
 import type { Position, Size } from "@/ui/transforms"
 import type { Enable } from "re-resizable"
 import { Resizable } from "re-resizable"
+import { WindowTopBarHeight } from "@/features/window-drawer/components/WindowDrawerTopBar.styles"
+import { WindowDrawerTopBar } from "@/features/window-drawer/components/WindowDrawerTopBar"
 
 interface Props {
 	myWindow: MyWindow
@@ -165,14 +166,27 @@ export const WindowDrawerWindow = React.memo(
 							onDragStart(myWindow)
 						}}
 					/>
-					<GetWindowContentByWindowType
-						windowType={myWindow.windowType}
-					/>
+					<ContentWrapper>
+						<GetWindowContentByWindowType
+							windowType={myWindow.windowType}
+						/>
+					</ContentWrapper>
 				</WindowContainer>
 			</Resizable>
 		)
 	},
 )
+
+/*
+
+					<WindowDrawerTopBar
+						myWindow={myWindow}
+						onDragStart={() => {
+							onDragStart(myWindow)
+						}}
+					/>
+
+ */
 
 const asResizeEnable = (enabled: boolean): Enable => ({
 	top: enabled,
@@ -207,5 +221,9 @@ const WindowContainer = styled.div<WindowContainerProps>`
 	border-right: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
 	border-bottom: ${borderSize}px inset ${theme.colors.primaryBorderElevated};
 	background-color: ${theme.colors.primaryBackground};
-	overflow: hidden;
+`
+
+const ContentWrapper = styled.div`
+	width: 100%;
+	height: calc(100% - ${WindowTopBarHeight}px);
 `

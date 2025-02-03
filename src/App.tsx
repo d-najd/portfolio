@@ -11,7 +11,7 @@ import {
 } from "./features/window/windowSlice"
 import { useAppDispatch } from "@/app/hooks"
 
-let openProjectsWindow = true
+let openProjectsWindow = false
 let openSendMailWindow = false
 
 const App = () => {

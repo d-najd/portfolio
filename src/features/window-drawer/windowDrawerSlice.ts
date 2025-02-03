@@ -247,6 +247,7 @@ export const windowDrawerSlice = createAppSlice({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						windowType: WindowType.Projects,
+						offsetX: 700,
 						minWidth: 480,
 						minHeight: 340,
 					}),
