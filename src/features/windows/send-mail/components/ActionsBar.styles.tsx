@@ -1,6 +1,7 @@
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
 import { Row } from "@/components/Row"
+import { SendMailDivider } from "@/features/windows/send-mail/components/SendMailDivider"
 
 export const Container = styled.div`
 	width: 100%;
@@ -37,4 +38,19 @@ export const SendText = styled.span`
 	margin-top: 2px;
 	margin-left: 6px;
 	font-size: 1.25em;
+`
+
+export const Divider = () => {
+	return (
+		<DividerContainer>
+			<SendMailDivider />
+		</DividerContainer>
+	)
+}
+
+const dividerVerticalSubtract = 2
+const DividerContainer = styled.div`
+	display: flex;
+	margin-top: ${dividerVerticalSubtract}px;
+	height: calc(100% - ${dividerVerticalSubtract * 2}px);
 `

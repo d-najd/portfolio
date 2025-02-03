@@ -9,7 +9,6 @@ import insertFileIcon from "@/resources/icons/send-mail/insert-file.png"
 import insertSignatureIcon from "@/resources/icons/send-mail/insert-signature.png"
 import digitallySignMessageIcon from "@/resources/icons/send-mail/digitally-sign-message.png"
 import encryptMessageIcon from "@/resources/icons/send-mail/encrypt-message.png"
-import { SendMailDivider } from "@/features/windows/send-mail/components/SendMailDivider"
 import { css } from "@emotion/react"
 import * as S from "./ActionsBar.styles"
 import { Button } from "@/features/windows/send-mail/components/Button"
@@ -22,7 +21,7 @@ export const ActionsBar = () => {
 					<S.Icon height={18} src={sendMailIcon} />
 					<S.SendText>Send</S.SendText>
 				</Button>
-				<SendMailDivider />
+				<S.Divider />
 				<Button disabled={true}>
 					<S.Icon height={13} src={undoIcon} />
 				</Button>
@@ -35,21 +34,21 @@ export const ActionsBar = () => {
 				<Button disabled={true}>
 					<S.Icon height={22} src={pasteIcon} />
 				</Button>
-				<SendMailDivider />
+				<S.Divider />
 				<Button>
 					<S.Icon height={22} src={checkNamesIcon} />
 				</Button>
 				<Button>
 					<S.Icon height={20} src={selectRecipientsIcon} />
 				</Button>
-				<SendMailDivider />
+				<S.Divider />
 				<Button>
 					<S.Icon height={22} src={insertFileIcon} />
 				</Button>
 				<Button disabled={true}>
 					<S.Icon height={22} src={insertSignatureIcon} />
 				</Button>
-				<SendMailDivider />
+				<S.Divider />
 				<Button>
 					<S.Icon
 						css={css`
