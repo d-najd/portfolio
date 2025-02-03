@@ -35,10 +35,10 @@ export const MenuBar = () => {
 }
 
 const Container = styled(Row)`
+	width: 100%;
+	padding: 1px 0;
 	flex-direction: row;
 	flex-wrap: wrap;
-	padding: 1px 0;
-	width: 100%;
 `
 
 const Item = styled.button`

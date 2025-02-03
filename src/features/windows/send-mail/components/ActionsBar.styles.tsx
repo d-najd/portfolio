@@ -3,18 +3,21 @@ import theme from "@/theme/theme"
 import { Row } from "@/components/Row"
 
 export const Container = styled.div`
+	box-sizing: border-box;
 	width: 100%;
 	border-width: 2px;
-	border-color: ${theme.colors.borderColor} ${theme.colors.borderColor} white
+	border-color: ${theme.colors.borderColor} white white
 		${theme.colors.borderColor};
 	border-style: solid;
 `
 export const ContainerInner = styled(Row)`
+	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
 	gap: 6px;
 	border-width: 2px;
-	border-color: white white ${theme.colors.borderColor} white;
+	border-color: white ${theme.colors.borderColor} ${theme.colors.borderColor}
+		white;
 	border-style: solid;
 `
 

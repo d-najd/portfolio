@@ -10,10 +10,13 @@ export const MailContent = () => {
 }
 
 const Container = styled.div`
-	flex-grow: 1;
+	box-sizing: border-box;
 	width: 100%;
+	flex-grow: 1;
+	margin-top: 8px;
+	border: inset 2px black;
 	background-color: white;
-	margin-bottom: 12px;
+	margin-bottom: 26px;
 	// margin-right: 12px;
 	// padding-right: 12px;
 	//width: 100%;
@@ -29,9 +32,4 @@ const TextContentContainer = styled.span`
 	border-top-color: ${theme.colors.disabled};
 	border-bottom-color: ${theme.colors.primaryBorderDepressed};
 	border-right-color: ${theme.colors.primaryBorderDepressed};
-`
-
-const BottomDivider = styled.div`
-	min-height: 120px;
-	background-color: red;
 `

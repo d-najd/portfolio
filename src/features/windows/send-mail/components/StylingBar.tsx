@@ -52,7 +52,7 @@ export const StylingBar = () => {
 const Container = styled(Row)`
 	gap: 15px;
 	padding-left: 12px;
-	min-height: 23px;
+	min-height: 24px;
 	margin-top: 8px;
 	overflow: hidden;
 `

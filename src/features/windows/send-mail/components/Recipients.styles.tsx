@@ -11,9 +11,10 @@ const fieldHeight = 18
 
 export const Container = styled.div`
 	display: flex;
+	box-sizing: border-box;
 	width: 100%;
-	margin-top: 4px;
-	border: solid black 1px;
+	margin-top: 6px;
+	border: solid black 2px;
 `
 
 export const LeftContainer = styled(Column)`

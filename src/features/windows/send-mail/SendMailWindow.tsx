@@ -19,6 +19,10 @@ export const SendMailWindow = React.memo(() => {
 	)
 })
 
+const horizontalMargin = 6
+
 const Container = styled(WindowContentContainer)`
+	margin-left: ${horizontalMargin}px;
+	width: calc(100% - ${horizontalMargin * 2}px);
 	flex-direction: column;
 `
