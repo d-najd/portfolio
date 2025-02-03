@@ -5,6 +5,7 @@ import { ActionsBar } from "@/features/windows/send-mail/components/ActionsBar"
 import { Recipients } from "@/features/windows/send-mail/components/Recipients"
 import { StylingBar } from "@/features/windows/send-mail/components/StylingBar"
 import { MailContent } from "@/features/windows/send-mail/components/MailContent"
+import { WindowContentContainer } from "@/components/WindowContentContainer"
 
 export const SendMailWindow = React.memo(() => {
 	return (
@@ -18,13 +19,6 @@ export const SendMailWindow = React.memo(() => {
 	)
 })
 
-const Container = styled.div`
-	display: flex;
-	position: relative;
+const Container = styled(WindowContentContainer)`
 	flex-direction: column;
-
-	box-sizing: border-box;
-	width: 100%;
-	height: 100%;
-	background-color: yellow;
 `

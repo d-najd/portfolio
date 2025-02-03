@@ -4,6 +4,7 @@ import styled from "@emotion/styled"
 import { ProjectWindowItem } from "./components/ProjectWindowItem"
 import { Alignment, Alignments } from "@/ui/alignment"
 import React from "react"
+import { WindowContentContainer } from "@/components/WindowContentContainer"
 
 export const ProjectsWindow = React.memo(() => {
 	const listProjects = useAppSelector(selectWindowProjectsList)
@@ -17,23 +18,15 @@ export const ProjectsWindow = React.memo(() => {
 	)
 })
 
-const Container = styled.div`
+const Container = styled(WindowContentContainer)`
 	${Alignment(Alignments.HorizontallyCentered)};
-	position: relative;
-	//display: flex;
 	padding-top: 17px;
-	height: calc(100% - 17px);
-	// padding-bottom: 17px;
+	padding-bottom: 17px;
+	height: calc(100% - 34px);
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: flex-start;
 	gap: 17px;
-	background-color: red;
-	overflow: hidden;
-	// position: absolute;
-	width: 100%;
-	// overflow: scroll;
-	scrollbar-width: none;
 `
 /*
 padding-bottom: ${o =>

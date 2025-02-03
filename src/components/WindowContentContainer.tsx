@@ -8,6 +8,15 @@ interface Props {
 // This code is cursed for the love of god don't try to change it
 // hours wasted: 3h
 export const WindowContentContainer = styled.div<Props>`
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	overflow: scroll;
+	scrollbar-width: none;
+
+	/*
+
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -17,4 +26,5 @@ export const WindowContentContainer = styled.div<Props>`
 			? WindowTopBarHeight
 			: o.paddingBottom + WindowTopBarHeight}px;
 	scrollbar-width: none;
+	*/
 `
