@@ -13,7 +13,7 @@ interface Props {
  * @param elevated defaults to elevated
  */
 export const ContentSeparator = styled.div<Props>`
-	border-width: ${o => o.width || "3"}px;
+	border-width: ${o => o.width || "2"}px;
 	border-top-color: ${o =>
 		o.elevated === false
 			? theme.colors.primaryBorderElevated
