@@ -276,7 +276,7 @@ export const windowDrawerSlice = createAppSlice({
 						windowType: WindowType.SendMail,
 						offsetX: 25,
 						minWidth: 275,
-						minHeight: 150,
+						minHeight: 525,
 						width: 600,
 					}),
 				)
