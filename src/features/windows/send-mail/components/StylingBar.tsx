@@ -17,8 +17,9 @@ import insertHorizontalLineIcon from "@/resources/icons/send-mail/styling-menu/i
 import insertHyperlinkIcon from "@/resources/icons/send-mail/styling-menu/insert-hyperlink.png"
 import insertPictureIcon from "@/resources/icons/send-mail/styling-menu/insert-picture.png"
 import { SendMailDivider } from "@/features/windows/send-mail/components/SendMailDivider"
+import React from "react"
 
-export const StylingBar = () => {
+export const StylingBar = React.memo(() => {
 	return (
 		<Container>
 			<StylingBarDropdown
@@ -46,7 +47,7 @@ export const StylingBar = () => {
 			<Icon src={insertPictureIcon}></Icon>
 		</Container>
 	)
-}
+})
 
 const Container = styled(Row)`
 	min-height: 24px;

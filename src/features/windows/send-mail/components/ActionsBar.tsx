@@ -12,12 +12,13 @@ import encryptMessageIcon from "@/resources/icons/send-mail/encrypt-message.png"
 import { css } from "@emotion/react"
 import * as S from "./ActionsBar.styles"
 import { Button } from "@/features/windows/send-mail/components/Button"
+import React from "react"
 
 interface Props {
 	onSendClicked: () => void
 }
 
-export const ActionsBar = ({ onSendClicked }: Props) => {
+export const ActionsBar = React.memo(({ onSendClicked }: Props) => {
 	return (
 		<S.Container>
 			<S.ContainerInner>
@@ -74,4 +75,4 @@ export const ActionsBar = ({ onSendClicked }: Props) => {
 			</S.ContainerInner>
 		</S.Container>
 	)
-}
+})

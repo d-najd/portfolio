@@ -1,13 +1,14 @@
 import styled from "@emotion/styled"
 import { Row } from "@/components/Row"
 import theme from "@/theme/theme"
+import React from "react"
 
 interface MenuBarItemData {
 	text: string
 	underlinedIndex: number
 }
 
-export const MenuBar = () => {
+export const MenuBar = React.memo(() => {
 	const data: MenuBarItemData[] = [
 		{ text: "File", underlinedIndex: 0 },
 		{ text: "Edit", underlinedIndex: 0 },
@@ -32,7 +33,7 @@ export const MenuBar = () => {
 			})}
 		</Container>
 	)
-}
+})
 
 const Container = styled(Row)`
 	width: 100%;

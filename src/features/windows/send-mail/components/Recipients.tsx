@@ -2,14 +2,14 @@ import recipientIcon from "@/resources/icons/send-mail/recipient.png"
 import edgeIcon from "@/resources/icons/send-mail/edge-1.png"
 import * as S from "./Recipients.styles"
 import { mailRecipient } from "@/features/windows/send-mail/SendMailWindow"
-import type React from "react"
+import React from "react"
 
 interface Props {
 	subject: string
 	setSubject: React.Dispatch<string>
 }
 
-export const Recipients = ({ subject, setSubject }: Props) => {
+export const Recipients = React.memo(({ subject, setSubject }: Props) => {
 	return (
 		<S.Container>
 			<S.LeftContainer>
@@ -50,4 +50,4 @@ export const Recipients = ({ subject, setSubject }: Props) => {
 			</S.RightContainer>
 		</S.Container>
 	)
-}
+})
