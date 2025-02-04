@@ -6,30 +6,34 @@ import { Alignment, Alignments } from "@/ui/alignment"
 import React from "react"
 import { useAppDispatch } from "@/app/hooks"
 import { unfocus } from "@/features/window/windowSlice"
+import { StartMenu } from "@/features/bottom-panel/components/StartMenu"
 
 export const BottomPanel = React.memo(() => {
 	const dispatch = useAppDispatch()
 
 	return (
-		<S.Container>
-			<S.BottomBarTopLine />
-			<S.BottomBar>
-				<S.StartButton
-					onClick={o => {
-						dispatch(unfocus())
-					}}
-				>
-					<Row css={Alignment(Alignments.CenteredStart)}>
-						<S.WindowsImage
-							src={windowsIco}
-							alt={"Windows 95 logo"}
-						/>
-						<S.WindowsImageText>Start</S.WindowsImageText>
-					</Row>
-				</S.StartButton>
-				<S.Separator />
-				<BottomPanelWindows />
-			</S.BottomBar>
-		</S.Container>
+		<>
+			<S.Container>
+				<S.BottomBarTopLine />
+				<S.BottomBar>
+					<S.StartButton
+						onClick={o => {
+							dispatch(unfocus())
+						}}
+					>
+						<Row css={Alignment(Alignments.CenteredStart)}>
+							<S.WindowsImage
+								src={windowsIco}
+								alt={"Windows 95 logo"}
+							/>
+							<S.WindowsImageText>Start</S.WindowsImageText>
+						</Row>
+					</S.StartButton>
+					<S.Separator />
+					<BottomPanelWindows />
+				</S.BottomBar>
+			</S.Container>
+			<StartMenu />
+		</>
 	)
 })
