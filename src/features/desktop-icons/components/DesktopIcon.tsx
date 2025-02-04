@@ -10,6 +10,7 @@ import { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { ExecuteActionByDesktopIconType } from "../desktopIconActions"
 import * as S from "./DesktopIcon.styles"
+import { desktopEntryFactory } from "@/features/shared/desktopEntry"
 
 interface Props {
 	iconData: DesktopIcon
@@ -46,7 +47,7 @@ export const DesktopIconTSX = ({
 	return (
 		<S.Container onClick={handleDoubleClick}>
 			<S.Icon
-				src={iconData.iconUrl}
+				src={desktopEntryFactory(iconData.iconType).icon}
 				selectedIcon={selectedIcon}
 				iconData={iconData}
 			/>

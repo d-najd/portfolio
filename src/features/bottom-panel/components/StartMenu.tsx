@@ -5,14 +5,18 @@ import windowsLogo from "@/resources/images/bottom-bar-start-windows-logo.png"
 import { Row } from "@/components/Row"
 import { Column } from "@/components/Column"
 import { Alignment, Alignments } from "@/ui/alignment"
+import {
+	desktopEntryFactory,
+	DesktopEntryType,
+} from "@/features/shared/desktopEntry"
 
 export const StartMenu = () => {
 	const myItems = [
-		{ name: "Projects", src: "" },
-		{ name: "Resume", src: "" },
-		{ name: "Send Mail", src: "" },
-		{ name: "Github", src: "" },
-		{ name: "Linkedin", src: "" },
+		{ type: DesktopEntryType.Projects },
+		{ type: DesktopEntryType.Resume },
+		{ type: DesktopEntryType.SendMail },
+		{ type: DesktopEntryType.Github },
+		{ type: DesktopEntryType.LinkedIn },
 	]
 
 	return (
@@ -22,9 +26,11 @@ export const StartMenu = () => {
 			</LeftContainer>
 			<RightContainer>
 				{myItems.map(item => (
-					<RightItemContainer key={item.name}>
-						<RightItemIcon />
-						<RightItemText>{item.name}</RightItemText>
+					<RightItemContainer key={item.type}>
+						<RightItemIcon
+							src={desktopEntryFactory(item.type).icon}
+						/>
+						<RightItemText>{item.type}</RightItemText>
 					</RightItemContainer>
 				))}
 			</RightContainer>
@@ -35,7 +41,7 @@ export const StartMenu = () => {
 const Container = styled(Row)`
 	position: absolute;
 	width: 170px;
-	height: 260px;
+	height: 255px;
 	bottom: 0;
 	margin-bottom: ${bottomPanelHeight}px;
 	margin-left: 2px;
@@ -71,7 +77,7 @@ const rightContentPadding = 10
 const RightContainer = styled(Column)`
 	justify-content: end;
 	margin-bottom: ${rightContentPadding}px;
-	gap: 16px;
+	gap: 18px;
 	width: 100%;
 	box-sizing: border-box;
 `
@@ -85,9 +91,8 @@ const RightItemContainer = styled(Row)`
 const rightIconSize = 30
 
 const RightItemIcon = styled.img`
-	min-width: ${rightIconSize}px;
-	min-height: ${rightIconSize}px;
-	background-color: red;
+	width: ${rightIconSize}px;
+	height: ${rightIconSize}px;
 `
 
 const rightTextMargin = 4

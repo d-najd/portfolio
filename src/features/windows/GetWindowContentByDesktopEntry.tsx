@@ -1,25 +1,25 @@
 import { ProjectsWindow } from "./projects/ProjectsWindow"
 import type { ReactNode } from "react"
 import React from "react"
-import { WindowType } from "@/features/shared/windowType"
 import { SendMailWindow } from "@/features/windows/send-mail/SendMailWindow"
+import { DesktopEntryType } from "@/features/shared/desktopEntry"
 
 interface Props {
-	windowType: WindowType
+	desktopEntry: DesktopEntryType
 }
 
 /**
  * @see WindowContentContainer.tsx each content container must extend this style
  */
-export const GetWindowContentByWindowType = React.memo(
-	({ windowType }: Props): ReactNode => {
-		switch (windowType) {
-			case WindowType.SendMail:
+export const GetWindowContentByDesktopEntry = React.memo(
+	({ desktopEntry }: Props): ReactNode => {
+		switch (desktopEntry) {
+			case DesktopEntryType.SendMail:
 				return <SendMailWindow />
-			case WindowType.Projects:
+			case DesktopEntryType.Projects:
 				return <ProjectsWindow />
 			default:
-				return <>{windowType}</>
+				return <>{desktopEntry}</>
 		}
 	},
 )

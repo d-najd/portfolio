@@ -1,22 +1,13 @@
 import type { defaultSliceStates } from "@/utils/sliceUtil"
 import { createAppSlice } from "@/app/createAppSlice"
-import myComputerIco from "../../resources/windows_95_icons/Computers/My Computer.ico"
-import recycleBinIco from "../../resources/windows_95_icons/Recycle Bins/Empty Recycle Bin.ico"
-import resumeIco from "../../resources/windows_95_icons/Notepads & Writing/Writing on sheet.ico"
-import projectsIco from "../../resources/windows_95_icons/Folders/Documents Folder.ico"
-import sendMailIco from "../../resources/windows_95_icons/Mail & Letters/Mail.ico"
-import linkedInIco from "../../resources/icons/linkedIn.ico"
-import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
-import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { unfocus } from "@/features/window/windowSlice"
 import { changeActiveWindow } from "@/features/window-drawer/windowDrawerSlice"
-import { WindowType } from "@/features/shared/windowType"
+import { DesktopEntryType } from "@/features/shared/desktopEntry"
 
 export interface DesktopIcon {
 	id: number
-	iconUrl: string
-	iconType: WindowType
+	iconType: DesktopEntryType
 }
 
 interface DesktopIconsState {
@@ -35,43 +26,35 @@ const initialState: DesktopIconsState = {
 	icons: [
 		{
 			id: getNextIconId(),
-			iconUrl: myComputerIco,
-			iconType: WindowType.MyComputer,
+			iconType: DesktopEntryType.MyComputer,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: recycleBinIco,
-			iconType: WindowType.RecycleBin,
+			iconType: DesktopEntryType.RecycleBin,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: resumeIco,
-			iconType: WindowType.Resume,
+			iconType: DesktopEntryType.Resume,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: projectsIco,
-			iconType: WindowType.Projects,
+			iconType: DesktopEntryType.Projects,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: sendMailIco,
-			iconType: WindowType.SendMail,
+			iconType: DesktopEntryType.SendMail,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: linkedInIco,
-			iconType: WindowType.LinkedIn,
+			iconType: DesktopEntryType.LinkedIn,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: githubIco,
-			iconType: WindowType.Github,
+			iconType: DesktopEntryType.Github,
 		},
 		{
 			id: getNextIconId(),
-			iconUrl: msDosPromptIco,
-			iconType: WindowType.Terminal,
+			iconType: DesktopEntryType.Terminal,
 		},
 	],
 	selectedIcon: -1,

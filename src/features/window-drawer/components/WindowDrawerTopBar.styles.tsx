@@ -9,7 +9,7 @@ import { WindowsButton } from "@/components/WindowsButton"
  */
 const topBarContentHeight = 28
 const topBarBorderHeight = 3
-const contentHorizontalPadding = 3
+const contentHorizontalPadding = 6
 export const WindowTopBarHeight = topBarContentHeight + topBarBorderHeight
 
 interface ContainerProps {
@@ -32,7 +32,6 @@ export const StyledImage = styled.img`
 	width: 24px;
 	height: 24px;
 	margin-left: ${contentHorizontalPadding}px;
-	background-color: red;
 	pointer-events: none;
 	user-select: none;
 `

@@ -11,7 +11,7 @@ import {
 } from "../window/windowSlice"
 import type { Position } from "@/ui/transforms"
 import type { Size } from "re-resizable"
-import { WindowType } from "@/features/shared/windowType"
+import { DesktopEntryType } from "@/features/shared/desktopEntry"
 
 export interface WindowDrawerWindow {
 	id: number
@@ -23,7 +23,7 @@ export interface WindowDrawerWindow {
 	/**
 	 * Necessary for determining which content to draw for which window
 	 */
-	windowType: WindowType
+	desktopEntry: DesktopEntryType
 	/**
 	 * Current state of the window, maximized is kept in the window drawer menu since only one window can be maximized,
 	 * and it's always the active window
@@ -44,7 +44,7 @@ type WindowFactoryParams = {
 	height?: number
 	offsetX?: number
 	offsetY?: number
-	windowType?: WindowType
+	desktopEntry?: DesktopEntryType
 	minimized?: boolean
 	minWidth?: number
 	minHeight?: number
@@ -57,14 +57,14 @@ let windowFactory = ({
 	height = 550,
 	offsetX = 480,
 	offsetY = 80,
-	windowType = WindowType.Undefined,
+	desktopEntry = DesktopEntryType.Undefined,
 	minimized = false,
 	minWidth = 300,
 	minHeight = 200,
 }: WindowFactoryParams): WindowDrawerWindow => ({
 	id: id,
 	drawOrder: drawOrder,
-	windowType: windowType,
+	desktopEntry: desktopEntry,
 	minimized: minimized,
 	width: width,
 	height: height,
@@ -246,7 +246,7 @@ export const windowDrawerSlice = createAppSlice({
 					windowFactory({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
-						windowType: WindowType.Projects,
+						desktopEntry: DesktopEntryType.Projects,
 						offsetX: 700,
 						minWidth: 480,
 						minHeight: 340,
@@ -260,7 +260,7 @@ export const windowDrawerSlice = createAppSlice({
 					windowFactory({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
-						windowType: WindowType.Github,
+						desktopEntry: DesktopEntryType.Github,
 						minWidth: 480,
 						minHeight: 340,
 					}),
@@ -273,7 +273,7 @@ export const windowDrawerSlice = createAppSlice({
 					windowFactory({
 						id: windowIdCounter,
 						drawOrder: state.windows.length,
-						windowType: WindowType.SendMail,
+						desktopEntry: DesktopEntryType.SendMail,
 						offsetX: 25,
 						minWidth: 275,
 						minHeight: 525,

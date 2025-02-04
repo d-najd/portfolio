@@ -4,7 +4,7 @@ import type { WindowDrawerWindow } from "../window-drawer/windowDrawerSlice"
 import { selectWindowDrawerWindows } from "../window-drawer/windowDrawerSlice"
 import { createAppSlice } from "@/app/createAppSlice"
 import { useAppSelector } from "@/app/hooks"
-import { WindowType } from "@/features/shared/windowType"
+import { DesktopEntryType } from "@/features/shared/desktopEntry"
 
 interface BaseWindow {
 	/**
@@ -67,19 +67,19 @@ export const windowSlice = createAppSlice({
 		onProjectsWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: WindowType.Projects,
+				name: DesktopEntryType.Projects,
 			})
 		},
 		onSendMailWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: WindowType.SendMail,
+				name: DesktopEntryType.SendMail,
 			})
 		},
 		onGithubWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: WindowType.Github,
+				name: DesktopEntryType.Github,
 			})
 		},
 		/**

@@ -11,6 +11,7 @@ import maximizeIcon from "@/resources/icons/maximize-icon.png"
 import closeIcon from "@/resources/icons/close-icon.png"
 import React, { useCallback } from "react"
 import * as S from "./WindowDrawerTopBar.styles"
+import { desktopEntryFactory } from "@/features/shared/desktopEntry"
 
 export interface Props {
 	myWindow: MyWindow
@@ -52,7 +53,9 @@ export const WindowDrawerTopBar = React.memo(
 				activeWindowId={activeWindowId}
 				curWindowId={myWindow.id}
 			>
-				<S.StyledImage />
+				<S.StyledImage
+					src={desktopEntryFactory(myWindow.desktopEntry).icon}
+				/>
 				<S.Text>{myWindow.name}</S.Text>
 				<S.ActionsContainer>
 					<S.TopBarButton

@@ -10,7 +10,7 @@ import {
 import { bottomPanelHeight } from "@/features/bottom-panel/BottomPanel.styles"
 import styled from "@emotion/styled"
 import theme from "@/theme/theme"
-import { GetWindowContentByWindowType } from "@/features/windows/GetWindowContentByWindowType"
+import { GetWindowContentByDesktopEntry } from "@/features/windows/GetWindowContentByDesktopEntry"
 import type { DragState, MousePosition } from "../WindowDrawer"
 import type { Position, Size } from "@/ui/transforms"
 import type { Enable } from "re-resizable"
@@ -167,8 +167,8 @@ export const WindowDrawerWindow = React.memo(
 						}}
 					/>
 					<ContentWrapper>
-						<GetWindowContentByWindowType
-							windowType={myWindow.windowType}
+						<GetWindowContentByDesktopEntry
+							desktopEntry={myWindow.desktopEntry}
 						/>
 					</ContentWrapper>
 				</WindowContainer>

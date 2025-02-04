@@ -12,6 +12,7 @@ import {
 import { css } from "@emotion/react"
 import { Row } from "@/components/Row"
 import { Alignment, Alignments } from "@/ui/alignment"
+import { desktopEntryFactory } from "@/features/shared/desktopEntry"
 
 interface Props {
 	curWindow: MyWindow
@@ -27,7 +28,7 @@ export const BottomPanelWindow = ({ curWindow }: Props) => {
 			css={pressedButtonStyleOverride(curWindow, activeWindowId)}
 		>
 			<Row css={Alignment(Alignments.CenteredStart)}>
-				<Image />
+				<Image src={desktopEntryFactory(curWindow.desktopEntry).icon} />
 				<Text>{curWindow.name}</Text>
 			</Row>
 		</ContainerButton>
@@ -46,19 +47,18 @@ const pressedButtonStyleOverride = (
 }
 
 const ContainerButton = styled(WindowsButton)`
-	width: 107px;
+	width: 125px;
 	height: 27px;
 	padding-left: 7px;
 `
 
-const Image = styled.image`
-	min-width: 14px;
-	min-height: 14px;
-	background-color: red;
+const Image = styled.img`
+	width: 18px;
+	height: 18px;
 `
 
 const Text = styled.span`
-	margin-left: 3px;
+	margin-left: 4px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
