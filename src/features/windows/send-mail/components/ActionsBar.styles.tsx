@@ -32,6 +32,8 @@ export const Icon = styled.img<IconProps>`
 	height: ${o => o.height}px;
 	padding: 2px 0;
 	image-rendering: pixelated;
+	user-select: none;
+	pointer-events: none;
 `
 
 export const SendText = styled.span`

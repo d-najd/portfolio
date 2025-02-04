@@ -23,6 +23,8 @@ export const LeftContainer = styled(Column)`
 	text-align: right;
 	background-color: ${theme.colors.disabled};
 	color: white;
+	pointer-events: none;
+	user-select: none;
 `
 
 export const LeftContainerText = styled.span`
@@ -45,6 +47,8 @@ export const MiddleSubContainer = styled(Row)`
 export const RecipientIcon = styled.img`
 	width: min-content;
 	height: ${fieldHeight}px;
+	user-select: none;
+	pointer-events: none;
 `
 
 export const MiddleContainerText = styled.u`
@@ -91,4 +95,6 @@ export const RightContainer = styled.div`
 export const EdgeIcon = styled.img`
 	height: 26px;
 	image-rendering: pixelated;
+	user-select: none;
+	pointer-events: none;
 `

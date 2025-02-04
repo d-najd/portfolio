@@ -58,4 +58,6 @@ const Container = styled(Row)`
 
 const Icon = styled.img`
 	height: 100%;
+	user-select: none;
+	pointer-events: none;
 `

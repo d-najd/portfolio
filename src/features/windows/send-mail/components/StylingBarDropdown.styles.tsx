@@ -14,6 +14,8 @@ export const Container = styled(Row)`
 	border-top-color: ${theme.colors.disabled};
 	border-bottom-color: ${theme.colors.primaryBorderDepressed};
 	border-right-color: ${theme.colors.primaryBorderDepressed};
+	user-select: none;
+	pointer-events: none;
 `
 
 export const Text = styled.span`
@@ -32,5 +34,4 @@ export const Icon = styled(WindowsButton)`
 
 export const IconImage = styled.img`
 	height: 8px;
-	pointer-events: none;
 `
