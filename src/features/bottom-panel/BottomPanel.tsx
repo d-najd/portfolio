@@ -4,12 +4,16 @@ import windowsIco from "@/resources/windows_95_icons/Windows/Windows logo (witho
 import * as S from "./BottomPanel.styles"
 import { Alignment, Alignments } from "@/ui/alignment"
 import React from "react"
-import { useAppDispatch } from "@/app/hooks"
-import { unfocus } from "@/features/window/windowSlice"
+import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { StartMenu } from "@/features/bottom-panel/components/StartMenu"
+import {
+	onSelectStartMenu,
+	selectStartMenuSelected,
+} from "@/features/bottom-panel/bottomPanelSlice"
 
 export const BottomPanel = React.memo(() => {
 	const dispatch = useAppDispatch()
+	const startMenuSelected = useAppSelector(selectStartMenuSelected)
 
 	return (
 		<>
@@ -18,7 +22,7 @@ export const BottomPanel = React.memo(() => {
 				<S.BottomBar>
 					<S.StartButton
 						onClick={o => {
-							dispatch(unfocus())
+							dispatch(onSelectStartMenu())
 						}}
 					>
 						<Row css={Alignment(Alignments.CenteredStart)}>
@@ -33,7 +37,7 @@ export const BottomPanel = React.memo(() => {
 					<BottomPanelWindows />
 				</S.BottomBar>
 			</S.Container>
-			<StartMenu />
+			{startMenuSelected && <StartMenu />}
 		</>
 	)
 })

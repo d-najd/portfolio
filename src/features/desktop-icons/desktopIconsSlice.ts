@@ -72,7 +72,6 @@ export const desktopIconsSlice = createAppSlice({
 		onSelectDesktopIcon: (state, action: PayloadAction<number>) => {
 			state.selectedIcon = action.payload
 		},
-		onProjectsClicked: state => {},
 	}),
 	selectors: {
 		selectDesktopIconsStatus: state => state.status,
@@ -92,8 +91,7 @@ export const desktopIconsSlice = createAppSlice({
 	},
 })
 
-export const { onSelectDesktopIcon, onProjectsClicked } =
-	desktopIconsSlice.actions
+export const { onSelectDesktopIcon } = desktopIconsSlice.actions
 
 export const {
 	selectDesktopIconsStatus,

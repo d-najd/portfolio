@@ -95,7 +95,7 @@ const RightItemIcon = styled.img`
 	height: ${rightIconSize}px;
 `
 
-const rightTextMargin = 4
+const rightTextMargin = 6
 
 const RightItemText = styled.span`
 	width: calc(
