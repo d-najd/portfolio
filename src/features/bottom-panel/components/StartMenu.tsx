@@ -10,15 +10,15 @@ import {
 	DesktopEntryType,
 } from "@/features/shared/desktopEntry"
 
-export const StartMenu = () => {
-	const myItems = [
-		{ type: DesktopEntryType.Projects },
-		{ type: DesktopEntryType.Resume },
-		{ type: DesktopEntryType.SendMail },
-		{ type: DesktopEntryType.Github },
-		{ type: DesktopEntryType.LinkedIn },
-	]
+const myItems = [
+	{ type: DesktopEntryType.Projects },
+	{ type: DesktopEntryType.Resume },
+	{ type: DesktopEntryType.SendMail },
+	{ type: DesktopEntryType.Github },
+	{ type: DesktopEntryType.LinkedIn },
+]
 
+export const StartMenu = () => {
 	return (
 		<Container>
 			<LeftContainer>
@@ -26,6 +26,8 @@ export const StartMenu = () => {
 			</LeftContainer>
 			<RightContainer>
 				{myItems.map(item => (
+					// TODO when adding actions refactor and move all actions from
+					// desktopIconActions.ts to desktopEntry.ts
 					<RightItemContainer key={item.type}>
 						<RightItemIcon
 							src={desktopEntryFactory(item.type).icon}
