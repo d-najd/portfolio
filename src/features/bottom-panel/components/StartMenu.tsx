@@ -9,6 +9,9 @@ import {
 	desktopEntryFactory,
 	DesktopEntryType,
 } from "@/features/shared/desktopEntry"
+import { useAppDispatch } from "@/app/hooks"
+import { unfocus } from "@/features/window/windowSlice"
+import React from "react"
 
 const myItems = [
 	{ type: DesktopEntryType.Projects },
@@ -18,7 +21,9 @@ const myItems = [
 	{ type: DesktopEntryType.LinkedIn },
 ]
 
-export const StartMenu = () => {
+export const StartMenu = React.memo(() => {
+	const dispatch = useAppDispatch()
+
 	return (
 		<Container>
 			<LeftContainer>
@@ -26,9 +31,15 @@ export const StartMenu = () => {
 			</LeftContainer>
 			<RightContainer>
 				{myItems.map(item => (
-					// TODO when adding actions refactor and move all actions from
-					// desktopIconActions.ts to desktopEntry.ts
-					<RightItemContainer key={item.type}>
+					<RightItemContainer
+						onClick={() => {
+							dispatch(unfocus())
+							desktopEntryFactory(item.type).executeAction(
+								dispatch,
+							)
+						}}
+						key={item.type}
+					>
 						<RightItemIcon
 							src={desktopEntryFactory(item.type).icon}
 						/>
@@ -38,12 +49,12 @@ export const StartMenu = () => {
 			</RightContainer>
 		</Container>
 	)
-}
+})
 
 const Container = styled(Row)`
 	position: absolute;
 	width: 170px;
-	height: 255px;
+	height: 245px;
 	bottom: 0;
 	margin-bottom: ${bottomPanelHeight}px;
 	margin-left: 2px;
@@ -72,22 +83,30 @@ const LeftWindowsLogo = styled.img`
 	margin-left: ${(leftContainerWidth - windowsLogoWidth) / 2}px;
 	margin-bottom: 2px;
 	width: ${windowsLogoWidth}px;
+	pointer-events: none;
+	user-select: none;
 `
 
 const rightContentPadding = 10
 
 const RightContainer = styled(Column)`
 	justify-content: end;
-	margin-bottom: ${rightContentPadding}px;
-	gap: 18px;
+	// gap: 18px;
 	width: 100%;
 	box-sizing: border-box;
 `
 
 const RightItemContainer = styled(Row)`
 	${Alignment(Alignments.VerticallyCentered)};
-	margin-left: ${rightContentPadding}px;
+	// margin-left: ${rightContentPadding}px;
 	width: calc(100% - ${rightContentPadding * 2}px);
+	padding: 9px ${rightContentPadding}px;
+
+	&:hover {
+		cursor: pointer;
+		background-color: ${theme.colors.windowTopBarActive};
+		color: white;
+	}
 `
 
 const rightIconSize = 30
@@ -95,6 +114,8 @@ const rightIconSize = 30
 const RightItemIcon = styled.img`
 	width: ${rightIconSize}px;
 	height: ${rightIconSize}px;
+	user-select: none;
+	pointer-events: none;
 `
 
 const rightTextMargin = 6
@@ -107,4 +128,6 @@ const RightItemText = styled.span`
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	user-select: none;
+	pointer-events: none;
 `
