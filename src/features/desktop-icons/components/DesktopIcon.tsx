@@ -8,7 +8,6 @@ import { defaultDoubleClickState, doubleClickTolerance } from "../DesktopIcons"
 import type React from "react"
 import { useCallback } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
-import { ExecuteActionByDesktopIconType } from "../desktopIconActions"
 import * as S from "./DesktopIcon.styles"
 import { desktopEntryFactory } from "@/features/shared/desktopEntry"
 import { unfocus } from "@/features/window/windowSlice"
@@ -34,7 +33,7 @@ export const DesktopIconTSX = ({
 				doubleClickTolerance
 		) {
 			setDoubleClickState(defaultDoubleClickState())
-			ExecuteActionByDesktopIconType(iconData.iconType, dispatch)
+			desktopEntryFactory(iconData.iconType).executeAction(dispatch)
 		} else {
 			// Clicked
 			dispatch(unfocus())

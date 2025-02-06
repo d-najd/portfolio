@@ -11,6 +11,12 @@ import sendMailIco
 import linkedInIco from "../../resources/icons/linkedIn.ico"
 import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
+import type { AppDispatch } from "@/app/store"
+import {
+	onProjectsWindowOpened,
+	onSendMailWindowOpened,
+} from "@/features/window/windowSlice"
+import { openAndFocusTab } from "@/utils/openAndFocusTab"
 
 /**
  * Contains list of all possible windows/icons, the string refers to the name of
@@ -37,6 +43,7 @@ export enum DesktopEntryType {
 export interface DesktopEntry {
 	type: DesktopEntryType
 	icon: string
+	executeAction: (dispatch: AppDispatch) => void
 }
 
 /**
@@ -48,52 +55,72 @@ export const desktopEntryFactory = (entry: DesktopEntryType): DesktopEntry => {
 			return {
 				type: entry,
 				icon: "",
+				executeAction: () => {},
 			}
 		case DesktopEntryType.MyComputer:
 			return {
 				type: entry,
 				icon: myComputerIco,
+				executeAction: () => {},
 			}
 		case DesktopEntryType.RecycleBin:
 			return {
 				type: entry,
 				icon: recycleBinIco,
+				executeAction: () => {},
 			}
 		case DesktopEntryType.Resume:
 			return {
 				type: entry,
 				icon: resumeIco,
+				executeAction: () => {},
 			}
 		case DesktopEntryType.Projects:
 			return {
 				type: entry,
 				icon: projectsIco,
+				executeAction: dispatch => {
+					dispatch(onProjectsWindowOpened())
+				},
 			}
 		case DesktopEntryType.SendMail:
 			return {
 				type: entry,
 				icon: sendMailIco,
+				executeAction: dispatch => {
+					dispatch(onSendMailWindowOpened())
+				},
 			}
 		case DesktopEntryType.LinkedIn:
 			return {
 				type: entry,
 				icon: linkedInIco,
+				executeAction: () => {
+					openAndFocusTab(
+						"https://www.linkedin.com/in/dimitar-najdovski/",
+					)
+				},
 			}
 		case DesktopEntryType.Github:
 			return {
 				type: entry,
 				icon: githubIco,
+				executeAction: () => {
+					openAndFocusTab("https://github.com/d-najd")
+				},
 			}
 		case DesktopEntryType.Terminal:
 			return {
 				type: entry,
 				icon: msDosPromptIco,
+				executeAction: () => {},
 			}
 		default:
 			console.error("desktop entry not set " + entry)
 			return {
 				type: entry,
 				icon: "",
+				executeAction: () => {},
 			}
 	}
 }
