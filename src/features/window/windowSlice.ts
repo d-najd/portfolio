@@ -40,20 +40,7 @@ interface WindowState {
 }
 
 const initialState: WindowState = {
-	windows: [
-		{
-			id: getNextWindowId(),
-			name: "Window 1",
-		},
-		{
-			id: getNextWindowId(),
-			name: "Window 2",
-		},
-		{
-			id: getNextWindowId(),
-			name: "Window 3",
-		},
-	],
+	windows: [],
 	status: "idle",
 }
 

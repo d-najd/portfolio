@@ -85,32 +85,7 @@ interface WindowManagerState {
 }
 
 const initialState: WindowManagerState = {
-	windows: [
-		windowFactory({
-			id: 0,
-			drawOrder: 1,
-			width: 320,
-			height: 320,
-			offsetX: 320,
-			offsetY: 80,
-		}),
-		windowFactory({
-			id: 1,
-			drawOrder: 0,
-			width: 320,
-			height: 320,
-			offsetX: 480,
-			offsetY: 80,
-		}),
-		windowFactory({
-			id: 2,
-			drawOrder: 2,
-			width: 320,
-			height: 320,
-			offsetX: 80,
-			offsetY: 480,
-		}),
-	],
+	windows: [],
 	activeWindowId: 1,
 	maximizedWindowId: -1,
 	status: "idle",

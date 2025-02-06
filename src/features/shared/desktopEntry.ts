@@ -8,8 +8,8 @@ import projectsIco
 	from "../../resources/windows_95_icons/Folders/Documents Folder.ico"
 import sendMailIco
 	from "../../resources/windows_95_icons/Mail & Letters/Mail.ico"
-import linkedInIco from "../../resources/icons/linkedIn.ico"
-import githubIco from "../../resources/icons/GitHub_Invertocat_Light.svg"
+import linkedInIco from "../../resources/icons/linkedin-pixel.png"
+import githubIco from "../../resources/icons/github-pixel.png"
 import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { AppDispatch } from "@/app/store"
 import {
