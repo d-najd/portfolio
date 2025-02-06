@@ -1,6 +1,7 @@
 import type { defaultSliceStates } from "@/utils/sliceUtil"
 import { createAppSlice } from "@/app/createAppSlice"
 import { unfocus } from "@/features/window/windowSlice"
+import type { PayloadAction } from "@reduxjs/toolkit"
 
 interface BottomPanelState {
 	startMenuSelected: boolean
@@ -12,12 +13,16 @@ const initialState: BottomPanelState = {
 	status: "idle",
 }
 
+const unfocusStartMenu = (state: BottomPanelState) => {
+	state.startMenuSelected = false
+}
+
 export const bottomPanelSlice = createAppSlice({
 	name: "bottom-panel",
 	initialState,
 	reducers: create => ({
-		onSelectStartMenu: state => {
-			state.startMenuSelected = !state.startMenuSelected
+		onSetStartMenuSelected: (state, action: PayloadAction<boolean>) => {
+			state.startMenuSelected = action.payload
 		},
 	}),
 	selectors: {
@@ -25,11 +30,11 @@ export const bottomPanelSlice = createAppSlice({
 	},
 	extraReducers: builder => {
 		builder.addCase(unfocus, state => {
-			state.startMenuSelected = false
+			unfocusStartMenu(state)
 		})
 	},
 })
 
-export const { onSelectStartMenu } = bottomPanelSlice.actions
+export const { onSetStartMenuSelected } = bottomPanelSlice.actions
 
 export const { selectStartMenuSelected } = bottomPanelSlice.selectors

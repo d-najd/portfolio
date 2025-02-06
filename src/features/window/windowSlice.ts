@@ -61,6 +61,11 @@ export const windowSlice = createAppSlice({
 	name: "window",
 	initialState,
 	reducers: create => ({
+		/**
+		 * Called whenever the wallpaper or something else is pressed that
+		 * should unfocus everything from active windows to icons.
+		 */
+		unfocus: state => {},
 		closeWindow: (state, action: PayloadAction<number>) => {
 			state.windows = state.windows.filter(o => o.id !== action.payload)
 		},
@@ -82,11 +87,6 @@ export const windowSlice = createAppSlice({
 				name: DesktopEntryType.Github,
 			})
 		},
-		/**
-		 * Called whenever the wallpaper or something else is pressed that
-		 * should unfocus everything from active windows to icons.
-		 */
-		unfocus: state => {},
 	}),
 	selectors: {
 		selectWindowsStatus: state => state.status,

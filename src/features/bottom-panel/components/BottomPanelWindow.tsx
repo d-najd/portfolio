@@ -1,4 +1,5 @@
 import type { MyWindow } from "@/features/window/windowSlice"
+import { unfocus } from "@/features/window/windowSlice"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import {
 	changeActiveWindow,
@@ -24,7 +25,10 @@ export const BottomPanelWindow = ({ curWindow }: Props) => {
 
 	return (
 		<ContainerButton
-			onClick={() => dispatch(changeActiveWindow(curWindow.id))}
+			onClick={() => {
+				dispatch(unfocus())
+				dispatch(changeActiveWindow(curWindow.id))
+			}}
 			css={pressedButtonStyleOverride(curWindow, activeWindowId)}
 		>
 			<Row css={Alignment(Alignments.CenteredStart)}>

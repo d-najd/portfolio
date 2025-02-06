@@ -2,7 +2,6 @@ import type { defaultSliceStates } from "@/utils/sliceUtil"
 import { createAppSlice } from "@/app/createAppSlice"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { unfocus } from "@/features/window/windowSlice"
-import { changeActiveWindow } from "@/features/window-drawer/windowDrawerSlice"
 import { DesktopEntryType } from "@/features/shared/desktopEntry"
 
 export interface DesktopIcon {
@@ -81,13 +80,9 @@ export const desktopIconsSlice = createAppSlice({
 		selectSelectedDesktopIcon: state => state.selectedIcon,
 	},
 	extraReducers: builder => {
-		builder
-			.addCase(unfocus, state => {
-				unfocusIcons(state)
-			})
-			.addCase(changeActiveWindow, state => {
-				unfocusIcons(state)
-			})
+		builder.addCase(unfocus, state => {
+			unfocusIcons(state)
+		})
 	},
 })
 

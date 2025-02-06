@@ -7,9 +7,10 @@ import React from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { StartMenu } from "@/features/bottom-panel/components/StartMenu"
 import {
-	onSelectStartMenu,
+	onSetStartMenuSelected,
 	selectStartMenuSelected,
 } from "@/features/bottom-panel/bottomPanelSlice"
+import { unfocus } from "@/features/window/windowSlice"
 
 export const BottomPanel = React.memo(() => {
 	const dispatch = useAppDispatch()
@@ -21,8 +22,11 @@ export const BottomPanel = React.memo(() => {
 				<S.BottomBarTopLine />
 				<S.BottomBar>
 					<S.StartButton
-						onClick={o => {
-							dispatch(onSelectStartMenu())
+						onClick={() => {
+							const prevState = startMenuSelected
+
+							dispatch(unfocus())
+							dispatch(onSetStartMenuSelected(!prevState))
 						}}
 					>
 						<Row css={Alignment(Alignments.CenteredStart)}>

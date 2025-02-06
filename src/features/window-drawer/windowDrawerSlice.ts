@@ -233,10 +233,6 @@ export const windowDrawerSlice = createAppSlice({
 				unfocusWindowInternal(state)
 			})
 			.addCase(closeWindow, (state, action) => {
-				if (action.payload === state.activeWindowId) {
-					unfocusWindowInternal(state)
-				}
-
 				state.windows = state.windows.filter(
 					o => o.id !== action.payload,
 				)

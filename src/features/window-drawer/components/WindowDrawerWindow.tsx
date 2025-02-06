@@ -1,4 +1,5 @@
 import type { MyWindow } from "@/features/window/windowSlice"
+import { unfocus } from "@/features/window/windowSlice"
 import useScreenSize from "@/hooks/useScreenSize"
 import React, { useCallback, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
@@ -80,6 +81,7 @@ export const WindowDrawerWindow = React.memo(
 
 		const changeActiveWindowAction = useCallback(
 			(curWindow: MyWindow) => {
+				dispatch(unfocus())
 				dispatch(changeActiveWindow(curWindow.id))
 			},
 			[dispatch],
@@ -97,6 +99,9 @@ export const WindowDrawerWindow = React.memo(
 				minHeight={myWindow.minHeight}
 				style={resizableContainerStyle(getWindowOffset(myWindow))}
 				enable={resizeEnabled}
+				onResizeStart={() => {
+					changeActiveWindowAction(myWindow)
+				}}
 				onResize={(event, direction, elementRef, delta) => {
 					// If we let the state update it will feel clunky, so updating positions here
 					const windowOffset = getWindowOffset(myWindow)
