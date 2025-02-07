@@ -38,7 +38,7 @@ export interface WindowDrawerWindow {
 }
 
 type WindowFactoryParams = {
-	id: number
+	id?: number
 	drawOrder: number
 	width?: number
 	height?: number
@@ -51,11 +51,11 @@ type WindowFactoryParams = {
 }
 
 let windowFactory = ({
-	id,
+	id = windowIdCounter,
 	drawOrder,
 	width = 950,
 	height = 550,
-	offsetX = 480,
+	offsetX = 150,
 	offsetY = 80,
 	desktopEntry = DesktopEntryType.Undefined,
 	minimized = false,
@@ -129,6 +129,24 @@ const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
  */
 const unfocusWindowInternal = (state: WindowManagerState) => {
 	state.activeWindowId = -1
+}
+
+/**
+ * Default behaviour for responding to reducers which create new window
+ * @param state state
+ * @param windowDrawerWindow parameters for creating the window
+ */
+const createWindow = (
+	state: WindowManagerState,
+	windowDrawerWindow: WindowDrawerWindow = windowFactory({
+		id: windowIdCounter,
+		drawOrder: state.windows.length,
+	}),
+) => {
+	state.windows.push(windowDrawerWindow)
+
+	reorderAtTopWindow(state, windowDrawerWindow.id)
+	state.activeWindowId = windowDrawerWindow.id
 }
 
 export const windowDrawerSlice = createAppSlice({
@@ -213,46 +231,38 @@ export const windowDrawerSlice = createAppSlice({
 				)
 			})
 			.addCase(onProjectsWindowOpened, state => {
-				state.windows.push(
+				createWindow(
+					state,
 					windowFactory({
-						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						desktopEntry: DesktopEntryType.Projects,
-						offsetX: 700,
 						minWidth: 480,
 						minHeight: 340,
 					}),
 				)
-				reorderAtTopWindow(state, windowIdCounter)
-				state.activeWindowId = windowIdCounter
 			})
 			.addCase(onGithubWindowOpened, state => {
-				state.windows.push(
+				createWindow(
+					state,
 					windowFactory({
-						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						desktopEntry: DesktopEntryType.Github,
 						minWidth: 480,
 						minHeight: 340,
 					}),
 				)
-				reorderAtTopWindow(state, windowIdCounter)
-				state.activeWindowId = windowIdCounter
 			})
 			.addCase(onSendMailWindowOpened, state => {
-				state.windows.push(
+				createWindow(
+					state,
 					windowFactory({
-						id: windowIdCounter,
 						drawOrder: state.windows.length,
 						desktopEntry: DesktopEntryType.SendMail,
-						offsetX: 25,
 						minWidth: 275,
 						minHeight: 525,
 						width: 600,
 					}),
 				)
-				reorderAtTopWindow(state, windowIdCounter)
-				state.activeWindowId = windowIdCounter
 			})
 	},
 })
