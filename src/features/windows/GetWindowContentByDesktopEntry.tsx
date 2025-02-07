@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import React from "react"
 import { SendMailWindow } from "@/features/windows/send-mail/SendMailWindow"
 import { DesktopEntryType } from "@/features/shared/desktopEntry"
+import { ResumeWindow } from "@/features/windows/resume/ResumeWindow"
 
 interface Props {
 	desktopEntry: DesktopEntryType
@@ -18,6 +19,8 @@ export const GetWindowContentByDesktopEntry = React.memo(
 				return <SendMailWindow />
 			case DesktopEntryType.Projects:
 				return <ProjectsWindow />
+			case DesktopEntryType.Resume:
+				return <ResumeWindow />
 			default:
 				return <>{desktopEntry}</>
 		}

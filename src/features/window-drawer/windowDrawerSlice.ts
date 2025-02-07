@@ -5,6 +5,7 @@ import {
 	closeWindow,
 	onGithubWindowOpened,
 	onProjectsWindowOpened,
+	onResumeWindowOpened,
 	onSendMailWindowOpened,
 	unfocus,
 	windowIdCounter,
@@ -124,7 +125,7 @@ const reorderAtTopWindow = (state: WindowManagerState, id: number) => {
 }
 
 /**
- * unfocuses the currently focused window if there is one
+ * un-focuses the currently focused window if there is one
  * @param state
  */
 const unfocusWindowInternal = (state: WindowManagerState) => {
@@ -230,6 +231,17 @@ export const windowDrawerSlice = createAppSlice({
 					o => o.id !== action.payload,
 				)
 			})
+			.addCase(onResumeWindowOpened, state => {
+				createWindow(
+					state,
+					windowFactory({
+						drawOrder: state.windows.length,
+						desktopEntry: DesktopEntryType.Resume,
+						minWidth: 480,
+						minHeight: 340,
+					}),
+				)
+			})
 			.addCase(onProjectsWindowOpened, state => {
 				createWindow(
 					state,
@@ -260,7 +272,6 @@ export const windowDrawerSlice = createAppSlice({
 						desktopEntry: DesktopEntryType.SendMail,
 						minWidth: 275,
 						minHeight: 525,
-						width: 600,
 					}),
 				)
 			})

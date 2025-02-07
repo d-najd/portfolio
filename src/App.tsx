@@ -16,13 +16,13 @@ let openSendMailWindow = false
 
 const App = () => {
 	const dispatch = useAppDispatch()
-	if (!openProjectsWindow) {
-		openProjectsWindow = true
+	if (openProjectsWindow) {
+		openProjectsWindow = false
 		dispatch(onProjectsWindowOpened())
 	}
 
-	if (!openSendMailWindow) {
-		openSendMailWindow = true
+	if (openSendMailWindow) {
+		openSendMailWindow = false
 		dispatch(onSendMailWindowOpened())
 	}
 

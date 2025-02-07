@@ -14,6 +14,7 @@ import msDosPromptIco from "../../resources/icons/MS-DOS logo.ico"
 import type { AppDispatch } from "@/app/store"
 import {
 	onProjectsWindowOpened,
+	onResumeWindowOpened,
 	onSendMailWindowOpened,
 } from "@/features/window/windowSlice"
 import { openAndFocusTab } from "@/utils/openAndFocusTab"
@@ -73,7 +74,9 @@ export const desktopEntryFactory = (entry: DesktopEntryType): DesktopEntry => {
 			return {
 				type: entry,
 				icon: resumeIco,
-				executeAction: () => {},
+				executeAction: dispatch => {
+					dispatch(onResumeWindowOpened())
+				},
 			}
 		case DesktopEntryType.Projects:
 			return {

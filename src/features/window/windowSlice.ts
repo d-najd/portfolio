@@ -56,6 +56,12 @@ export const windowSlice = createAppSlice({
 		closeWindow: (state, action: PayloadAction<number>) => {
 			state.windows = state.windows.filter(o => o.id !== action.payload)
 		},
+		onResumeWindowOpened: state => {
+			state.windows.push({
+				id: getNextWindowId(),
+				name: DesktopEntryType.Resume,
+			})
+		},
 		onProjectsWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
@@ -140,6 +146,7 @@ const combineWindows = (
 
 export const {
 	closeWindow,
+	onResumeWindowOpened,
 	onProjectsWindowOpened,
 	onSendMailWindowOpened,
 	onGithubWindowOpened,
