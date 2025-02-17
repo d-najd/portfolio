@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import { Row } from "@/components/Row"
 import { Alignment, Alignments } from "@/ui/alignment"
-import resume from "@/resources/documents/resume-sample.pdf"
+import resume from "@/resources/documents/resume.pdf"
 import downloadIcon from "@/resources/windows_95_icons/Sheets/Move document.ico"
 import openInNewTabIcon from "@/resources/windows_95_icons/Sheets/Web-document.ico"
 import { Button } from "@/features/windows/resume/components/Button"
