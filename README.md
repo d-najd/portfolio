@@ -1,4 +1,4 @@
-~~# Windows 95 themed portfolio
+# Windows 95 themed portfolio
 
 [[Put video here]]
 
