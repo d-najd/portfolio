@@ -77,7 +77,7 @@ export const windowSlice = createAppSlice({
 		onGithubWindowOpened: state => {
 			state.windows.push({
 				id: getNextWindowId(),
-				name: DesktopEntryType.Github,
+				name: DesktopEntryType.GitHub,
 			})
 		},
 	}),

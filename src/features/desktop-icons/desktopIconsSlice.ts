@@ -49,7 +49,7 @@ const initialState: DesktopIconsState = {
 		},
 		{
 			id: getNextIconId(),
-			iconType: DesktopEntryType.Github,
+			iconType: DesktopEntryType.GitHub,
 		},
 		{
 			id: getNextIconId(),

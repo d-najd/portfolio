@@ -1,28 +1,67 @@
-# Work in progress
+~~# Windows 95 themed portfolio
 
-## Project Structure
+[[Put video here]]
 
-app -> react store, slices, hooks, etc... setup  
-components -> Reusable components  
-features -> UI and state  
-|**x-thing  
-|\_\_\_**components -> optional folder containing components for the main
-component  
-|**\_**XThing.tsx -> React component  
-|**\_**xThingSlice.ts -> The slice  
-|**\_**XThing.style.tsx -> if component has >=3 or has too much subcomponent
-code |**\_**README.md -> Optional readme  
-|\_\_windows -> Contains collection of window contents  
-hooks -> Reusable hooks  
-resources -> images/videos/icons  
-theme -> theme setup  
-ui -> ui utilities  
-utils -> utilities which may be used independently of ui stuff (more generic)
 
-#### Notes
+---
 
-- Import for the style (XThing.style.tsx) is usually done like so  
-  `import { * as S } from "./XThing.style.tsx";`
-- Component should only have 1 component return (ex XThing.tsx should export
-  XThing.tsx as component and no other components), if there are more components
-  move them to another script.
+## Features
+
+### Window Management
+
+* Windows can be opened by double-clicking an icon (some icons redirect to other
+  webpages like GitHub or LinkedIn)
+* Windows can be moved around and resized like real windows
+* Window Action buttons (minimizing, maximizing, closing) are functional
+
+[[Put video here]]
+
+### Bottom Bar
+
+* Opened windows will be added here
+* Start menu contains list of quick actions
+
+[[Put video here]]
+
+### Projects Window
+
+* Contains list of projects that I have worked on
+
+[[Put video here]]
+
+### Resume Window
+
+* Contains my resume which can be viewed inside the window itself
+* The resume can be downloaded or opened in another tab
+
+[[Put video here]]
+
+### Send Mail Window
+
+* Mail can be sent to me by pressing the send mail icon. The mail will include
+  the entered description and subject and uses the mailing application on your
+  pc
+* Has near identical styling to one of windows 95's mailing applications
+
+---
+
+## Technologies Used
+
+- React
+- Redux
+- Vite
+- Styled Components
+- Prettier
+- GitHub Pages
+- Typescript
+
+## Contact Me
+
+Send me a mail [[add mail link through ]]
+Message me on LinkedIn [[add linkedin link]]
+
+## Project Setup
+
+1. Git clone the project ```https://github.com/d-najd/portfolio/tree/master```
+2. Install packages ```npm install```
+3. Run the project ``npm start``

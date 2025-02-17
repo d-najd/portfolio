@@ -37,7 +37,7 @@ export enum DesktopEntryType {
 	Projects = "Projects",
 	SendMail = "Send Mail",
 	LinkedIn = "LinkedIn",
-	Github = "Github",
+	GitHub = "GitHub",
 	Terminal = "MS-DOS Prompt",
 }
 
@@ -104,7 +104,7 @@ export const desktopEntryFactory = (entry: DesktopEntryType): DesktopEntry => {
 					)
 				},
 			}
-		case DesktopEntryType.Github:
+		case DesktopEntryType.GitHub:
 			return {
 				type: entry,
 				icon: githubIco,

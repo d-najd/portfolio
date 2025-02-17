@@ -258,7 +258,7 @@ export const windowDrawerSlice = createAppSlice({
 					state,
 					windowFactory({
 						drawOrder: state.windows.length,
-						desktopEntry: DesktopEntryType.Github,
+						desktopEntry: DesktopEntryType.GitHub,
 						minWidth: 480,
 						minHeight: 340,
 					}),

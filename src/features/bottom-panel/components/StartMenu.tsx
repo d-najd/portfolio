@@ -17,7 +17,7 @@ const myItems = [
 	{ type: DesktopEntryType.Projects },
 	{ type: DesktopEntryType.Resume },
 	{ type: DesktopEntryType.SendMail },
-	{ type: DesktopEntryType.Github },
+	{ type: DesktopEntryType.GitHub },
 	{ type: DesktopEntryType.LinkedIn },
 ]
 
