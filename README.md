@@ -2,7 +2,6 @@
 
 [[Put video here]]
 
-
 ---
 
 ## Features
@@ -13,6 +12,8 @@
   webpages like GitHub or LinkedIn)
 * Windows can be moved around and resized like real windows
 * Window Action buttons (minimizing, maximizing, closing) are functional
+
+![Description of your GIF](./gituhub-clips/Window-Features.webp)
 
 [[Put video here]]
 
@@ -62,6 +63,20 @@ Message me on LinkedIn [[add linkedin link]]
 
 ## Project Setup
 
-1. Git clone the project ```https://github.com/d-najd/portfolio/tree/master```
-2. Install packages ```npm install```
-3. Run the project ``npm start``
+1. Git clone the project
+
+```shell
+git clone https://github.com/d-najd/portfolio.git
+```
+
+2. Install packages
+
+```shell
+npm install
+```
+
+3. Run the project
+
+```shell
+npm start
+```
