@@ -13,9 +13,7 @@
 * Windows can be moved around and resized like real windows
 * Window Action buttons (minimizing, maximizing, closing) are functional
 
-![Description of your GIF](./gituhub-clips/Window-Features.webm)
-
-[[Put video here]]
+[Window Features](https://github.com/user-attachments/assets/57aa4423-018d-4576-b816-24d7654666e0)
 
 ### Bottom Bar
 
