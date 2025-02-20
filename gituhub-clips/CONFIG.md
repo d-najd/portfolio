@@ -20,10 +20,9 @@ ffmpeg -i input.mp4
 7. Re-encode the video (optimized for smallest size) with following settings
 
 ```shell
-ffmpeg -i Window-Features.mkv 
-  -vf "fps=12,scale=520:-1:flags=lanczos"       
-  -c:v libwebp        
-  -lossless 0 -q:v 70 -compression_level 6        
-  -preset default -loop 0        
-  output.webp
+ffmpeg -i input.mkv   
+  -c:v libaom-av1 -crf 27 -cpu-used 4   
+  -vf "scale=720:-2:flags=lanczos,fps=24"   
+  -strict experimental 
+  -an output.webm
 ```
