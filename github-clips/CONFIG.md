@@ -17,7 +17,14 @@ ffmpeg -i input.mp4
 5. Add ~10 frames delay before any action and ~20 frames after action is shown,
    change this per case basis
 6. Export video with settings 720p, 30fps, mkv.
-7. Re-encode the video (optimized for smallest size) with following settings
+7. Re-encode the video using the following settings, first one is for GitHub
+   README.md second one is for videos in website (second is ~4.5x smaller)
+
+```shell
+ffmpeg -i input.mkv 
+  -vf "fps=16,scale=520:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64:stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5" 
+  -loop 0 -an -sn -dn output.gif
+````
 
 ```shell
 ffmpeg -i input.mkv   
@@ -25,4 +32,4 @@ ffmpeg -i input.mkv
   -vf "scale=720:-2:flags=lanczos,fps=24"   
   -strict experimental 
   -an output.webm
-```
+````

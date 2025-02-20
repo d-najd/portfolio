@@ -13,10 +13,7 @@
 * Windows can be moved around and resized like real windows
 * Window Action buttons (minimizing, maximizing, closing) are functional
 
-[Window Features](https://github.com/user-attachments/assets/57aa4423-018d-4576-b816-24d7654666e0)
-
-e
-![Test](./github-clips/Window-Features.mp4)
+![Window Features](./github-clips/Window-Features.gif)
 
 ### Bottom Bar
 
