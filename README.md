@@ -27,6 +27,8 @@ Web based windows 95 desktop recreation
 * Contains my resume which can be viewed inside the window itself
 * The resume can be downloaded or opened in another tab
 
+![Resume Window Features](./github-clips/Resume-Window-Features.gif)
+
 ### Send Mail Window
 
 * Mail can be sent to me by pressing the send mail icon. The mail will include
