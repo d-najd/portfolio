@@ -5,10 +5,7 @@
    Resolve doesn't accept many codecs and formats).
 
 ```shell
-ffmpeg -i input.mp4 
-  -c:v dnxhd 
-  -profile:v dnxhr_lb 
-  output.mov
+ffmpeg -i input.mp4 -c:v dnxhd -profile:v dnxhr_lb output.mov
 ```
 
 3. Add clips to DaVinci Resolve
@@ -29,5 +26,5 @@ ffmpeg -i input.mkv -c:v libaom-av1 -crf 27 -cpu-used 4 -vf "scale=720:-2:flags=
 ### For GitHub Readme
 
 ```shell
-ffmpeg -i input.mkv -vf "fps=16,scale=520:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64:stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5" -loop 0 -an -sn -dn -f gif - | gifsicle --lossy=15 -O3 -o output.gif
+ffmpeg -i input.mkv -vf "fps=16,scale=520:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64:stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5" -loop 0 -an -sn -dn -f gif - | gifsicle --lossy=30 -O3 -o output.gif
 ```

@@ -1,6 +1,6 @@
-# Windows 95 themed portfolio
+# [Windows 95 themed portfolio](https://d-najd.github.io/portfolio/)
 
-[[Put video here]]
+Web based windows 95 desktop recreation
 
 ---
 
@@ -20,20 +20,12 @@
 * Opened windows will be added here
 * Start menu contains list of quick actions
 
-[[Put video here]]
-
-### Projects Window
-
-* Contains list of projects that I have worked on
-
-[[Put video here]]
+![Bottom Bar Features](./github-clips/BottomBar-Features.gif)
 
 ### Resume Window
 
 * Contains my resume which can be viewed inside the window itself
 * The resume can be downloaded or opened in another tab
-
-[[Put video here]]
 
 ### Send Mail Window
 
@@ -41,6 +33,10 @@
   the entered description and subject and uses the mailing application on your
   pc
 * Has near identical styling to one of windows 95's mailing applications
+
+### Projects Window
+
+* Contains list of projects that I have worked on
 
 ---
 
@@ -54,10 +50,13 @@
 - GitHub Pages
 - Typescript
 
+---
+
 ## Contact Me
 
-Send me a mail [[add mail link through ]]
-Message me on LinkedIn [[add linkedin link]]
+### [Email Me](mailto:dimitar.najdovskiw@gmail.com)
+
+---
 
 ## Project Setup
 
