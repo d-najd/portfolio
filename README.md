@@ -31,12 +31,12 @@ Web based windows 95 desktop recreation
 
 ### Send Mail Window
 
-![Send Mail Window Features](./github-clips/SendMail-Window-Features.gif)
-
 * Mail can be sent to me by pressing the send mail icon. The mail will include
   the entered description and subject and uses the mailing application on your
   pc
 * Has near identical styling to one of windows 95's mailing applications
+
+* ![Send Mail Window Features](./github-clips/SendMail-Window-Features.gif)
 
 ### Projects Window
 
