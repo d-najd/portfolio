@@ -2,8 +2,6 @@
 
 Web based windows 95 desktop recreation
 
----
-
 ## Features
 
 ### Window Management
@@ -42,8 +40,6 @@ Web based windows 95 desktop recreation
 
 * Contains list of projects that I have worked on
 
----
-
 ## Technologies Used
 
 - React
@@ -54,13 +50,9 @@ Web based windows 95 desktop recreation
 - GitHub Pages
 - Typescript
 
----
-
 ## Contact Me
 
 ### [Email Me](mailto:dimitar.najdovskiw@gmail.com)
-
----
 
 ## Project Setup
 
