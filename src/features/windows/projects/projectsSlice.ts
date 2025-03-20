@@ -63,15 +63,6 @@ const initialState: ProjectsState = {
 		},
 		{
 			id: getNextProjectId(),
-			title: ProjectType.AntiViolence,
-			description:
-				"Android/IOS app created as a collage project in collaboration with humanitarian organization rotary. This app is made to reduce among peer and family violence, it works by students anonymously sending report to the school which can then be sent to the police. I created the android app and collaborated with others on the firebase backend and IOS app. This project is still under development so I can't provide any links.",
-			projectLinks: [],
-			videoLink: prijaviNasilstvoVideo,
-			technologiesUsed: "Android Studio, Firebase, Jetpack Compose, MVVM",
-		},
-		{
-			id: getNextProjectId(),
 			title: ProjectType.Sandblasting,
 			description:
 				"Professional VR Sandblasting Simulator. The first project that I worked on when I joined Cythero VR. This was also my first time using unity, blender and many other tools. I worked on creating core systems, 3D models, grading systems and lessons.",
@@ -83,91 +74,17 @@ const initialState: ProjectsState = {
 				},
 			],
 			videoLink: sandblastingVideo,
+			technologiesUsed: "Unity, Compute Shaders, Blender, Figma",
+		},
+		{
+			id: getNextProjectId(),
+			title: ProjectType.AntiViolence,
+			description:
+				"Android/IOS app created as a collage project in collaboration with humanitarian organization rotary. This app is made to reduce among peer and family violence, it works by students anonymously sending report to the school which can then be sent to the police. I created the android app and collaborated with others on the firebase backend and IOS app. This project is still under development so I can't provide any links.",
+			projectLinks: [],
+			videoLink: prijaviNasilstvoVideo,
 			technologiesUsed: "Android Studio, Firebase, Jetpack Compose, MVVM",
 		},
-		/*
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		{
-			id: getNextProjectId(),
-			title: ProjectType.Portfolio,
-			description: "Description",
-			repo: "https://www.github.com",
-			videoLink: ",",
-			technologiesUsed:
-				"React, Vue, Typescript, Styled Components, Redux",
-		},
-		 */
 	],
 	status: "idle",
 }
