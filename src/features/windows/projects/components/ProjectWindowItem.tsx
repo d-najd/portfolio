@@ -17,19 +17,17 @@ export const ProjectWindowItem = React.memo(({ project }: Props) => {
 	return (
 		<S.Container
 			onPointerEnter={o => {
-				/*
-				console.log(o.target)
-				console.log(o.currentTarget)
-				console.log(o.relatedTarget)
-				console.log("END")
-				 */
 				setAnimateHover(true)
 			}}
 			onPointerLeave={() => setAnimateHover(false)}
 		>
-			<S.ContentContainer>
-				<S.Video />
-			</S.ContentContainer>
+			<S.ContentContainer
+				src={project.videoLink}
+				autoPlay={true}
+				loop={true}
+				controls={false}
+				muted={true}
+			/>
 			<S.HoverContainer>
 				<HoverContent project={project} hoverProgress={hoverProgress} />
 			</S.HoverContainer>

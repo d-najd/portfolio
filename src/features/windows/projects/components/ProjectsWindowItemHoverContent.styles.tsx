@@ -6,11 +6,11 @@ import { Row } from "@/components/Row"
 import { Column } from "@/components/Column"
 import { transparentize } from "polished"
 
-export const containerWidth = 450
+export const containerWidth = 550
 export const hoverContainerInitialHeight = 30
-export const containerHeight = 272
+export const containerHeight = 310
 
-const containerPaddingHorizontal = 12
+const containerPaddingHorizontal = 8
 export const bottomBarHeight = 69
 
 export const getHeight = (hoverProgress: number) => {
@@ -81,15 +81,14 @@ export const TechUsedText = styled.span`
 	font-size: 0.825em;
 	overflow: hidden;
 `
-
 export const BottomBarIconHolder = styled(Column)`
 	${Alignment(Alignments.Centered)}
 	width: 42px;
 	height: 100%;
 	gap: 6px;
 	cursor: pointer;
-	padding-left: 4px;
-	padding-right: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
 	user-select: none;
 
 	&:hover {
@@ -99,7 +98,6 @@ export const BottomBarIconHolder = styled(Column)`
 
 export const BottomBarIcon = styled.img`
 	width: 34px;
-	height: 34px;
 	pointer-events: none;
 	user-select: none;
 `

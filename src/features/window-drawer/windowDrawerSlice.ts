@@ -250,6 +250,7 @@ export const windowDrawerSlice = createAppSlice({
 						desktopEntry: DesktopEntryType.Projects,
 						minWidth: 480,
 						minHeight: 340,
+						width: 1135,
 					}),
 				)
 			})

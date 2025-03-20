@@ -1,5 +1,4 @@
 import type { Project } from "@/features/windows/projects/projectsSlice"
-import githubIco from "@/resources/icons/GitHub_Invertocat_Light.svg"
 import * as S from "./ProjectsWindowItemHoverContent.styles"
 import React, { useMemo } from "react"
 import { openAndFocusTab } from "@/utils/openAndFocusTab"
@@ -41,14 +40,21 @@ export const HoverContent = React.memo(({ project, hoverProgress }: Props) => {
 					<S.TechUsedTitle>Technologies used:</S.TechUsedTitle>
 					<S.TechUsedText>{project.technologiesUsed}</S.TechUsedText>
 				</S.TechUsed>
-				<S.BottomBarIconHolder
-					onClick={o => {
-						openAndFocusTab(project.repo)
-					}}
-				>
-					<S.BottomBarIcon src={githubIco} />
-					<S.BottomBarIconText>Repo</S.BottomBarIconText>
-				</S.BottomBarIconHolder>
+				{project.projectLinks.map(projectLink => {
+					return (
+						<S.BottomBarIconHolder
+							key={projectLink.name}
+							onClick={o => {
+								openAndFocusTab(projectLink.link)
+							}}
+						>
+							<S.BottomBarIcon src={projectLink.icon} />
+							<S.BottomBarIconText>
+								{projectLink.name}
+							</S.BottomBarIconText>
+						</S.BottomBarIconHolder>
+					)
+				})}
 			</S.BottomBar>
 		</S.Container>
 	)

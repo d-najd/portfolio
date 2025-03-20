@@ -8,6 +8,8 @@ import type { AppDispatch } from "@/app/store"
 export enum ProjectType {
 	Portfolio = "Windows 95 Inspired Portfolio",
 	BugTracker = "Bugtracker",
+	AntiViolence = "Anti-Violence Project",
+	Sandblasting = "SandBlasting VR Simulator",
 }
 
 /**

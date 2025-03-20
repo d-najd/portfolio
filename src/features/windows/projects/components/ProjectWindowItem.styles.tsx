@@ -8,16 +8,15 @@ import { Alignment, Alignments } from "@/ui/alignment"
 export const Container = styled.div`
 	width: ${containerWidth}px;
 	height: ${containerHeight}px;
-	background-color: gray;
 `
 
-export const ContentContainer = styled.div`
+export const ContentContainer = styled.video`
 	position: absolute;
 	width: ${containerWidth}px;
 	height: ${containerHeight}px;
 `
 
-export const Video = styled.a`
+export const Video = styled.video`
 	height: 100%;
 	width: 100%;
 `
