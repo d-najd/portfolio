@@ -51,10 +51,12 @@ const initialState: DesktopIconsState = {
 			id: getNextIconId(),
 			iconType: DesktopEntryType.GitHub,
 		},
+		/*
 		{
 			id: getNextIconId(),
 			iconType: DesktopEntryType.Terminal,
 		},
+		 */
 	],
 	selectedIcon: -1,
 	status: "idle",
