@@ -18,8 +18,13 @@ const gl = canvas.getContext("webgl")!
 
 //Vertex coordinates and colors
 const vertices = [
-	-0.5, 0.5, 1.0, 0.0, 0.0, -0.5, -0.5, 1.0, 0.0, 0.0, 0.5, 0.5, 1.0, 0.0,
-	0.0, 0.5, -0.5, 1.0, 0.0, 0.0
+	-0.5, 0.5, //first-pos
+	0.75, 0.75, //second-pos
+	0.0, -0.5, //t-pos
+	-0.5, 1.0, //forth-pos
+	0.75, 0.75, 0.5, 0.5,
+	0.75, 0.75, 0.75, 0.5,
+	-0.5, 0.75, 0.75, 0.75
 ]
 
 // Create a buffer object
@@ -56,9 +61,7 @@ gl.enableVertexAttribArray(a_color)
 gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, 20, 8);
 
 // draw rectangle
-gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);// gl.drawArrays(gl.TRIANGLES, 0, 6)
-
-
+gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 /*
 if (container) {
