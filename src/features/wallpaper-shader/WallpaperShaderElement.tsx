@@ -5,7 +5,7 @@ import { useTimeSinceStartup } from "@/hooks/useTimeSinceStartup"
 
 export const WallpaperShaderElement = React.memo(() => {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
-	const timeSinceStartup = useTimeSinceStartup(2)
+	const timeSinceStartup = useTimeSinceStartup(50)
 
 	useEffect(() => {
 		const canvas = canvasRef.current
@@ -19,13 +19,11 @@ export const WallpaperShaderElement = React.memo(() => {
 	}, [timeSinceStartup])
 
 	return (
-		<div>
 			<Canvas ref={canvasRef}/>
-		</div>
 	)
 })
 
 const Canvas = styled.canvas`
-	width: 1920px;
-	height: 1080px;
+	width: 100%;
+	height: 100%;
 `
