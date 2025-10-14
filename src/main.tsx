@@ -6,9 +6,11 @@ import { store } from "./app/store"
 import "./index.css"
 import { ThemeProvider } from "@emotion/react"
 import theme from "./theme/theme"
+import { WallpaperShaderElement } from "@/features/wallpaper-shader/WallpaperShaderElement"
 
-import vertexShader from './vertex.glsl?raw'
-import fragmentShader from './fragment.glsl?raw'
+/*
+import vertexShader from './features/wallpaper-shader/vertex.glsl?raw'
+import fragmentShader from './features/wallpaper-shader/fragment.glsl?raw'
 
 const canvas = document.createElement('canvas')
 canvas.width = 400
@@ -60,13 +62,27 @@ const a_color = gl.getAttribLocation(program, "a_color")
 gl.enableVertexAttribArray(a_color)
 gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, 20, 8);
 
+const test2 = gl.getUniformLocation(program, "test")!
+gl.uniform3fv(test2, [1.0, 0.0, 0.0])
+// gl.uniform1f(test2, 0.1)
+// gl.uniform2f(program, test2, 0.5)
+
 // draw rectangle
 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+ */
 
-/*
+const container = document.getElementById("root")
+
 if (container) {
 	const root = createRoot(container)
 
+	root.render(
+		<React.StrictMode>
+			<WallpaperShaderElement />
+		</React.StrictMode>
+	)
+
+	/*
 	root.render(
 		<React.StrictMode>
 			<ThemeProvider theme={theme}>
@@ -76,9 +92,9 @@ if (container) {
 			</ThemeProvider>
 		</React.StrictMode>,
 	)
+	 */
 } else {
 	throw new Error(
 		"Root element with ID 'root' was not found in the document. Ensure there is a corresponding HTML element with the ID 'root' in your HTML file.",
 	)
 }
- */
