@@ -12,7 +12,7 @@ export const WallpaperShaderElement = React.memo(() => {
 		if (canvas == null) {
 			return
 		}
-		console.log("INVOKED " + timeSinceStartup)
+		// console.log("INVOKED " + timeSinceStartup)
 
 		const gl = canvas.getContext("webgl")!
 		WallpaperShaderLogic(gl, timeSinceStartup)
@@ -26,6 +26,6 @@ export const WallpaperShaderElement = React.memo(() => {
 })
 
 const Canvas = styled.canvas`
-	width: 400px;
-	height: 400px;
+	width: 1920px;
+	height: 1080px;
 `

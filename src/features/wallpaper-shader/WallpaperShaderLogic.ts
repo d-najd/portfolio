@@ -1,16 +1,12 @@
 import vertexShader from '@/features/wallpaper-shader/vertex.glsl?raw'
 import fragmentShader from '@/features/wallpaper-shader/fragment.glsl?raw'
+import wallpaperImage from "@/resources/images/UV_by_peterdackers.png"
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 //Vertex coordinates and colors
 	const vertices = [
-		-0.5, 0.5, //first-pos
-		0.75, 0.75, //second-pos
-		0.0, -0.5, //t-pos
-		-0.5, 1.0, //forth-pos
-		0.75, 0.75, 0.5, 0.5,
-		0.75, 0.75, 0.75, 0.5,
-		-0.5, 0.75, 0.75, 0.75
+		-0.5, 0.5, 1.0, 0.0, 0.0, -0.5, -0.5, 1.0, 0.0, 0.0, 0.5, 0.5, 1.0, 0.0,
+		0.0, 0.5, -0.5, 1.0, 0.0, 0.0
 	]
 
 // Create a buffer object
@@ -51,11 +47,32 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 
 	const u_time_since_startup = gl.getUniformLocation(program, "time_since_startup")!
 	gl.uniform1f(u_time_since_startup, timeElapsedSinceStartup)
+
+	setWallpaperTexture(gl)
 // gl.uniform1f(test2, 0.1)
 // gl.uniform2f(program, test2, 0.5)
 
 // draw rectangle
-	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+}
+
+function setWallpaperTexture(gl: WebGLRenderingContext) {
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+	const texture = gl.createTexture()
+	const image = new Image()
+	image.src = wallpaperImage
+
+	image.onload = () => {
+		gl.bindTexture(gl.TEXTURE_2D, texture)
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+		gl.generateMipmap(gl.TEXTURE_2D);
+
+		// gl.clearColor(0, 0, 0, 1);
+		// gl.clear(gl.COLOR_BUFFER_BIT);
+	}
 }
 
 
