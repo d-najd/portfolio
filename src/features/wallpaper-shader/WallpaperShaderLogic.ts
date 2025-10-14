@@ -3,11 +3,12 @@ import fragmentShader from '@/features/wallpaper-shader/fragment.glsl?raw'
 import wallpaperImage from "@/resources/images/UV_by_peterdackers.png"
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
-//Vertex coordinates and colors
-	const vertices = [
-		-0.5, 0.5, 1.0, 0.0, 0.0, -0.5, -0.5, 1.0, 0.0, 0.0, 0.5, 0.5, 1.0, 0.0,
-		0.0, 0.5, -0.5, 1.0, 0.0, 0.0
-	]
+	const vertices = new Float32Array([
+		-1, -1,  0, 1,
+		1, -1,  1, 1,
+		-1,  1,  0, 0,
+		1,  1,  1, 0,
+	]);
 
 	const vertexBuffer = gl.createBuffer()
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
@@ -22,19 +23,22 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 	gl.linkProgram(program);
 	gl.useProgram(program);
 
-	const a_position = gl.getAttribLocation(program, "a_position")
-	gl.enableVertexAttribArray(a_position)
-	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 20, 0);
+	const aPosition = gl.getAttribLocation(program, 'aPosition');
+	const aTexCoord = gl.getAttribLocation(program, 'aTexCoord');
 
-	const a_color = gl.getAttribLocation(program, "a_color")
-	gl.enableVertexAttribArray(a_color)
-	gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, 20, 8);
+	gl.enableVertexAttribArray(aPosition);
+	gl.enableVertexAttribArray(aTexCoord);
 
+	gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 16, 0);
+	gl.vertexAttribPointer(aTexCoord, 2, gl.FLOAT, false, 16, 8);
+
+	/*
 	const test2 = gl.getUniformLocation(program, "test")!
 	gl.uniform3fv(test2, [1.0, 0.0, 0.0])
 
 	const u_time_since_startup = gl.getUniformLocation(program, "time_since_startup")!
 	gl.uniform1f(u_time_since_startup, timeElapsedSinceStartup)
+	 */
 
 	setWallpaperTexture(gl)
 
