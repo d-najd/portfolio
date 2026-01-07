@@ -71,11 +71,10 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 	)
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
+	gl.uniform1f(timeElapsedSinceStartupLocation, timeElapsedSinceStartup)
+
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 
-	console.log(timeElapsedSinceStartup)
-
-	gl.uniform1f(timeElapsedSinceStartupLocation, timeElapsedSinceStartup)
 }
 
 function createShaderProgram(gl: WebGLRenderingContext) {
