@@ -17,6 +17,7 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 	const positionLocation = gl.getAttribLocation(program, "a_position")
 	const texcoordLocation = gl.getAttribLocation(program, "a_texCoord")
 	const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
+	const timeElapsedSinceStartupLocation = gl.getUniformLocation(program, "u_timeElapsedSinceStartup")
 
 	const positionBuffer = gl.createBuffer()
 
@@ -34,7 +35,6 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 	)
 
 	setTexture(gl, image)
-
 
 	resizeCanvasToDisplaySize(gl.canvas as HTMLCanvasElement)
 
@@ -72,6 +72,10 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
+
+	console.log(timeElapsedSinceStartup)
+
+	gl.uniform1f(timeElapsedSinceStartupLocation, timeElapsedSinceStartup)
 }
 
 function createShaderProgram(gl: WebGLRenderingContext) {
