@@ -17,9 +17,11 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 
 	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), curTime)
 
+	// unorm
 	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
 	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
 
+	// in pixels
 	const islandCenter = new Int32Array([339, 241]);
 	gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenter"), islandCenter)
 
