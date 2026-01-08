@@ -20,6 +20,9 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
 	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
 
+	const islandCenter = new Int32Array([339, 241]);
+	gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenter"), islandCenter)
+
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
 
@@ -75,6 +78,10 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	)
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
+
+	// 220 + 119, 339
+	// 122 + 119, 241
+	// w 458, h 360, 238
 
 	setTexture(gl, image)
 }
