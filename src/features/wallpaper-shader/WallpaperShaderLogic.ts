@@ -81,10 +81,6 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 
-	// 220 + 119, 339
-	// 122 + 119, 241
-	// w 458, h 360, 238
-
 	setTexture(gl, image)
 }
 
