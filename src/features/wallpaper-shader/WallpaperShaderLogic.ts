@@ -1,6 +1,8 @@
 import vertexShader from '@/features/wallpaper-shader/vertex.glsl?raw'
 import fragmentShader from '@/features/wallpaper-shader/fragment.glsl?raw'
 import wallpaperImage from "@/resources/images/kolibri-os-1.png"
+import { StarElement } from "@/features/wallpaper-shader/StarElement"
+import { glslHelper } from "@/features/wallpaper-shader/glslHelper"
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
@@ -22,10 +24,28 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
 
 	// in pixels
-	const islandCenter = new Int32Array([339, 241]);
-	gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenter"), islandCenter)
+	// const islandCenterPx = new Int32Array([339, 241]);
+	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
+	gl.uniform2f(gl.getUniformLocation(program, "u_islandCenter"), 0.1765625, 0.223148148)
+
+	let starElementArr = new Array<StarElement>(30);
+	for (let i = 0; i < starElementArr.length; i++) {
+		starElementArr[i] = new StarElement(0.3, 0.3)
+	}
+
+	glslHelper.uniformStructs(gl, program, "starElements", starElementArr)
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
+}
+
+function createTexture(gl: WebGLRenderingContext) {
+	const texture = gl.createTexture()
+	gl.bindTexture(gl.TEXTURE_2D, texture)
+
+	// gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+
+	setTexture(gl, image)
+
 }
 
 function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram) {
@@ -81,7 +101,6 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 
-	setTexture(gl, image)
 }
 
 function createShaderProgram(gl: WebGLRenderingContext) {
@@ -107,6 +126,8 @@ function setTexture(gl: WebGLRenderingContext, image: HTMLImageElement) {
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
 
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+
+	return texture
 }
 
 function setRectangle(gl: any, x: any, y: any, width: any, height: any) {
