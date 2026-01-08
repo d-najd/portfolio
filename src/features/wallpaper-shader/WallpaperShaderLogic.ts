@@ -13,11 +13,18 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 
 function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedSinceStartup: number) {
 	const program = createShaderProgram(gl)
+	boilerplateSetup(gl, image, program)
 
+	const curTimeLocation = gl.getUniformLocation(program, "u_curTimeLocation")
+	gl.uniform1f(curTimeLocation, timeElapsedSinceStartup)
+
+	gl.drawArrays(gl.TRIANGLES, 0, 6)
+}
+
+function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram) {
+	const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
 	const positionLocation = gl.getAttribLocation(program, "a_position")
 	const texcoordLocation = gl.getAttribLocation(program, "a_texCoord")
-	const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
-	const timeElapsedSinceStartupLocation = gl.getUniformLocation(program, "u_timeElapsedSinceStartup")
 
 	const positionBuffer = gl.createBuffer()
 
@@ -34,16 +41,11 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 		gl.STATIC_DRAW,
 	)
 
-	setTexture(gl, image)
-
 	resizeCanvasToDisplaySize(gl.canvas as HTMLCanvasElement)
 
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-
 	gl.clearColor(0, 0, 0, 0)
 	gl.clear(gl.COLOR_BUFFER_BIT)
-
-	gl.useProgram(program)
 
 	gl.enableVertexAttribArray(positionLocation)
 
@@ -71,10 +73,8 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedS
 	)
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
-	gl.uniform1f(timeElapsedSinceStartupLocation, timeElapsedSinceStartup)
 
-	gl.drawArrays(gl.TRIANGLES, 0, 6)
-
+	setTexture(gl, image)
 }
 
 function createShaderProgram(gl: WebGLRenderingContext) {
