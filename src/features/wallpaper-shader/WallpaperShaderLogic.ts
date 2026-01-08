@@ -1,6 +1,6 @@
 import vertexShader from '@/features/wallpaper-shader/vertex.glsl?raw'
 import fragmentShader from '@/features/wallpaper-shader/fragment.glsl?raw'
-import wallpaperImage from "@/resources/images/UV_by_peterdackers.png"
+import wallpaperImage from "@/resources/images/kolibri-os-1.png"
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
@@ -11,12 +11,14 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 	}
 }
 
-function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeElapsedSinceStartup: number) {
+function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: number) {
 	const program = createShaderProgram(gl)
 	boilerplateSetup(gl, image, program)
 
-	const curTimeLocation = gl.getUniformLocation(program, "u_curTimeLocation")
-	gl.uniform1f(curTimeLocation, timeElapsedSinceStartup)
+	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), curTime)
+
+	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
+	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
