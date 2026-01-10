@@ -9,13 +9,13 @@ export class glslHelper {
 		}
 	}
 
-	static createBlankTexture(gl: WebGLRenderingContext, width: number, height: number) {
-		const currentTexture = gl.getParameter(gl.TEXTURE_BINDING_2D);
+	static createBlankTexture(gl: WebGLRenderingContext, width: number, height: number): WebGLTexture {
+		const currentTexture = gl.getParameter(gl.TEXTURE_BINDING_2D)
 
-		const texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, texture);
+		const texture = gl.createTexture()
+		gl.bindTexture(gl.TEXTURE_2D, texture)
 
-		const blackData = new Uint8Array(width * height * 4);
+		const blackData = new Uint8Array(width * height * 4)
 
 		gl.texImage2D(
 			gl.TEXTURE_2D,
@@ -27,14 +27,13 @@ export class glslHelper {
 			gl.RGBA,
 			gl.UNSIGNED_BYTE,
 			blackData
-		);
-
+		)
 
 		this.setTextureParameters(gl, texture)
 
-		gl.bindTexture(gl.TEXTURE_2D, currentTexture);
+		gl.bindTexture(gl.TEXTURE_2D, currentTexture)
 
-		return texture;
+		return texture
 	}
 
 	static setTextureParameters(gl: WebGLRenderingContext, texture: WebGLTexture) {

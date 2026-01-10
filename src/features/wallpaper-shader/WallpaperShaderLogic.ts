@@ -1,8 +1,11 @@
 import vertexShader from '@/features/wallpaper-shader/vertex.glsl?raw'
 import fragmentShader from '@/features/wallpaper-shader/fragment.glsl?raw'
+import updateFragmentShader from '@/features/wallpaper-shader/updateFragment.glsl?raw'
 import wallpaperImage from "@/resources/images/kolibri-os-1.png"
 import { StarElement } from "@/features/wallpaper-shader/StarElement"
 import { glslHelper } from "@/features/wallpaper-shader/glslHelper"
+
+let updateTexture: WebGLTexture | undefined = undefined
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
@@ -14,24 +17,57 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 }
 
 function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: number) {
-	const program = createShaderProgram(gl)
-	boilerplateSetup(gl, image, program)
+	const updateProgram = createUpdateShaderProgram(gl)
+	const mainProgram = createMainShaderProgram(gl)
 
-	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), curTime)
+	if (updateTexture === undefined) {
+		updateTexture = glslHelper.createBlankTexture(gl, image.width, image.height)
+	}
+
+	boilerplateSetup(gl, image, mainProgram)
+	boilerplateSetup(gl, image, updateProgram)
+
+	/*
+	const savedUnit = gl.getParameter(gl.ACTIVE_TEXTURE);
+	const savedTexture = gl.getParameter(gl.TEXTURE_BINDING_2D);
+	 */
+
+	let mainTexture = setTexture(gl, image)
+
+	gl.activeTexture(gl.TEXTURE1)
+	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
+
+	const framebuffer = gl.createFramebuffer();
+	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, mainTexture, 0);
+
+	gl.useProgram(updateProgram);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+	gl.useProgram(mainProgram);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+	gl.activeTexture(gl.TEXTURE1)
+	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
+
+
+	gl.uniform1f(gl.getUniformLocation(mainProgram, "u_curTimeLocation"), curTime)
 
 	// unorm
 	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
-	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
+	gl.uniform4fv(gl.getUniformLocation(mainProgram, "u_backgroundColor"), backgroundColor)
 
 	// in pixels
 	// const islandCenterPx = new Int32Array([339, 241]);
 	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
-	gl.uniform2f(gl.getUniformLocation(program, "u_islandCenter"), 0.1765625, 0.223148148)
+	gl.uniform2f(gl.getUniformLocation(mainProgram, "u_islandCenter"), 0.1765625, 0.223148148)
 
 	let starElementArr = new Array<StarElement>(30);
 	for (let i = 0; i < starElementArr.length; i++) {
-		starElementArr[i] = new StarElement(gl, program, "starElements", 0.3, 0.3, false)
+		starElementArr[i] = new StarElement(gl, mainProgram, "starElements", 0.3, 0.3, false)
 	}
+
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
@@ -88,10 +124,9 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	)
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
-
 }
 
-function createShaderProgram(gl: WebGLRenderingContext) {
+function createMainShaderProgram(gl: WebGLRenderingContext) {
 	const vs = createShader(gl, gl.VERTEX_SHADER, vertexShader)
 	const fs = createShader(gl, gl.FRAGMENT_SHADER, fragmentShader)
 
@@ -104,8 +139,22 @@ function createShaderProgram(gl: WebGLRenderingContext) {
 	return program
 }
 
+function createUpdateShaderProgram(gl: WebGLRenderingContext) {
+	const vs = createShader(gl, gl.VERTEX_SHADER, vertexShader)
+	const fs = createShader(gl, gl.FRAGMENT_SHADER, updateFragmentShader)
+
+	const program = gl.createProgram()
+	gl.attachShader(program, vs)
+	gl.attachShader(program, fs);
+	gl.linkProgram(program);
+	gl.useProgram(program);
+
+	return program
+}
+
 function setTexture(gl: WebGLRenderingContext, image: HTMLImageElement) {
 	const texture = gl.createTexture()
+	gl.activeTexture(gl.TEXTURE0)
 	gl.bindTexture(gl.TEXTURE_2D, texture)
 
 	glslHelper.setTextureParameters(gl, texture)
