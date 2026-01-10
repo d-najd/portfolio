@@ -4,39 +4,43 @@ export class glslHelper {
 	static uniformStructs(gl: WebGLRenderingContext, program: WebGLProgram, uniformAttribName: string, structs: Iterable<IGLSLStruct>) {
 		let index = 0;
 		for (const curStruct of structs) {
-			curStruct.uniformStruct(gl, program, uniformAttribName + `[${index}]`)
+			curStruct.uniformStruct(`[${index}]`)
 			index++;
 		}
 	}
 
-	static copyTexture(
-		gl: WebGLRenderingContext,
-		srcTex: WebGLTexture,
-		dstTex: WebGLTexture,
-		width: number,
-		height: number
-	) {
-		const fb = gl.createFramebuffer()!;
-		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, dstTex, 0);
+	static createBlankTexture(gl: WebGLRenderingContext, width: number, height: number) {
+		const currentTexture = gl.getParameter(gl.TEXTURE_BINDING_2D);
 
-		if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
-			throw new Error("Framebuffer not complete");
-		}
+		const texture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, texture);
 
-		gl.viewport(0, 0, width, height);
+		const blackData = new Uint8Array(width * height * 4);
 
-		gl.useProgram(copyProgram);
+		gl.texImage2D(
+			gl.TEXTURE_2D,
+			0,
+			gl.RGBA,
+			width,
+			height,
+			0,
+			gl.RGBA,
+			gl.UNSIGNED_BYTE,
+			blackData
+		);
 
-		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_2D, srcTex);
-		gl.uniform1i(srcTexLocation, 0);
 
-		gl.bindVertexArray(quadVAO);
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
+		this.setTextureParameters(gl, texture)
 
-		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+		gl.bindTexture(gl.TEXTURE_2D, currentTexture);
 
-		gl.deleteFramebuffer(fb);
+		return texture;
+	}
+
+	static setTextureParameters(gl: WebGLRenderingContext, texture: WebGLTexture) {
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
 	}
 }
