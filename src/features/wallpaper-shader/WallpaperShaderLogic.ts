@@ -17,7 +17,7 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 }
 
 function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: number) {
-	const updateProgram = createUpdateShaderProgram(gl)
+	// const updateProgram = createUpdateShaderProgram(gl)
 	const mainProgram = createMainShaderProgram(gl)
 
 	if (updateTexture === undefined) {
@@ -25,15 +25,18 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	}
 
 	boilerplateSetup(gl, image, mainProgram)
-	boilerplateSetup(gl, image, updateProgram)
+	// boilerplateSetup(gl, image, updateProgram)
 
 	/*
 	const savedUnit = gl.getParameter(gl.ACTIVE_TEXTURE);
 	const savedTexture = gl.getParameter(gl.TEXTURE_BINDING_2D);
 	 */
 
-	let mainTexture = setTexture(gl, image)
 
+	// let mainTexture = setTexture(gl, image)
+	setTexture(gl, image)
+
+	/*
 	gl.activeTexture(gl.TEXTURE1)
 	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
 
@@ -50,7 +53,7 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 
 	gl.activeTexture(gl.TEXTURE1)
 	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
-
+	 */
 
 	gl.uniform1f(gl.getUniformLocation(mainProgram, "u_curTimeLocation"), curTime)
 
@@ -67,7 +70,6 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	for (let i = 0; i < starElementArr.length; i++) {
 		starElementArr[i] = new StarElement(gl, mainProgram, "starElements", 0.3, 0.3, false)
 	}
-
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
