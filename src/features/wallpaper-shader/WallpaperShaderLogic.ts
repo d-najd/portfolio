@@ -5,76 +5,46 @@ import wallpaperImage from "@/resources/images/kolibri-os-1.png"
 import { StarElement } from "@/features/wallpaper-shader/StarElement"
 import { glslHelper } from "@/features/wallpaper-shader/glslHelper"
 
-let updateTexture: WebGLTexture | undefined = undefined
+let mainTexture: WebGLTexture = null
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
 	image.src = wallpaperImage
 
 	image.onload = () => {
+		mainTexture = createTextureFromImage(gl, image)
 		render(gl, image, timeElapsedSinceStartup)
 	}
 }
 
 function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: number) {
-	// const updateProgram = createUpdateShaderProgram(gl)
 	const mainProgram = createMainShaderProgram(gl)
+	boilerplateSetup(gl, image, mainProgram, curTime)
 
-	if (updateTexture === undefined) {
-		updateTexture = glslHelper.createBlankTexture(gl, image.width, image.height)
-	}
+	const updateProgram = createUpdateShaderProgram(gl)
+	boilerplateSetup(gl, image, updateProgram, curTime)
 
-	boilerplateSetup(gl, image, mainProgram)
-	// boilerplateSetup(gl, image, updateProgram)
-
-	/*
-	const savedUnit = gl.getParameter(gl.ACTIVE_TEXTURE);
-	const savedTexture = gl.getParameter(gl.TEXTURE_BINDING_2D);
-	 */
-
-
-	// let mainTexture = setTexture(gl, image)
-	setTexture(gl, image)
-
-	/*
-	gl.activeTexture(gl.TEXTURE1)
-	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
+	gl.useProgram(updateProgram);
 
 	const framebuffer = gl.createFramebuffer();
 	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, mainTexture, 0);
 
-	gl.useProgram(updateProgram);
 	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-	gl.useProgram(mainProgram);
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	gl.useProgram(mainProgram);
 
-	gl.activeTexture(gl.TEXTURE1)
-	gl.bindTexture(gl.TEXTURE_2D, updateTexture)
+
+	/*
 	 */
 
-	gl.uniform1f(gl.getUniformLocation(mainProgram, "u_curTimeLocation"), curTime)
-
-	// unorm
-	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
-	gl.uniform4fv(gl.getUniformLocation(mainProgram, "u_backgroundColor"), backgroundColor)
-
-	// in pixels
-	// const islandCenterPx = new Int32Array([339, 241]);
-	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
-	gl.uniform2f(gl.getUniformLocation(mainProgram, "u_islandCenter"), 0.1765625, 0.223148148)
-
-	let starElementArr = new Array<StarElement>(30);
-	for (let i = 0; i < starElementArr.length; i++) {
-		starElementArr[i] = new StarElement(gl, mainProgram, "starElements", 0.3, 0.3, false)
-	}
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
 
-function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram) {
+function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram, curTime: number) {
 	const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
 	const positionLocation = gl.getAttribLocation(program, "a_position")
 	const texcoordLocation = gl.getAttribLocation(program, "a_texCoord")
@@ -126,6 +96,22 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	)
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
+
+	gl.uniform1f(gl.getUniformLocation(mainProgram, "u_curTimeLocation"), curTime)
+
+	// unorm
+	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
+	gl.uniform4fv(gl.getUniformLocation(mainProgram, "u_backgroundColor"), backgroundColor)
+
+	// in pixels
+	// const islandCenterPx = new Int32Array([339, 241]);
+	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
+	gl.uniform2f(gl.getUniformLocation(mainProgram, "u_islandCenter"), 0.1765625, 0.223148148)
+
+	let starElementArr = new Array<StarElement>(30);
+	for (let i = 0; i < starElementArr.length; i++) {
+		starElementArr[i] = new StarElement(gl, mainProgram, "starElements", 0.3, 0.3, false)
+	}
 }
 
 function createMainShaderProgram(gl: WebGLRenderingContext) {
@@ -154,7 +140,7 @@ function createUpdateShaderProgram(gl: WebGLRenderingContext) {
 	return program
 }
 
-function setTexture(gl: WebGLRenderingContext, image: HTMLImageElement) {
+function createTextureFromImage(gl: WebGLRenderingContext, image: HTMLImageElement) {
 	const texture = gl.createTexture()
 	gl.activeTexture(gl.TEXTURE0)
 	gl.bindTexture(gl.TEXTURE_2D, texture)
