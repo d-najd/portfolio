@@ -97,20 +97,20 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 
-	gl.uniform1f(gl.getUniformLocation(mainProgram, "u_curTimeLocation"), curTime)
+	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), curTime)
 
 	// unorm
 	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
-	gl.uniform4fv(gl.getUniformLocation(mainProgram, "u_backgroundColor"), backgroundColor)
+	gl.uniform4fv(gl.getUniformLocation(program, "u_backgroundColor"), backgroundColor)
 
 	// in pixels
 	// const islandCenterPx = new Int32Array([339, 241]);
 	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
-	gl.uniform2f(gl.getUniformLocation(mainProgram, "u_islandCenter"), 0.1765625, 0.223148148)
+	gl.uniform2f(gl.getUniformLocation(program, "u_islandCenter"), 0.1765625, 0.223148148)
 
 	let starElementArr = new Array<StarElement>(30);
 	for (let i = 0; i < starElementArr.length; i++) {
-		starElementArr[i] = new StarElement(gl, mainProgram, "starElements", 0.3, 0.3, false)
+		starElementArr[i] = new StarElement(gl, program, "starElements", 0.3, 0.3, false)
 	}
 }
 
