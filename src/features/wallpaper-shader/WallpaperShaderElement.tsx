@@ -15,6 +15,7 @@ export const WallpaperShaderElement = React.memo(() => {
 		// console.log("INVOKED " + timeSinceStartup)
 
 		const gl = canvas.getContext("webgl")!
+
 		WallpaperShaderLogic(gl, timeSinceStartup)
 	}, [timeSinceStartup])
 

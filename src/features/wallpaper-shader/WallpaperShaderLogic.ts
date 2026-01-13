@@ -16,9 +16,8 @@ export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSince
 
 	image.onload = () => {
 		render(gl, image, timeElapsedSinceStartup - lastTime)
+		lastTime = timeElapsedSinceStartup
 	}
-
-	lastTime = timeElapsedSinceStartup
 }
 
 function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeSinceLastRender: number) {
@@ -128,7 +127,7 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	if (starElementArr === undefined) {
 		starElementArr = new Array<StarElement>(30);
 		for (let i = 0; i < starElementArr.length; i++) {
-			starElementArr[i] = new StarElement(Math.random(), Math.random(), 5.0, true)
+			starElementArr[i] = new StarElement(Math.random(), Math.random(), 10.0, true)
 		}
 	}
 

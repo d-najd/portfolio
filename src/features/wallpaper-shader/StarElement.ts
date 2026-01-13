@@ -23,9 +23,19 @@ export class StarElement extends IGLSLStruct {
 	 * @param timePassedSeconds amount of time passed
 	 */
 	updateCpu(timePassedSeconds: number): void {
-		console.log("CURRENT " + this.positionX)
-		this.positionX -= 0.01;
-		// this.positionX = Math.max(0, this.positionX - (timePassedSeconds / this.timeForLoopSeconds));
+		if (timePassedSeconds <= 0) {
+			return
+		}
+
+		const te = timePassedSeconds / this.timeForLoopSeconds
+		const me = this.positionX;
+		const mt = me - te
+		const t = Math.max(0, mt)
+		this.positionX = t
+		// this.positionX -= timePassedSeconds / this.timeForLoopSeconds;
+		// this.positionX = Math.max(0, this.positionX)
+
+		console.error(t)
 	}
 
 	dispose(): void {}
