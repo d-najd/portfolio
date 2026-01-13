@@ -16,9 +16,11 @@ uniform StarElement starElements[30];
 
 void main() {
     vec4 curPixel = texture2D(u_image, v_texCoord).rgba;
+    /*
     vec4 updateTexturePixel = texture2D(u_updateTexture, v_texCoord).bgra;
     bool isTransparent = curPixel.x == 0.0;
     vec4 transparentColor = vec4(1.0, 0.0, 0.0, 1.0);
+    */
 
     /*
     transparentColor = ((0.2 > v_texCoord.x &&

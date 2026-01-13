@@ -15,6 +15,10 @@ struct StarElement {
 uniform StarElement starElements[30];
 
 void main() {
-    vec4 curPixel = texture2D(u_image, v_texCoord).rgba;
-    gl_FragColor = curPixel;
+    vec4 curPixel = texture2D(u_updateTexture, v_texCoord).rgba;
+    vec4 transparentColor = vec4(0.0, 1.0, 0.0, 1.0);
+
+    vec4 finalColor = (v_texCoord.x < 0.2 && v_texCoord.y < 0.2) ? transparentColor : curPixel;
+
+    gl_FragColor = finalColor;
 }

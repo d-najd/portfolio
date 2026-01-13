@@ -5,14 +5,14 @@ import wallpaperImage from "@/resources/images/kolibri-os-1.png"
 import { StarElement } from "@/features/wallpaper-shader/StarElement"
 import { glslHelper } from "@/features/wallpaper-shader/glslHelper"
 
-let mainTexture: WebGLTexture = null
+let mainTexture: WebGLTexture | undefined = undefined
+let sampleTexture: WebGLTexture | undefined = undefined
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
 	image.src = wallpaperImage
 
 	image.onload = () => {
-		mainTexture = createTextureFromImage(gl, image)
 		render(gl, image, timeElapsedSinceStartup)
 	}
 }
@@ -24,11 +24,14 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	const updateProgram = createUpdateShaderProgram(gl)
 	boilerplateSetup(gl, image, updateProgram, curTime)
 
+	gl.activeTexture(gl.TEXTURE0)
+	gl.bindTexture(gl.TEXTURE_2D, mainTexture!)
+
 	gl.useProgram(updateProgram);
 
 	const framebuffer = gl.createFramebuffer();
 	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, mainTexture, 0);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, mainTexture!, 0);
 
 	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -36,15 +39,25 @@ function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: num
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	gl.useProgram(mainProgram);
 
-
-	/*
-	 */
-
-
 	gl.drawArrays(gl.TRIANGLES, 0, 6)
+
+	swapTextures()
+}
+
+function swapTextures() {
+	let tempTexture = mainTexture!
+	mainTexture = sampleTexture!
+	sampleTexture = tempTexture!
 }
 
 function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram, curTime: number) {
+	if (mainTexture === undefined) {
+		mainTexture = createTextureFromImage(gl, image)
+	}
+	if (sampleTexture === undefined) {
+		sampleTexture = createTextureFromImage(gl, image)
+	}
+
 	const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
 	const positionLocation = gl.getAttribLocation(program, "a_position")
 	const texcoordLocation = gl.getAttribLocation(program, "a_texCoord")
@@ -112,6 +125,14 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	for (let i = 0; i < starElementArr.length; i++) {
 		starElementArr[i] = new StarElement(gl, program, "starElements", 0.3, 0.3, false)
 	}
+
+	gl.activeTexture(gl.TEXTURE0);
+	gl.bindTexture(gl.TEXTURE_2D, mainTexture!);
+	gl.uniform1i(gl.getUniformLocation(program, "u_image"), 0);
+
+	gl.activeTexture(gl.TEXTURE1);
+	gl.bindTexture(gl.TEXTURE_2D, sampleTexture!);
+	gl.uniform1i(gl.getUniformLocation(program, "u_updateTexture"), 1);
 }
 
 function createMainShaderProgram(gl: WebGLRenderingContext) {
@@ -142,7 +163,7 @@ function createUpdateShaderProgram(gl: WebGLRenderingContext) {
 
 function createTextureFromImage(gl: WebGLRenderingContext, image: HTMLImageElement) {
 	const texture = gl.createTexture()
-	gl.activeTexture(gl.TEXTURE0)
+	// gl.activeTexture(gl.TEXTURE0)
 	gl.bindTexture(gl.TEXTURE_2D, texture)
 
 	glslHelper.setTextureParameters(gl, texture)
