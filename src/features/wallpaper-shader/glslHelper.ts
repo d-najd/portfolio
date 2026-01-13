@@ -4,7 +4,7 @@ export class glslHelper {
 	static uniformStructs(gl: WebGLRenderingContext, program: WebGLProgram, uniformAttribName: string, structs: Iterable<IGLSLStruct>) {
 		let index = 0;
 		for (const curStruct of structs) {
-			curStruct.uniformStruct(`[${index}]`)
+			curStruct.uniformStruct(gl, program, `[${index}]`)
 			index++;
 		}
 	}

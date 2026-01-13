@@ -2,28 +2,30 @@ import { IGLSLStruct } from "@/features/wallpaper-shader/IGLSLStruct"
 
 export class StarElement extends IGLSLStruct {
 	constructor(
-		gl: WebGLRenderingContext,
-		program: WebGLProgram,
-		uniformAttribName: string,
 		public positionX: number = 0.5,
 		public positionY: number = 0.5,
-		public active: false,
+		public timeForLoopSeconds: number = 5.0,
+		public active: boolean,
 	) {
-		super(gl, program, uniformAttribName)
+		super()
 	}
 
-	uniformStruct(uniformAttribNameExtra: string = ""): void {
-		const finalUniformAttribName = this.uniformAttribName + uniformAttribNameExtra
-
-		this.gl.uniform2f(
-			this.gl.getUniformLocation(this.program, finalUniformAttribName + ".position"),
+	uniformStruct(gl: WebGLRenderingContext, program: WebGLProgram, uniformAttribName: string): void {
+		gl.uniform2f(
+			gl.getUniformLocation(program, uniformAttribName + ".position"),
 			this.positionX,
 			this.positionY,
 		)
 	}
 
-	update(timePassed: number) {
-
+	/**
+	 * Should update only on the cpu side
+	 * @param timePassedSeconds amount of time passed
+	 */
+	updateCpu(timePassedSeconds: number): void {
+		console.log("CURRENT " + this.positionX)
+		this.positionX -= 0.01;
+		// this.positionX = Math.max(0, this.positionX - (timePassedSeconds / this.timeForLoopSeconds));
 	}
 
 	dispose(): void {}

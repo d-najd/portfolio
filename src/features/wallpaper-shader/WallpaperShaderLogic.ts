@@ -7,22 +7,26 @@ import { glslHelper } from "@/features/wallpaper-shader/glslHelper"
 
 let mainTexture: WebGLTexture | undefined = undefined
 let sampleTexture: WebGLTexture | undefined = undefined
+let starElementArr: Array<StarElement> | undefined = undefined
+let lastTime: number
 
 export function WallpaperShaderLogic(gl: WebGLRenderingContext, timeElapsedSinceStartup: number) {
 	const image = new Image()
 	image.src = wallpaperImage
 
 	image.onload = () => {
-		render(gl, image, timeElapsedSinceStartup)
+		render(gl, image, timeElapsedSinceStartup - lastTime)
 	}
+
+	lastTime = timeElapsedSinceStartup
 }
 
-function render(gl: WebGLRenderingContext, image: HTMLImageElement, curTime: number) {
+function render(gl: WebGLRenderingContext, image: HTMLImageElement, timeSinceLastRender: number) {
 	const mainProgram = createMainShaderProgram(gl)
-	boilerplateSetup(gl, image, mainProgram, curTime)
+	boilerplateSetup(gl, image, mainProgram, timeSinceLastRender)
 
 	const updateProgram = createUpdateShaderProgram(gl)
-	boilerplateSetup(gl, image, updateProgram, curTime)
+	boilerplateSetup(gl, image, updateProgram, timeSinceLastRender)
 
 	gl.activeTexture(gl.TEXTURE0)
 	gl.bindTexture(gl.TEXTURE_2D, mainTexture!)
@@ -50,7 +54,7 @@ function swapTextures() {
 	sampleTexture = tempTexture!
 }
 
-function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram, curTime: number) {
+function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, program: WebGLProgram, timeSinceLastRender: number) {
 	if (mainTexture === undefined) {
 		mainTexture = createTextureFromImage(gl, image)
 	}
@@ -110,7 +114,7 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 
 	gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 
-	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), curTime)
+	gl.uniform1f(gl.getUniformLocation(program, "u_curTimeLocation"), timeSinceLastRender)
 
 	// unorm
 	const backgroundColor = new Float32Array([0.094117647, 0.125490196, 0.156862745, 1])
@@ -121,9 +125,16 @@ function boilerplateSetup(gl: WebGLRenderingContext, image: HTMLImageElement, pr
 	// gl.uniform2iv(gl.getUniformLocation(program, "u_islandCenterPx"), islandCenterPx)
 	gl.uniform2f(gl.getUniformLocation(program, "u_islandCenter"), 0.1765625, 0.223148148)
 
-	let starElementArr = new Array<StarElement>(30);
-	for (let i = 0; i < starElementArr.length; i++) {
-		starElementArr[i] = new StarElement(gl, program, "starElements", 0.3, 0.3, false)
+	if (starElementArr === undefined) {
+		starElementArr = new Array<StarElement>(30);
+		for (let i = 0; i < starElementArr.length; i++) {
+			starElementArr[i] = new StarElement(Math.random(), Math.random(), 5.0, true)
+		}
+	}
+
+	for (let i = 0; i < starElementArr!.length; i++) {
+		starElementArr![i].updateCpu(timeSinceLastRender)
+		starElementArr![i].uniformStruct(gl, program, `starElements[${i}]`)
 	}
 
 	gl.activeTexture(gl.TEXTURE0);
