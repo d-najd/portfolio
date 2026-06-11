@@ -10,6 +10,7 @@ export enum ProjectType {
 	BugTracker = "Bugtracker",
 	AntiViolence = "Anti-Violence Project",
 	Sandblasting = "SandBlasting VR Simulator",
+   Pathfinder = "Pathfinding Visualizer"
 }
 
 /**

@@ -6,6 +6,7 @@ import cytheroIco from "@/resources/icons/LogoCythero.png"
 import bugtrackerVideo from "@/resources/videos/Bugtracker.webm"
 import sandblastingVideo from "@/resources/videos/Sandblasting.webm"
 import prijaviNasilstvoVideo from "@/resources/videos/Prijavi-Nasilstvo.webm"
+import pathfinderVideo from "@/resources/videos/Pathfinder.webm"
 
 export interface Project {
 	id: number
@@ -84,6 +85,21 @@ const initialState: ProjectsState = {
 			projectLinks: [],
 			videoLink: prijaviNasilstvoVideo,
 			technologiesUsed: "Android Studio, Firebase, Jetpack Compose, MVVM",
+		},
+		{
+			id: getNextProjectId(),
+			title: ProjectType.Pathfinder,
+			description:
+				"A pathfinding visualization tool that finds and displays the optimal route from point A to point B",
+			projectLinks: [
+				{
+					name: "Github",
+					link: "https://github.com/d-najd/PathFinder",
+					icon: githubIco,
+				},
+			],
+         videoLink: pathfinderVideo,
+         technologiesUsed: "Java, Swing",
 		},
 	],
 	status: "idle",
