@@ -1,6 +1,6 @@
 # [Windows 95 themed portfolio](https://d-najd.github.io/portfolio/)
 
-Web based windows 95 desktop recreation
+A web-based recreation of the classic Windows 95 desktop environment, built to showcase projects, resume, and contact info interactively
 
 ## Features
 
